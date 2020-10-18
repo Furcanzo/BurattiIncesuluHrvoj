@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<iframe id="pdf" src="RASD/main.pdf" height="100%" width="100%"></iframe>
+
+<script>
+    var time;
+    var newTime;
+    setInterval(async function elem() {
+        newTime = await (await fetch("./date.iml")).text();
+        if (newTime === time) {
+            return;
+        }
+        time = newTime;
+        document.getElementById("pdf").contentWindow.location.href= "RASD/main.pdf";
+    }, 2000);
+</script>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    iframe {
+        display: block;
+        width: 100vw;
+        height: 100vh;
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+        border: 0 none;
+        box-sizing: border-box;
+    }
+
+</style>
+</body>
+</html>
