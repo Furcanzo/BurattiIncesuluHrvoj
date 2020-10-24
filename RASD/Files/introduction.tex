@@ -91,5 +91,30 @@ The system aims to provide assistance to cope with the customer load for manager
 
 
 \subsection{Document Structure}
+This document is composed of six sections, each with the purpose described below: \\
+\begin{itemize}
+    \item \textbf{Introduction}: This section provides an introduction of the problem, the scope of the project with details regarding the goals, target users and phenomena.
+        The goals of the project are formulated in accordance with the description of actions and actors in the Specification Document.
+        Within the project's scope, properties and duties of different users and user groups are described in Target Users section.
+        Furthermore, under the scope of the project, the relevant phenomena of the project is presented through their relevance to the world and the machine.
+    \item \textbf{Overall Description}: This section builds upon the introduction section by providing expansion of the scope and relevant functionalities of the system.
+        The basic perspective is provided considering the shared phenomena between the world and the system and the integrations of the system with other parties and products.
+        The overall actions that can be conducted over the system is described using a detailed class diagram, portraying all required components of the system, their inner state and provided functionalities for other components to facilitate their purpose.
+        All core features of the system is listed and explained using user scenarios to provide a better understanding of the real-world condition on which the use case should apply to, a state chart for demonstrating the relationship between various states the system can be in during the execution of the provided core feature scenario.
+        Next, the requirements for the system to archive the aforementioned goals and allow the execution of the provided scenarios.
+        The user characteristics, based on their roles in the system is further evaluated in this section, through the means of the needs that they have, how the system archives those needs via its requirements and goals.
+        No system can be designed without a broad idea on what domain it exists in and how much the environment limits its ability to perform its features.
+        Ergo, we provide the expected assumptions of the domain, the dependencies of the system to external components and the limits imposed by the world on the system.
+    \item \textbf{Specific Requirements}: This section is the main section of the document.
+        The external interfaces that the system requires to function correctly is presented with details and additional mockups if needed.
+        The interfaces section is mainly concentrated on different views of user interfaces as the user-facing part is the main way to integrate with the system.
+        In this section, functional requirements of the system are presented in detail, a common use case diagram is provided, and each use-case of the system is analyzed with details on a use case description table and a sequence diagram.
+        The performance requirements of the system, with a focus on %TODO add when performance requirements are written
+        The design constraints of the system, with a focus on different standard compliances, hardware limitations of the system to function and other constraints, like GDPR are also elaborated on this section.
+        The vertical aspects that needs consideration are evaluated under the Software System Attributes subsection of this document, with an emphasis on Reliability, Availability, Security, Maintainability and Portability.
 
-% TODO: @Ozan do this
+    \item \textbf{Formal Analysis Using Alloy}: This section features various models built and hypothesis verified using Alloy.
+        This section demonstrates that some aspects of the requirements document can be formally proven to be correct and provides additional information about the proposed system to the engineers.
+    \item \textbf{Effort Spent}: This section features the effort table, in which all team members provide a rough estimation on the time spent on creation of the various sections of the document.
+    \item \textbf{References}: This section features different reference materials referred inside this document.
+\end{itemize}

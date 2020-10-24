@@ -7,12 +7,19 @@
 % We need a tool, either stores raw content as text in our repo, or integrates with GitHub.
 % TODO: Find the tool , maybe moqups? @Aydin
 
+% Actual mockups of user interfaces
+
 \subsubsection{Hardware Interfaces}
 
+% Do we integrate with external hardware? Like the entrance door?
 \subsubsection{Software Interfaces}
+
+% Do we integrate with custom software, expose an API?
 
 \subsubsection{Communication Interfaces}
 
+
+% What is a communication interface? the Internet? RF port? Radio? Bluetooth?
 
 \subsection{Functional Requirements}
 % Use draw.io, compatible with GitHub.
@@ -21,27 +28,51 @@
 % TODO: @Roberto start
 % Definition  of  use  case  diagrams,  use  cases  and  associated sequence/activity diagrams, and mapping on requirements
 
+% Use case diagram
 
+% For each use case:
+%   Use case table
+%   Use case sequence diagram
+
+
+% Goals, mapped to the requirements and domain assumptions they relate to
+% (Requirements are defined in Overview -> Product functions)
+% (Domain assumptions are in Overview -> Assumptions,dependencies and constraints -> Domain Assumptions)
 \subsection{Performance Requirements}
+
+% Some basic stuff about how much users the system takes, speed etc...
 
 
 \subsection{Design Constraints}
 
 \subsubsection{Standards compliance}
+% QR standard, UTC timing standard, GPS, etc...
 
 \subsubsection{Hardware limitations}
-
+% What needs to be on the phone?
 \subsubsection{Any other constraint}
+% GDPR regulations, local laws, etc...
 
+% Isn't this similar to Overview -> Assumptions,dependencies and constraints -> Constraints?
 
 \subsection{Software System Attributes}
 
 \subsubsection{Reliability}
 
+% Don't crash for long time, fault tolerance strategies like RAID, backups, etc
+
 \subsubsection{Availability}
+
+% 99.5% availability minimum, release any hardware control in case of power cut or unavailability.
 
 \subsubsection{Security}
 
+% Data hashing, salting, encryption of user data if necessary.
+
 \subsubsection{Maintainability}
 
+% Testing practices on all levels
+
 \subsubsection{Portability}
+
+% Usage of widely adopted platforms (Java, .NET, Browser), no custom protocol implementation apart from wide-spread
