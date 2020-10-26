@@ -46,12 +46,48 @@ The system aims to provide assistance to cope with the customer load for manager
 % TODO: Write goals accordingly @Aydin
 
 \subsection{Scope}
-% TODO: @Ozan Start below sections
+
 \subsubsection{Targeted Users}
 
+CLup aims to resolve the problem of Customers queueing up in front of a location, without any control over the availability of place in the location and further contact tracing by the managers.
+\\[0.5cm]
+\textbf{Customer:} \\
 
+Customers will be able to obtain specific line numbers for various locations using CLup, which they can track the estimated time available with and also view the location on a map application to plan their visit.
+Customers can further obtain line numbers for future visits, based on the info provided by the system about the availability of free spots on the specific time intervals.
+They may prefer to visit a different branch of the same chain.
+Furthermore, they can provide specific products they intend to purchase or set an estimated time for their visit to allow finer granularity.
+Some customers may also prefer to obtain a line number upon visiting the store physically.
+To plan their visit in a time slot where the location will be less crowded, the users can see the occupancy of the location based on already taken line numbers and forecasts provided by the system.
+\\[0.5cm]
+\textbf{Manager:} \\
+
+The location manager (which could be an actual manager, or someone responsible for handling customer management) can provide details regarding the availability of products and the location in general, by setting the opening hours, maximum allowed customers in shop, in-shop location of different products and categories, maximum amount of reservations that can be made per customer, line number timeout and the location.
+Furthermore, the manager can monitor the flow of customers and manually intervene in case of missing line numbers via performing manual checkout for a specific customer, or by printing line numbers physically for some customers.
+Also, for chains and relevant stores, the manager can add chain members for the location.
 
 \subsubsection{Relevant Phenomena}
+
+\begin{table}[h]
+    \begin{tabular}{|p{2cm}|p{2cm}|p{2cm}|}
+        \hline
+        \textbf{Phenomenon}    & \textbf{World / Machine}       & \textbf{Shared } \\ \hline
+        Line Number & Machine & Yes \\ \hline
+        Line Number Ticket & World & No \\ \hline
+        Product & World & No \\ \hline
+        Product Category & World & No \\ \hline
+        In-store Location & World & Yes \\ \hline
+        Occupancy Forecast & Machine & No \\ \hline
+        Store & World & Yes \\ \hline
+        Time Slot & Machine & Yes \\ \hline
+        Ticket Printer & World & Yes \\ \hline
+        Line Number Timer & Machine & No \\ \hline
+        Customer Scheduling Algorithm & Machine & No \\ \hline
+        Store Door & World & Yes \\ \hline
+        % Line template:
+        %          &               &  \\ \hline
+    \end{tabular}
+\end{table}
 
 % here we include an analysis of the world and of the shared phenomena
 
@@ -64,10 +100,12 @@ The system aims to provide assistance to cope with the customer load for manager
     \item \textit{Customer}: the user with the goal of making a visit to the location
     \item \textit{Visit Time}: the time interval in which a customer performs a visit to the location
     \item \textit{Line Number}: A number that indicates the ordering of a specific customer in the line
+    \item \textit{Line Number Ticket}: A physical ticket printed that features the line number and the QR code.
     \item \textit{Time Slot}: Specific intervals of time that are determined by the opening hours and average visit time per customer.
     \item \textit{Partner Store}: A different location that is included in the same beneficiary chain of command (such as another member of the franchise or store chain) or in a mutual agreement with the specific location
     \item \textit{Product}: Any item, items, service or services demanded by the customer, and provided by the location to the customer.
-\end{itemize}
+    \item \textit{In-store Location}: A location of a specific product or a product category inside the location.
+\item \end{itemize}
 \subsubsection{Acronyms}
 \begin{itemize}
     \item \textbf{RASD}: Requirement Analysis and Specification Document
