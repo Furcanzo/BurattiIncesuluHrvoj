@@ -5,6 +5,7 @@ do
     (cd RASD; pdflatex -halt-on-error main.tex)
     if [ $? -eq 0 ]
     then
+        mv RASD/main.pdf DeliveryFolder/RASD1.pdf
         echo $(cd RASD; zip cache Files/* 1>/dev/null; md5 cache.zip) > date.iml;
         rm ./RASD/cache.zip;
     fi
