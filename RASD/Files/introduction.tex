@@ -18,12 +18,14 @@ The system aims to provide assistance to cope with the customer load for manager
 % Monitor the entrance and exit of customers with their line numbers, using QR codes.
 % Observe the current amount of customers in the location.
 % Stop the system from issuing more tickets for a given day in case of an overflow or emergency
+% Schedule a system stop.
 % Print line numbers with QR code on them for the physically arriving customers who doesn't have a virtual ticket
 % Enter manually the line number, customer info to open gates
 % Set the timeout
 
+% Clerk/Handsmen: Does the QR read/overwrite things, prints QR code if needed TODO: @Ozan Update all accordingly
 
-% User:
+% Customer:
 % Retrieve a direct line number for a location
 % Generate a QR code for entry
 % See an ETA, like 30 mins are left for your line number
@@ -45,6 +47,8 @@ The system aims to provide assistance to cope with the customer load for manager
 
 % TODO: Write goals accordingly @Aydin
 
+
+% 80/20 percent split between bookings and physical appearence on domain assumptions for us to schedule in an easy way.
 \subsection{Scope}
 
 \subsubsection{Targeted Users}
@@ -68,8 +72,8 @@ Also, for chains and relevant stores, the manager can add chain members for the 
 
 \subsubsection{Relevant Phenomena}
 
-\begin{table}[h]
-    \begin{tabular}{|p{2cm}|p{2cm}|p{2cm}|}
+\begin{table}[H]
+    \begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|}
         \hline
         \textbf{Phenomenon}    & \textbf{World / Machine}       & \textbf{Shared } \\ \hline
         Line Number & Machine & Yes \\ \hline
