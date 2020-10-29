@@ -18,12 +18,14 @@ The system aims to provide assistance to cope with the customer load for manager
 % Monitor the entrance and exit of customers with their line numbers, using QR codes.
 % Observe the current amount of customers in the location.
 % Stop the system from issuing more tickets for a given day in case of an overflow or emergency
+% Schedule a system stop.
 % Print line numbers with QR code on them for the physically arriving customers who doesn't have a virtual ticket
 % Enter manually the line number, customer info to open gates
 % Set the timeout
 
+% Clerk/Handsmen: Does the QR read/overwrite things, prints QR code if needed TODO: @Ozan Update all accordingly
 
-% User:
+% Customer:
 % Retrieve a direct line number for a location
 % Generate a QR code for entry
 % See an ETA, like 30 mins are left for your line number
@@ -45,13 +47,51 @@ The system aims to provide assistance to cope with the customer load for manager
 
 % TODO: Write goals accordingly @Aydin
 
+
+% 80/20 percent split between bookings and physical appearence on domain assumptions for us to schedule in an easy way.
 \subsection{Scope}
-% TODO: @Ozan Start below sections
+
 \subsubsection{Targeted Users}
 
+CLup aims to resolve the problem of Customers queueing up in front of a location, without any control over the availability of place in the location and further contact tracing by the managers.
+\\[0.5cm]
+\textbf{Customer:} \\
 
+Customers will be able to obtain specific line numbers for various locations using CLup, which they can track the estimated time available with and also view the location on a map application to plan their visit.
+Customers can further obtain line numbers for future visits, based on the info provided by the system about the availability of free spots on the specific time intervals.
+They may prefer to visit a different branch of the same chain.
+Furthermore, they can provide specific products they intend to purchase or set an estimated time for their visit to allow finer granularity.
+Some customers may also prefer to obtain a line number upon visiting the store physically.
+To plan their visit in a time slot where the location will be less crowded, the users can see the occupancy of the location based on already taken line numbers and forecasts provided by the system.
+\\[0.5cm]
+\textbf{Manager:} \\
+
+The location manager (which could be an actual manager, or someone responsible for handling customer management) can provide details regarding the availability of products and the location in general, by setting the opening hours, maximum allowed customers in shop, in-shop location of different products and categories, maximum amount of reservations that can be made per customer, line number timeout and the location.
+Furthermore, the manager can monitor the flow of customers and manually intervene in case of missing line numbers via performing manual checkout for a specific customer, or by printing line numbers physically for some customers.
+Also, for chains and relevant stores, the manager can add chain members for the location.
 
 \subsubsection{Relevant Phenomena}
+
+\begin{table}[H]
+    \begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|}
+        \hline
+        \textbf{Phenomenon}    & \textbf{World / Machine}       & \textbf{Shared } \\ \hline
+        Line Number & Machine & Yes \\ \hline
+        Line Number Ticket & World & No \\ \hline
+        Product & World & No \\ \hline
+        Product Category & World & No \\ \hline
+        In-store Location & World & Yes \\ \hline
+        Occupancy Forecast & Machine & No \\ \hline
+        Store & World & Yes \\ \hline
+        Time Slot & Machine & Yes \\ \hline
+        Ticket Printer & World & Yes \\ \hline
+        Line Number Timer & Machine & No \\ \hline
+        Customer Scheduling Algorithm & Machine & No \\ \hline
+        Store Door & World & Yes \\ \hline
+        % Line template:
+        %          &               &  \\ \hline
+    \end{tabular}
+\end{table}
 
 % here we include an analysis of the world and of the shared phenomena
 
@@ -64,10 +104,12 @@ The system aims to provide assistance to cope with the customer load for manager
     \item \textit{Customer}: the user with the goal of making a visit to the location
     \item \textit{Visit Time}: the time interval in which a customer performs a visit to the location
     \item \textit{Line Number}: A number that indicates the ordering of a specific customer in the line
+    \item \textit{Line Number Ticket}: A physical ticket printed that features the line number and the QR code.
     \item \textit{Time Slot}: Specific intervals of time that are determined by the opening hours and average visit time per customer.
     \item \textit{Partner Store}: A different location that is included in the same beneficiary chain of command (such as another member of the franchise or store chain) or in a mutual agreement with the specific location
     \item \textit{Product}: Any item, items, service or services demanded by the customer, and provided by the location to the customer.
-\end{itemize}
+    \item \textit{In-store Location}: A location of a specific product or a product category inside the location.
+\item \end{itemize}
 \subsubsection{Acronyms}
 \begin{itemize}
     \item \textbf{RASD}: Requirement Analysis and Specification Document
@@ -91,5 +133,30 @@ The system aims to provide assistance to cope with the customer load for manager
 
 
 \subsection{Document Structure}
+This document is composed of six sections, each with the purpose described below: \\
+\begin{itemize}
+    \item \textbf{Introduction}: This section provides an introduction of the problem, the scope of the project with details regarding the goals, target users and phenomena.
+        The goals of the project are formulated in accordance with the description of actions and actors in the Specification Document.
+        Within the project's scope, properties and duties of different users and user groups are described in Target Users section.
+        Furthermore, under the scope of the project, the relevant phenomena of the project is presented through their relevance to the world and the machine.
+    \item \textbf{Overall Description}: This section builds upon the introduction section by providing expansion of the scope and relevant functionalities of the system.
+        The basic perspective is provided considering the shared phenomena between the world and the system and the integrations of the system with other parties and products.
+        The overall actions that can be conducted over the system is described using a detailed class diagram, portraying all required components of the system, their inner state and provided functionalities for other components to facilitate their purpose.
+        All core features of the system is listed and explained using user scenarios to provide a better understanding of the real-world condition on which the use case should apply to, a state chart for demonstrating the relationship between various states the system can be in during the execution of the provided core feature scenario.
+        Next, the requirements for the system to archive the aforementioned goals and allow the execution of the provided scenarios.
+        The user characteristics, based on their roles in the system is further evaluated in this section, through the means of the needs that they have, how the system archives those needs via its requirements and goals.
+        No system can be designed without a broad idea on what domain it exists in and how much the environment limits its ability to perform its features.
+        Ergo, we provide the expected assumptions of the domain, the dependencies of the system to external components and the limits imposed by the world on the system.
+    \item \textbf{Specific Requirements}: This section is the main section of the document.
+        The external interfaces that the system requires to function correctly is presented with details and additional mockups if needed.
+        The interfaces section is mainly concentrated on different views of user interfaces as the user-facing part is the main way to integrate with the system.
+        In this section, functional requirements of the system are presented in detail, a common use case diagram is provided, and each use-case of the system is analyzed with details on a use case description table and a sequence diagram.
+        The performance requirements of the system, with a focus on %TODO add when performance requirements are written
+        The design constraints of the system, with a focus on different standard compliances, hardware limitations of the system to function and other constraints, like GDPR are also elaborated on this section.
+        The vertical aspects that needs consideration are evaluated under the Software System Attributes subsection of this document, with an emphasis on Reliability, Availability, Security, Maintainability and Portability.
 
-% TODO: @Ozan do this
+    \item \textbf{Formal Analysis Using Alloy}: This section features various models built and hypothesis verified using Alloy.
+        This section demonstrates that some aspects of the requirements document can be formally proven to be correct and provides additional information about the proposed system to the engineers.
+    \item \textbf{Effort Spent}: This section features the effort table, in which all team members provide a rough estimation on the time spent on creation of the various sections of the document.
+    \item \textbf{References}: This section features different reference materials referred inside this document.
+\end{itemize}
