@@ -2,28 +2,33 @@
 % here we include the goals of the project
 
 \subsubsection{Description of the Proposed System}
-The project CLup is a line spot reservation system that is planned to be used by managers and customers of many local vendors and chains.
+The project CLup is a line spot reservation system that is planned to be used by managers, clerks and customers of many local vendors and chains.
 The system aims to provide assistance to cope with the customer load for managers and to help customers access to products in a safe and controlled manner.
 
-% TODO: This needs expansion @Aydin
+% TODO: This needs expansion @Aydin -> @Ozan merge stuff
+
+% TODO: @Roberto find member,
+% TODO: @Ozan if found detail everything. If not write dependencies, constraints whatever...
+
+% TODO: Both: Refine the RASD analysis and send them through mediums.
+
 \subsubsection{Goals}
 % Manager:
 % Set the estimated customer number to be in the location (based on govt. regulations, space availability etc.)
 % Set the opening and closing hours of the store per day.
-% REALLY ?!?!?!??!: availability and location info on different products?
 % Set the in-shop location & categories of products in the location
 % Set the limit of reservation per customer per month, per day, per week
 % Set the location of the store
 % Add other chain members or partner stores
-% Monitor the entrance and exit of customers with their line numbers, using QR codes.
 % Observe the current amount of customers in the location.
 % Stop the system from issuing more tickets for a given day in case of an overflow or emergency
 % Schedule a system stop.
-% Print line numbers with QR code on them for the physically arriving customers who doesn't have a virtual ticket
-% Enter manually the line number, customer info to open gates
 % Set the timeout
 
-% Clerk/Handsmen: Does the QR read/overwrite things, prints QR code if needed TODO: @Ozan Update all accordingly
+% Clerk:
+% Monitor the entrance and exit of customers with line numbers, by scanning their QR codes.
+% Print line numbers with QR code on them for the physically arriving customers who doesn't have a virtual ticket.
+% Enter manually the line number, customer info to the system to invalidate customers.
 
 % Customer:
 % Retrieve a direct line number for a location
@@ -45,8 +50,7 @@ The system aims to provide assistance to cope with the customer load for manager
 % Opens the doors when QR code is scanned upon entry and exit
 % Timeouts the line numbers when not registered for given timeout by manager.
 
-% TODO: Write goals accordingly @Aydin
-
+% TODO: Write goals accordingly @Aydin -> @Ozan Refine and finish
 
 % 80/20 percent split between bookings and physical appearence on domain assumptions for us to schedule in an easy way.
 \subsection{Scope}
@@ -64,10 +68,12 @@ Furthermore, they can provide specific products they intend to purchase or set a
 Some customers may also prefer to obtain a line number upon visiting the store physically.
 To plan their visit in a time slot where the location will be less crowded, the users can see the occupancy of the location based on already taken line numbers and forecasts provided by the system.
 \\[0.5cm]
+\textbf{Clerk:} \\
+The clerk ( which can be a shopping assistant or a security detail) can monitor the flow of customers and manually intervene in case of missing line numbers via performing manual checkout for a specific customer, or by printing line numbers physically for some customers.
+\\[0.5cm]
 \textbf{Manager:} \\
 
 The location manager (which could be an actual manager, or someone responsible for handling customer management) can provide details regarding the availability of products and the location in general, by setting the opening hours, maximum allowed customers in shop, in-shop location of different products and categories, maximum amount of reservations that can be made per customer, line number timeout and the location.
-Furthermore, the manager can monitor the flow of customers and manually intervene in case of missing line numbers via performing manual checkout for a specific customer, or by printing line numbers physically for some customers.
 Also, for chains and relevant stores, the manager can add chain members for the location.
 
 \subsubsection{Relevant Phenomena}
@@ -91,17 +97,21 @@ Also, for chains and relevant stores, the manager can add chain members for the 
         % Line template:
         %          &               &  \\ \hline
     \end{tabular}
+    \caption{Relevant Phenomena of CLup}
 \end{table}
 
 % here we include an analysis of the world and of the shared phenomena
 
 
+% TODO: Ozan update document with the Map API
+% TODO: Ozan switch tables from DrawIO to Latex
 \subsection{Definitions, Acronyms, Abbreviations}
 \subsubsection{Definitions}
 \begin{itemize}
     \item \textit{Location}: the physical location of the business that operates the line reservation system
     \item \textit{Manager}: the user in charge of executive action within the location
     \item \textit{Customer}: the user with the goal of making a visit to the location
+    \item \textit{Clerk}: the user in charge of handling the entrance and exit of customers
     \item \textit{Visit Time}: the time interval in which a customer performs a visit to the location
     \item \textit{Line Number}: A number that indicates the ordering of a specific customer in the line
     \item \textit{Line Number Ticket}: A physical ticket printed that features the line number and the QR code.
@@ -109,7 +119,8 @@ Also, for chains and relevant stores, the manager can add chain members for the 
     \item \textit{Partner Store}: A different location that is included in the same beneficiary chain of command (such as another member of the franchise or store chain) or in a mutual agreement with the specific location
     \item \textit{Product}: Any item, items, service or services demanded by the customer, and provided by the location to the customer.
     \item \textit{In-store Location}: A location of a specific product or a product category inside the location.
-\item \end{itemize}
+    \item \textit{Working hours}: The time intervals that the store is open during each day.
+\end{itemize}
 \subsubsection{Acronyms}
 \begin{itemize}
     \item \textbf{RASD}: Requirement Analysis and Specification Document
