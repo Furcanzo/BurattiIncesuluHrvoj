@@ -6,7 +6,7 @@ The project \"CLup - Customer Line up\" is a line spot reservation system that i
 The system aims to come up with a handy solution for the ongoing issue of proper social distancing management particularly in the matter of grocery shopping, by providing assistance to cope with the customer load for managers and helping customers access to products in a safe and controlled manner.
 
 In particular, users will be able to see the locations, get a line number and book in advance for the grocery stores they would like to visit.
-Once assigned a line number, the customer will be able to track the estimated time of arrival of the line as well as will wait for the notification that informs about his or her line\’s forthcoming arrival, hence waiting time in the line in the crowd is minimum.
+Once assigned a line number, the customer will be able to track the estimated time of arrival of the line as well as will wait for the notification that informs about his or her line's forthcoming arrival, hence waiting time in the line in the crowd is minimum.
 Also, \"CLup\" provides uniquely generated QR codes per the line number, which can be utilized by the store managers as a proper monitoring tool in the entrances and exits of the locations.
 All in all, the general purpose of the product is to keep the congestion levels in lines of the locations at minimum via providing useful features for all the users.
 
@@ -16,6 +16,19 @@ All in all, the general purpose of the product is to keep the congestion levels 
 % TODO: All: Refine the RASD analysis and send them through mediums.
 
 \subsubsection{Goals}
+
+\begin{itemize}
+    \item \textbf{$G_{1}$} Customers can issue a line number for a location.
+    \item \textbf{$G_{2}$} Customers can issue line numbers for their future visits.
+    \item \textbf{$G_{3}$} Customers can detail their visits by category and/or product.
+    \item \textbf{$G_{4}$} Customers can plan their visit to the store. % Provide ETA, location and how much people are in the store.
+    \item \textbf{$G_{5}$} Customers may prefer to use alternative time slots or partner stores for their visit.
+    \item \textbf{$G_{6}$} Managers can prevent customers from issuing line numbers. % System stop, schedule system stop
+    \item \textbf{$G_{7}$} Managers can customize the system to allow optimizations for increased granularity, flow control and time slot forecasting. % Settings, timeout
+    \item \textbf{$G_{8}$} Clerks can check in and check out customers' entrance and exit. % Would this count as a goal?
+    \item \textbf{$G_{9}$} Customers can obtain printed line number tickets.
+    % \item Customers can authenticate themselves using their e-mail address and password. % Not sure about involving A&A in goals.
+\end{itemize}
 % Manager:
 % Set the estimated customer number to be in the location (based on govt. regulations, space availability etc.)
 % Set the opening and closing hours of the store per day.
@@ -51,8 +64,6 @@ All in all, the general purpose of the product is to keep the congestion levels 
 % System:
 % Forecast the occupancy of store per time slot
 % Timeouts the line numbers when not registered for given timeout by manager.
-
-% TODO: Write goals accordingly @Aydin -> @Ozan Refine and finish
 
 % 80/20 percent split between bookings and physical appearence on domain assumptions for us to schedule in an easy way.
 \subsection{Scope}
