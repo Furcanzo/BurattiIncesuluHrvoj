@@ -42,10 +42,9 @@
     \item \textbf{$D_8$} Managers' device has location services that has a location acquisition error for no more than 20 meters. % To set the location accurately
     \item \textbf{$D_9$} Clerks are constantly monitoring the locations entrances and exits. % For QR code reading to take customers in and out
     \item \textbf{$D_{10}$} Locations have printing equipments that are in 5 meters range of all the entrances that can print QR codes and line numbers. % To print tickets
-    \item \textbf{$D_{11}$} All user and location info can be represented with UTF-8 character encoding. % TODO: @Ozan To constraints / hardware limitations
     \item \textbf{$D_{12}$} At least one manager is available in the location during the working hours. % To monitor and shutdown during emergencies
     \item \textbf{$D_{13}$} The customer's entry and exit to the store is determined by whether the clerks have checked them in and out.
-    \item \textbf{$D_{14}$} The customer have their ticket through their shopping time (no dead battery, printed ticket loss, etc) % TODO: Ozan Formalize this
+    \item \textbf{$D_{14}$} The customer has their line number or line number ticket available with them through their visit, including their exit from the store % (no dead battery, printed ticket loss, etc)
 \end{itemize}
 % here we include domain assumptions
 % use the D_1, D_2,... syntax
@@ -55,4 +54,5 @@
 % What external libraries, tools, integrations does the system rely on
 \subsubsection{Constraints}
 % Maps API failure
+% All user and location info can be represented with UTF-8 character encoding.
 % What are the limits imposed by the environment, regulatory policies, hardware & software limitations, etc...
