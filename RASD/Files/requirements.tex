@@ -35,6 +35,229 @@
 %   Use case table
 %   Use case sequence diagram
 
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Book future line number} \\ \hline
+        \textit{Actors} & Customer \\ \hline
+        \textit{Entry conditions} & The customer is logged in the web app and wants to book a visit to the store. \\ \hline
+        \textit{Event flows}      & \tabitem The customer clicks on the "book a visit" button in the web app \\
+                                  & \tabitem The web app asks the time slot and the estimeted time of the visit presenting as default value the average of the previous times of visit of the same user \\
+                                  & \tabitem The customer sets the time slot and the estimated time of the visit \\
+                                  & \tabitem The web app asks what category of products the custumer wants to buy \\
+                                  & \tabitem The customer set the products categories \\
+                                  & \tabitem The web app generate the line number contacting the server \\
+                                  & \tabitem The web app generate the QR code on the informations retrived from the server
+        \\ \hline
+        \textit{Exit conditions} & The customer have booked a visit to the store \\ \hline
+        Exceptions & \tabitem The server cannot retrieve the line number since the time slot is full\\ \hline
+    \end{tabular}
+    \caption{Use Case: Book future line number}
+\end{table}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Grant access} \\ \hline
+        \textit{Actors} & Clerk, Customer \\ \hline
+        \textit{Entry conditions} & The customer has already obtained the QR code and he is going to access the store.\\ \hline
+        \textit{Event flows}      & \tabitem The Clerk scan the QR code from the customer smartphone or printed ticket using the clerk web app \\
+                                  & \tabitem The Clerk web app analyze the QR code and contact the Server \\
+                                  & \tabitem The server decides if the custumer can enter based on the informations recived that were stored in the QR code \\
+                                  & \tabitem The server communicate to the clerk app its decision \\
+                                  & \tabitem The clerk let the customer enter the store \\
+        \\ \hline
+        \textit{Exit conditions} & The customer enter the store \\ \hline
+        Exceptions & \tabitem The server communicate to the clerk that the customer cannot enter because his/her line number is not reached yet\\ \hline
+    \end{tabular}
+    \caption{Use Case: Grant access}
+\end{table}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Initialize} \\ \hline
+        \textit{Actors} & Manager \\ \hline
+        \textit{Entry conditions} & The manager of the store needs to set the basic informations of the store in order to start the service \\ \hline
+        \textit{Event flows}      & \tabitem The manager clicks on the initialize button \\
+        & \tabitem The web app request to the server the initialization form \\
+        & \tabitem The initialization form is returned to the manager \\
+        & \tabitem The manager fills the form and send it back to the server through the web app \\
+        & \tabitem The server stores the informations and return an ack \\
+        \hline
+        \textit{Exit conditions} & The system is initialized and can offer all its functions \\ \hline
+        Exceptions & \tabitem Some mandatory part of the form is not filled. \\ \hline
+    \end{tabular}
+    \caption{Use Case: Initialize}
+\end{table}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Monitor state} \\ \hline
+        \textit{Actors} & Manager \\ \hline
+        \textit{Entry conditions} & The manager wants to monitor the number of customers in the store in real time \\ \hline
+        \textit{Event flows}      & \tabitem The manager clicks on the "monitor" button \\
+        & \tabitem The web app sends the request to the server \\
+        & \tabitem The server return the actual number of customers in the store \\
+        & \tabitem The web app repeats the process periodically until the manager clicks the "stop monitor" button \\
+        \hline
+        \textit{Exit conditions} & The manager is informed on the number of the customers in the store in real time \\ \hline
+        Exceptions & \tabitem \\ \hline
+    \end{tabular}
+    \caption{Use Case: Monitor state}
+\end{table}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Print guest ticket} \\ \hline
+        \textit{Actors} & Clerk, Customer \\ \hline
+        \textit{Entry conditions} & The customer is at the store to buy a physical ticket since he doesn't have a smartphone or doesn't want to use it \\ \hline
+        \textit{Event flows}      & \tabitem The customer ask the clerk to have a ticket \\
+        & \tabitem The clerk generate a ticket using the clerk web app \\
+        & \tabitem The clerk web app communicate to the server the intention to generate a ticket \\
+        & \tabitem The server retrieve a line number and generate a ticket \\
+        & \tabitem The server sends the ticket back to the web app \\
+        & \tabitem The clerk print the ticket \\
+        & \tabitem The clerk gives the ticket to the customer \\
+        \hline
+        \textit{Exit conditions} & The customer have a ticket\\ \hline
+        Exceptions & \tabitem The server cannot retrieve the line number since the time slot is full. \\ \hline
+    \end{tabular}
+    \caption{Use Case: Print guest ticket}
+\end{table}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Print guest ticket} \\ \hline
+        \textit{Actors} & Clerk, Customer \\ \hline
+        \textit{Entry conditions} & The customer is at the store to buy a physical ticket since he doesn't have a smartphone or doesn't want to use it \\ \hline
+        \textit{Event flows}      & \tabitem The customer ask the clerk to have a ticket \\
+        & \tabitem The clerk generate a ticket using the clerk web app \\
+        & \tabitem The clerk web app communicate to the server the intention to generate a ticket \\
+        & \tabitem The server retrieve a line number and generate a ticket \\
+        & \tabitem The server sends the ticket back to the web app \\
+        & \tabitem The clerk print the ticket \\
+        & \tabitem The clerk gives the ticket to the customer \\
+        \hline
+        \textit{Exit conditions} & The customer have a ticket\\ \hline
+        Exceptions & \tabitem The server cannot retrieve the line number since the time slot is full. \\ \hline
+    \end{tabular}
+    \caption{Use Case: Print guest ticket}
+\end{table}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Schedule a stop} \\ \hline
+        \textit{Actors} & Manager \\ \hline
+        \textit{Entry conditions} & The manager wants to schedule a period of time in which the store will be closed and so the system shouldn't allow users to book a visit in that time \\ \hline
+        \textit{Event flows}      & \tabitem The manager click on the  \\"schedule a stop" button
+        & \tabitem The web app returns a form for requesting the time of the stop \\
+        & \tabitem The manager fills tha form and sends it to the server through the web app \\
+        & \tabitem The server stores the information in the database and return an ack \\
+        \hline
+        \textit{Exit conditions} & The system as a scheduled stop stored in its database and will use it to prevent customers from booking a visit in that time period \\ \hline
+        Exceptions & \tabitem There is already a planned stop in that period \\ \hline
+    \end{tabular}
+    \caption{Use Case: Schedule a stop}
+\end{table}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{See amount of customers in the store} \\ \hline
+        \textit{Actors} & Customer \\ \hline
+        \textit{Entry conditions} & The customer is logged in the web app and wants to know how much customers are in the store in order to decide if book a visit or retrive a line number \\ \hline
+        \textit{Event flows}      & \tabitem The customer clicks on the  "customers in store" button \\
+        & \tabitem The web app forward the request to the server \\
+        & \tabitem The server returns a table containing the amount of customers in the store for each time slot \\
+        \hline
+        \textit{Exit conditions} & The customer know the amount of other customers in the store and can plan his/her visit \\ \hline
+        Exceptions & \\ \hline
+    \end{tabular}
+    \caption{Use Case: See amount of customers in the store}
+\end{table}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{See store location} \\ \hline
+        \textit{Actors} & Customer, Maps API \\ \hline
+        \textit{Entry conditions} & The customer needs to know where the store is located and the time needed for going there \\ \hline
+        \textit{Event flows}      & \tabitem The customer clicks on the "store location" button \\
+        & \tabitem The web app contact an external API that provides a Map service sending the information of the store location stored in the web app \\
+        & \tabitem The external Maps API returns a map from the customer position to the store with a time estimation \\
+        \hline
+        \textit{Exit conditions} & The customer know how to go to the store and the time needed for going there \\ \hline
+        Exceptions & \tabitem The customer's smartphone doesn't have a GPS \\
+        & \tabitem The customer didn't provide the authorization to the web app for accessing the GPS information \\
+        \hline
+    \end{tabular}
+    \caption{Use Case: See store location}
+\end{table}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Sign up} \\ \hline
+        \textit{Actors} & Customer \\ \hline
+        \textit{Entry conditions} & The customer opened the web app and it's not registered yet, but want to register in order to have access to the system functionalities \\ \hline
+        \textit{Event flows}      & \tabitem The customer click on the "sign up" button \\
+        & \tabitem The customer inserts his/her credentials \\
+        & \tabitem The web app sends the information to the server \\
+        & \tabitem The server store the data relative to that user in the database \\
+        & \tabitem The server returns an ack to the web app \\
+        \hline
+        \textit{Exit conditions} & The customer is now registered and can use all the functionalities of the web app \\ \hline
+        Exceptions & \tabitem The credentials inserted in the registration form are already used  (e.g. the email) \\
+        & \tabitem The credentials inserted in the registration form are wrong  (e.g. not a valid email) \\
+        \hline
+    \end{tabular}
+    \caption{Use Case: Sign up}
+\end{table}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Sign up} \\ \hline
+        \textit{Actors} & Customer \\ \hline
+        \textit{Entry conditions} & The customer opened the web app and it's not registered yet, but want to register in order to have access to the system functionalities \\ \hline
+        \textit{Event flows}      & \tabitem The customer click on the "sign up" button \\
+        & \tabitem The customer inserts his/her credentials \\
+        & \tabitem The web app sends the information to the server \\
+        & \tabitem The server store the data relative to that user in the database \\
+        & \tabitem The server returns an ack to the web app \\
+        \hline
+        \textit{Exit conditions} & The customer is now registered and can use all the functionalities of the web app \\ \hline
+        Exceptions & \tabitem The credentials inserted in the registration form are already used  (e.g. the email) \\
+        & \tabitem The credentials inserted in the registration form are wrong  (e.g. not a valid email) \\
+        \hline
+    \end{tabular}
+    \caption{Use Case: Sign up}
+\end{table}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Stop for emergency} \\ \hline
+        \textit{Actors} & Manager \\ \hline
+        \textit{Entry conditions} & An emergency occurred and the manager wants to immediatly stop the system to distribute line numbers \\ \hline
+        \textit{Event flows}     & \tabitem The manager click on the "Emergency stop" button \\
+        & \tabitem The web app ask for confirm to the manager \\
+        & \tabitem The manager confirms his \\/her choice to stop the system
+        & \tabitem The web app contact the server \\
+        & \tabitem The server stops the service and return an ack  \\
+        \hline
+        \textit{Exit conditions} & The system has interrupted the service \\ \hline
+        Exceptions & \tabitem The manager abort the operation instead of confirming it \\
+        \hline
+    \end{tabular}
+    \caption{Use Case: Stop for emergency}
+\end{table}
+
 \subsubsection{Requirements}
 \begin{itemize}
     \item \textbf{$R_1$} The system must allow users to authenticate using their e-mail address and password. % TODO: Roberto add use case
