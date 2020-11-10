@@ -11,7 +11,10 @@ Also, \"CLup\" provides uniquely generated QR codes per the line number, which c
 All in all, the general purpose of the product is to keep the congestion levels in lines of the locations at minimum via providing useful features for all the users.
 
 
-% TODO: All: Refine the RASD analysis and send them through mediums.
+% TODO: All: Look at what @Ozan did for section 4 and complete the form by 11 Nov. Wednesday
+% TODO: All: Does system notification use cases originate from another actor on use case diagrams? How are they modeled to users?
+% TODO: @Ozan move new tables to LaTex
+% TODO: @Hrvoje Check use case descriptions.
 
 \subsubsection{Goals}
 
@@ -23,7 +26,8 @@ All in all, the general purpose of the product is to keep the congestion levels 
     \item \textbf{$G_{5}$} Customers may prefer to use alternative time slots or partner stores for their visit.
     \item \textbf{$G_{6}$} Managers can prevent customers from issuing line numbers. % System stop, schedule system stop
     \item \textbf{$G_{7}$} Managers can customize the system to allow optimizations for increased granularity, flow control and time slot forecasting. % Settings, timeout
-    \item \textbf{$G_{8}$} Clerks can check in and check out customers' entrance and exit. % Would this count as a goal?
+    % \item \textbf{$G_{8}$} Clerks can check in and check out customers' entrance and exit. % Would this count as a goal?
+    \item % TODO: @Ozan Actual goal is to monitor customers
     \item \textbf{$G_{9}$} Customers can obtain printed line number tickets.
     % \item Customers can authenticate themselves using their e-mail address and password. % Not sure about involving A&A in goals.
 \end{itemize}
@@ -42,7 +46,6 @@ All in all, the general purpose of the product is to keep the congestion levels 
 % Clerk:
 % Monitor the entrance and exit of customers with line numbers, by scanning their QR codes.
 % Print line numbers with QR code on them for the physically arriving customers who doesn't have a virtual ticket.
-% Enter manually the line number, customer info to the system to invalidate customers. % TODO: Shall we remove?
 
 % Customer:
 % Retrieve a direct line number for a location
@@ -131,7 +134,7 @@ Also, for chains and relevant stores, the manager can add chain members for the 
     \item \textit{Product}: Any item, items, service or services demanded by the customer, and provided by the location to the customer.
     \item \textit{In-store Location}: A location of a specific product or a product category inside the location.
     \item \textit{Working hours}: The time intervals that the store is open during each day.
-    \item \textit{Maps API}: Google Maps API that is used as a mapping service
+    \item \textit{Maps API}: Google Maps API that is used as a mapping service %TODO: @Ozan remove Google Maps -> Maps
 \end{itemize}
 \subsubsection{Acronyms}
 \begin{itemize}
