@@ -2,17 +2,35 @@
 % here we include the goals of the project
 
 \subsubsection{Description of the Proposed System}
-The project CLup is a line spot reservation system that is planned to be used by managers, clerks and customers of many local vendors and chains.
-The system aims to provide assistance to cope with the customer load for managers and to help customers access to products in a safe and controlled manner.
+The project \"CLup - Customer Line up\" is a line spot reservation system that is planned to be used by managers, clerks and customers of many local vendors and chains.
+The system aims to come up with a handy solution for the ongoing issue of proper social distancing management particularly in the matter of grocery shopping, by providing assistance to cope with the customer load for managers and helping customers access to products in a safe and controlled manner.
 
-% TODO: This needs expansion @Aydin -> @Ozan merge stuff
+In particular, users will be able to see the locations, get a line number and book in advance for the grocery stores they would like to visit.
+Once assigned a line number, the customer will be able to track the estimated time of arrival of the line as well as will wait for the notification that informs about his or her line's forthcoming arrival, hence waiting time in the line in the crowd is minimum.
+Also, \"CLup\" provides uniquely generated QR codes per the line number, which can be utilized by the store managers as a proper monitoring tool in the entrances and exits of the locations.
+All in all, the general purpose of the product is to keep the congestion levels in lines of the locations at minimum via providing useful features for all the users.
 
-% TODO: @Roberto find member,
-% TODO: @Ozan if found detail everything. If not write dependencies, constraints whatever...
 
-% TODO: Both: Refine the RASD analysis and send them through mediums.
+% TODO: All: Look at what @Ozan did for section 4 and complete the form by 11 Nov. Wednesday
+% TODO: All: Does system notification use cases originate from another actor on use case diagrams? How are they modeled to users?
+% TODO: @Ozan move new tables to LaTex
+% TODO: @Hrvoje Check use case descriptions.
 
 \subsubsection{Goals}
+
+\begin{itemize}
+    \item \textbf{$G_{1}$} Customers can issue a line number for a location.
+    \item \textbf{$G_{2}$} Customers can issue line numbers for their future visits.
+    \item \textbf{$G_{3}$} Customers can detail their visits by category and/or product.
+    \item \textbf{$G_{4}$} Customers can plan their visit to the store. % Provide ETA, location and how much people are in the store.
+    \item \textbf{$G_{5}$} Customers may prefer to use alternative time slots or partner stores for their visit.
+    \item \textbf{$G_{6}$} Managers can prevent customers from issuing line numbers. % System stop, schedule system stop
+    \item \textbf{$G_{7}$} Managers can customize the system to allow optimizations for increased granularity, flow control and time slot forecasting. % Settings, timeout
+    % \item \textbf{$G_{8}$} Clerks can check in and check out customers' entrance and exit. % Would this count as a goal?
+    \item % TODO: @Ozan Actual goal is to monitor customers
+    \item \textbf{$G_{9}$} Customers can obtain printed line number tickets.
+    % \item Customers can authenticate themselves using their e-mail address and password. % Not sure about involving A&A in goals.
+\end{itemize}
 % Manager:
 % Set the estimated customer number to be in the location (based on govt. regulations, space availability etc.)
 % Set the opening and closing hours of the store per day.
@@ -28,7 +46,6 @@ The system aims to provide assistance to cope with the customer load for manager
 % Clerk:
 % Monitor the entrance and exit of customers with line numbers, by scanning their QR codes.
 % Print line numbers with QR code on them for the physically arriving customers who doesn't have a virtual ticket.
-% Enter manually the line number, customer info to the system to invalidate customers.
 
 % Customer:
 % Retrieve a direct line number for a location
@@ -47,10 +64,7 @@ The system aims to provide assistance to cope with the customer load for manager
 
 % System:
 % Forecast the occupancy of store per time slot
-% Opens the doors when QR code is scanned upon entry and exit
 % Timeouts the line numbers when not registered for given timeout by manager.
-
-% TODO: Write goals accordingly @Aydin -> @Ozan Refine and finish
 
 % 80/20 percent split between bookings and physical appearence on domain assumptions for us to schedule in an easy way.
 \subsection{Scope}
@@ -93,7 +107,6 @@ Also, for chains and relevant stores, the manager can add chain members for the 
         Ticket Printer & World & Yes \\ \hline
         Line Number Timer & Machine & No \\ \hline
         Customer Scheduling Algorithm & Machine & No \\ \hline
-        Store Door & World & Yes \\ \hline
         % Line template:
         %          &               &  \\ \hline
     \end{tabular}
@@ -103,8 +116,8 @@ Also, for chains and relevant stores, the manager can add chain members for the 
 % here we include an analysis of the world and of the shared phenomena
 
 
-% TODO: Ozan update document with the Map API
-% TODO: Ozan switch tables from DrawIO to Latex
+% TODO: Self-note, let's discuss in meeting that DD and implementation is not far away
+
 \subsection{Definitions, Acronyms, Abbreviations}
 \subsubsection{Definitions}
 \begin{itemize}
@@ -112,6 +125,7 @@ Also, for chains and relevant stores, the manager can add chain members for the 
     \item \textit{Manager}: the user in charge of executive action within the location
     \item \textit{Customer}: the user with the goal of making a visit to the location
     \item \textit{Clerk}: the user in charge of handling the entrance and exit of customers
+    \item \textit{Hard-coded Super User}: a single user that is used to create managers of locations administered by the software vendor
     \item \textit{Visit Time}: the time interval in which a customer performs a visit to the location
     \item \textit{Line Number}: A number that indicates the ordering of a specific customer in the line
     \item \textit{Line Number Ticket}: A physical ticket printed that features the line number and the QR code.
@@ -120,11 +134,13 @@ Also, for chains and relevant stores, the manager can add chain members for the 
     \item \textit{Product}: Any item, items, service or services demanded by the customer, and provided by the location to the customer.
     \item \textit{In-store Location}: A location of a specific product or a product category inside the location.
     \item \textit{Working hours}: The time intervals that the store is open during each day.
+    \item \textit{Maps API}: Google Maps API that is used as a mapping service %TODO: @Ozan remove Google Maps -> Maps
 \end{itemize}
 \subsubsection{Acronyms}
 \begin{itemize}
     \item \textbf{RASD}: Requirement Analysis and Specification Document
     \item \textbf{QR Code}: Quick Response Code
+    \item \textit{API}: Application Programming Interface
 \end{itemize}
 \subsubsection{Abbreviations}
 \begin{itemize}
@@ -140,6 +156,7 @@ Also, for chains and relevant stores, the manager can add chain members for the 
     \item \href{https://beep.metid.polimi.it/documents/121843524/23d1869d-ab17-4e36-979e-f1ccbc59be24}{Specification Document: R\&DD Assignment AY 2020-2021}
     \item \href{https://standards.ieee.org/standard/29148-2011.html}{IEEE Std 830-1998: IEEE Recommended Practice for Software Requirements Specifications}
     \item \href{https://www.iso.org/standard/62021.html}{ISO/IEC 18004:2015 QR Code bar code symbology specification}
+    \item \href{https://developers.google.com/maps/documentation/javascript/overview}{Maps API documentation}
 \end{itemize}
 
 
