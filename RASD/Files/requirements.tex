@@ -5,14 +5,13 @@
 \subsubsection{User Interfaces}
 
 % We need a tool, either stores raw content as text in our repo, or integrates with GitHub.
-% TODO: Find the tool, maybe moqups? @Aydin
-% TODO: @Ozan start ui mockups
+% TODO: @Ozan finish ui mockups
 
 % Actual mockups of user interfaces
 
 \subsubsection{Hardware Interfaces}
-
-% Do we integrate with external hardware? Like the entrance door?
+% TODO: @Hrvoje These 3
+% Do we integrate with external hardware?
 \subsubsection{Software Interfaces}
 
 % Do we integrate with custom software, expose an API?
@@ -24,7 +23,7 @@
 
 \subsection{Functional Requirements}
 % Use draw.io, compatible with GitHub.
-% TODO: @Roberto Use case diagram
+% TODO: @Ozan Embed stuff here
 
 % TODO: @Roberto finish the table and sequence diagrams
 % Definition  of  use  case  diagrams,  use  cases  and  associated sequence/activity diagrams, and mapping on requirements
@@ -35,37 +34,261 @@
 %   Use case table
 %   Use case sequence diagram
 
+% TODO: @Ozan make exceptions italic
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Book future line number} \\ \hline
+        \textit{Actors} & Customer \\ \hline
+        \textit{Entry conditions} & The customer is logged in the web app and wants to book a visit to the store. \\ \hline
+        \textit{Event flows}      & \tabitem The customer clicks on the "book a visit" button in the web app \\
+                                  & \tabitem The web app asks the time slot and the estimeted time of the visit presenting as default value the average of the previous times of visit of the same user \\
+                                  & \tabitem The customer sets the time slot and the estimated time of the visit \\
+                                  & \tabitem The web app asks what category of products the custumer wants to buy \\
+                                  & \tabitem The customer set the products categories \\
+                                  & \tabitem The web app generate the line number contacting the server \\
+                                  & \tabitem The web app generate the QR code on the informations retrived from the server
+        \\ \hline
+        \textit{Exit conditions} & The customer have booked a visit to the store \\ \hline
+        Exceptions & \tabitem The server cannot retrieve the line number since the time slot is full\\ \hline
+    \end{tabular}
+    \caption{Use Case: Book future line number}
+\end{table}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Grant access} \\ \hline
+        \textit{Actors} & Clerk, Customer \\ \hline
+        \textit{Entry conditions} & The customer has already obtained the QR code and he is going to access the store.\\ \hline
+        \textit{Event flows}      & \tabitem The Clerk scan the QR code from the customer smartphone or printed ticket using the clerk web app \\
+                                  & \tabitem The Clerk web app analyze the QR code and contact the Server \\
+                                  & \tabitem The server decides if the custumer can enter based on the informations recived that were stored in the QR code \\
+                                  & \tabitem The server communicate to the clerk app its decision \\
+                                  & \tabitem The clerk let the customer enter the store \\
+        \\ \hline
+        \textit{Exit conditions} & The customer enter the store \\ \hline
+        Exceptions & \tabitem The server communicate to the clerk that the customer cannot enter because his/her line number is not reached yet\\ \hline
+    \end{tabular}
+    \caption{Use Case: Grant access}
+\end{table}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Initialize} \\ \hline
+        \textit{Actors} & Manager \\ \hline
+        \textit{Entry conditions} & The manager of the store needs to set the basic informations of the store in order to start the service \\ \hline
+        \textit{Event flows}      & \tabitem The manager clicks on the initialize button \\
+        & \tabitem The web app request to the server the initialization form \\
+        & \tabitem The initialization form is returned to the manager \\
+        & \tabitem The manager fills the form and send it back to the server through the web app \\
+        & \tabitem The server stores the informations and return an ack \\
+        \hline
+        \textit{Exit conditions} & The system is initialized and can offer all its functions \\ \hline
+        Exceptions & \tabitem Some mandatory part of the form is not filled. \\ \hline
+    \end{tabular}
+    \caption{Use Case: Initialize}
+\end{table}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Monitor state} \\ \hline
+        \textit{Actors} & Manager \\ \hline
+        \textit{Entry conditions} & The manager wants to monitor the number of customers in the store in real time \\ \hline
+        \textit{Event flows}      & \tabitem The manager clicks on the "monitor" button \\
+        & \tabitem The web app sends the request to the server \\
+        & \tabitem The server return the actual number of customers in the store \\
+        & \tabitem The web app repeats the process periodically until the manager clicks the "stop monitor" button \\
+        \hline
+        \textit{Exit conditions} & The manager is informed on the number of the customers in the store in real time \\ \hline
+        Exceptions & \tabitem \\ \hline
+    \end{tabular}
+    \caption{Use Case: Monitor state}
+\end{table}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Print guest ticket} \\ \hline
+        \textit{Actors} & Clerk, Customer \\ \hline
+        \textit{Entry conditions} & The customer is at the store to buy a physical ticket since he doesn't have a smartphone or doesn't want to use it \\ \hline
+        \textit{Event flows}      & \tabitem The customer ask the clerk to have a ticket \\
+        & \tabitem The clerk generate a ticket using the clerk web app \\
+        & \tabitem The clerk web app communicate to the server the intention to generate a ticket \\
+        & \tabitem The server retrieve a line number and generate a ticket \\
+        & \tabitem The server sends the ticket back to the web app \\
+        & \tabitem The clerk print the ticket \\
+        & \tabitem The clerk gives the ticket to the customer \\
+        \hline
+        \textit{Exit conditions} & The customer have a ticket\\ \hline
+        Exceptions & \tabitem The server cannot retrieve the line number since the time slot is full. \\ \hline
+    \end{tabular}
+    \caption{Use Case: Print guest ticket}
+\end{table}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Print guest ticket} \\ \hline % TODO: Ozan maybe you missed something on copy-paste
+        \textit{Actors} & Clerk, Customer \\ \hline
+        \textit{Entry conditions} & The customer is at the store to buy a physical ticket since he doesn't have a smartphone or doesn't want to use it \\ \hline
+        \textit{Event flows}      & \tabitem The customer ask the clerk to have a ticket \\
+        & \tabitem The clerk generate a ticket using the clerk web app \\
+        & \tabitem The clerk web app communicate to the server the intention to generate a ticket \\
+        & \tabitem The server retrieve a line number and generate a ticket \\
+        & \tabitem The server sends the ticket back to the web app \\
+        & \tabitem The clerk print the ticket \\
+        & \tabitem The clerk gives the ticket to the customer \\
+        \hline
+        \textit{Exit conditions} & The customer have a ticket\\ \hline
+        Exceptions & \tabitem The server cannot retrieve the line number since the time slot is full. \\ \hline
+    \end{tabular}
+    \caption{Use Case: Print guest ticket}
+\end{table}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Schedule a stop} \\ \hline
+        \textit{Actors} & Manager \\ \hline
+        \textit{Entry conditions} & The manager wants to schedule a period of time in which the store will be closed and so the system shouldn't allow users to book a visit in that time \\ \hline
+        \textit{Event flows}      & \tabitem The manager click on the  \\"schedule a stop" button
+        & \tabitem The web app returns a form for requesting the time of the stop \\
+        & \tabitem The manager fills tha form and sends it to the server through the web app \\
+        & \tabitem The server stores the information in the database and return an ack \\
+        \hline
+        \textit{Exit conditions} & The system as a scheduled stop stored in its database and will use it to prevent customers from booking a visit in that time period \\ \hline
+        Exceptions & \tabitem There is already a planned stop in that period \\ \hline
+    \end{tabular}
+    \caption{Use Case: Schedule a stop}
+\end{table}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{See amount of customers in the store} \\ \hline
+        \textit{Actors} & Customer \\ \hline
+        \textit{Entry conditions} & The customer is logged in the web app and wants to know how much customers are in the store in order to decide if book a visit or retrive a line number \\ \hline
+        \textit{Event flows}      & \tabitem The customer clicks on the  "customers in store" button \\
+        & \tabitem The web app forward the request to the server \\
+        & \tabitem The server returns a table containing the amount of customers in the store for each time slot \\
+        \hline
+        \textit{Exit conditions} & The customer know the amount of other customers in the store and can plan his/her visit \\ \hline
+        Exceptions & \\ \hline
+    \end{tabular}
+    \caption{Use Case: See amount of customers in the store}
+\end{table}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{See store location} \\ \hline
+        \textit{Actors} & Customer, Maps API \\ \hline
+        \textit{Entry conditions} & The customer needs to know where the store is located and the time needed for going there \\ \hline
+        \textit{Event flows}      & \tabitem The customer clicks on the "store location" button \\
+        & \tabitem The web app contact an external API that provides a Map service sending the information of the store location stored in the web app \\
+        & \tabitem The external Maps API returns a map from the customer position to the store with a time estimation \\
+        \hline
+        \textit{Exit conditions} & The customer know how to go to the store and the time needed for going there \\ \hline
+        Exceptions & \tabitem The customer's smartphone doesn't have a GPS \\
+        & \tabitem The customer didn't provide the authorization to the web app for accessing the GPS information \\
+        \hline
+    \end{tabular}
+    \caption{Use Case: See store location}
+\end{table}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Sign up} \\ \hline
+        \textit{Actors} & Customer \\ \hline
+        \textit{Entry conditions} & The customer opened the web app and it's not registered yet, but want to register in order to have access to the system functionalities \\ \hline
+        \textit{Event flows}      & \tabitem The customer click on the "sign up" button \\
+        & \tabitem The customer inserts his/her credentials \\
+        & \tabitem The web app sends the information to the server \\
+        & \tabitem The server store the data relative to that user in the database \\
+        & \tabitem The server returns an ack to the web app \\
+        \hline
+        \textit{Exit conditions} & The customer is now registered and can use all the functionalities of the web app \\ \hline
+        Exceptions & \tabitem The credentials inserted in the registration form are already used  (e.g. the email) \\
+        & \tabitem The credentials inserted in the registration form are wrong  (e.g. not a valid email) \\
+        \hline
+    \end{tabular}
+    \caption{Use Case: Sign up}
+\end{table}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Sign up} \\ \hline
+        \textit{Actors} & Customer \\ \hline
+        \textit{Entry conditions} & The customer opened the web app and it's not registered yet, but want to register in order to have access to the system functionalities \\ \hline
+        \textit{Event flows}      & \tabitem The customer click on the "sign up" button \\
+        & \tabitem The customer inserts his/her credentials \\
+        & \tabitem The web app sends the information to the server \\
+        & \tabitem The server store the data relative to that user in the database \\
+        & \tabitem The server returns an ack to the web app \\
+        \hline
+        \textit{Exit conditions} & The customer is now registered and can use all the functionalities of the web app \\ \hline
+        Exceptions & \tabitem The credentials inserted in the registration form are already used  (e.g. the email) \\
+        & \tabitem The credentials inserted in the registration form are wrong  (e.g. not a valid email) \\
+        \hline
+    \end{tabular}
+    \caption{Use Case: Sign up}
+\end{table}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Stop for emergency} \\ \hline
+        \textit{Actors} & Manager \\ \hline
+        \textit{Entry conditions} & An emergency occurred and the manager wants to immediately stop the system to distribute line numbers \\ \hline
+        \textit{Event flows}     & \tabitem The manager click on the "Emergency stop" button \\
+        & \tabitem The web app ask for confirm to the manager \\
+        & \tabitem The manager confirms his \\/her choice to stop the system
+        & \tabitem The web app contact the server \\
+        & \tabitem The server stops the service and return an ack  \\
+        \hline
+        \textit{Exit conditions} & The system has interrupted the service \\ \hline
+        Exceptions & \tabitem The manager abort the operation instead of confirming it \\
+        \hline
+    \end{tabular}
+    \caption{Use Case: Stop for emergency}
+\end{table}
+
 \subsubsection{Requirements}
 \begin{itemize}
     \item \textbf{$R_1$} The system must allow users to authenticate using their e-mail address and password. % TODO: Roberto add use case
     \item \textbf{$R_2$} The system must allow customers to register using their e-mail address, their name, surname, phone number and a new password.
-    \item \textbf{$R_{2.5}$} The system must provide a hard-coded super user to allow addition of locations and managers of locations. % TODO: Ozan write defn. of hard-coded and super user.
-    \item \textbf{$R_3$} Managers must be able to add additional managers and clerks as users.
-    \item \textbf{$R_4$} Managers must be able to set and update location specific information, that are maximum number of customers in the location at any given time, opening and closing hours of the store per each day, line number timeout, limit of reservation per customer on a predetermined time interval that is one of month, week or day, and location of the place % One form
-    \item \textbf{$R_5$} Managers can add any other location as a partner store.
-    \item \textbf{$R_6$} Managers can stop the system from issuing any more tickets for a given day
-    \item \textbf{$R_7$} Managers can schedule the system stop for a future time.
-    \item \textbf{$R_8$} Managers can set the in-shop locations for different categories and product items.
-    \item \textbf{$R_9$} In case of a system stop, no further line numbers can be issued for the given time slots.
-    \item \textbf{$R_{10}$} In case of a system stop, all line numbers in the stop time slots has to be cancelled.
-    \item \textbf{$R_{11}$} The system must cancel those line numbers that the customer didn't arrive to the location for more than the set timeout interval.
-    \item \textbf{$R_{12}$} In case of a ticket cancel, customer must be notified with an e-mail notification. % TODO: Roberto add use case
-    \item \textbf{$R_{13}$} Clerks must register the entrance and exit of customers via scanning the QR code for their line number.
-    \item \textbf{$R_{14}$} Clerks must be able to generate line number tickets in a printer compatible format.
-    \item \textbf{$R_{16}$} Customers must be able to obtain a line number, except when the system is stopped or the store is full.
-    \item \textbf{$R_{17}$} Customers must be able to obtain line numbers for different time slots in the future.
-    \item \textbf{$R_{18}$} Customers can not obtain line numbers that exceed the quantity per time interval limits.
-    \item \textbf{$R_{19}$} Customers can not obtain line numbers for time intervals that the system is stopped by a manager.
-    \item \textbf{$R_{20}$} Customers must be able to see the estimated time available for their line number.
-    \item \textbf{$R_{21}$} Customers must be able to set or update their phone number, password, name and surname. % TODO: Roberto add use case
-    \item \textbf{$R_{22}$} Customers can select specific product and/or product categories they plan to visit in the location while obtaining a line number.
-    \item \textbf{$R_{23}$} Customers can set an estimated time for their visit while obtaining a line number.
-    \item \textbf{$R_{24}$} Customers must be able to view the shop location
-    \item \textbf{$R_{25}$} Customers can view the occupation forecasts for the location at different time slots.
-    \item \textbf{$R_{26}$} Customers can see the alternative suggestions for time slots while obtaining a line number for the future.
-    \item \textbf{$R_{27}$} Customers can view the occupancy for the partner stores, if preferred time slot is not available while obtaining a line number.
-    \item \textbf{$R_{28}$} Customers can view their line numbers with the number and the QR code.
-    \item \textbf{$R_{29}$} The system must be able to provide a forecast for the occupancy of each location for any given time based on past visits.
+    \item \textbf{$R_3$} The system must provide a hard-coded super user to allow addition of locations and managers of locations.
+    \item \textbf{$R_4$} Managers must be able to add additional managers and clerks as users.
+    \item \textbf{$R_5$} Managers must be able to set and update location specific information, that are maximum number of customers in the location at any given time, opening and closing hours of the store per each day, line number timeout, limit of reservation per customer on a predetermined time interval that is one of month, week or day, and location of the place % One form
+    \item \textbf{$R_6$} Managers can add any other location as a partner store.
+    \item \textbf{$R_7$} Managers can stop the system from issuing any more tickets for a given day
+    \item \textbf{$R_8$} Managers can schedule the system stop for a future time.
+    \item \textbf{$R_9$} Managers can set the in-shop locations for different categories and product items.
+    \item \textbf{$R_{10}$} In case of a system stop, no further line numbers can be issued for the given time slots.
+    \item \textbf{$R_{11}$} In case of a system stop, all line numbers in the stop time slots has to be cancelled.
+    \item \textbf{$R_{12}$} The system must cancel those line numbers that the customer didn't arrive to the location for more than the set timeout interval.
+    \item \textbf{$R_{13}$} In case of a ticket cancel, customer must be notified with an e-mail notification. % TODO: Roberto add use case
+    \item \textbf{$R_{14}$} Clerks must register the entrance and exit of customers via scanning the QR code for their line number.
+    \item \textbf{$R_{15}$} Clerks must be able to generate line number tickets in a printer compatible format.
+    \item \textbf{$R_{17}$} Customers must be able to obtain a line number, except when the system is stopped or the store is full.
+    \item \textbf{$R_{18}$} Customers must be able to obtain line numbers for different time slots in the future.
+    \item \textbf{$R_{19}$} Customers can not obtain line numbers that exceed the quantity per time interval limits.
+    \item \textbf{$R_{20}$} Customers can not obtain line numbers for time intervals that the system is stopped by a manager.
+    \item \textbf{$R_{21}$} Customers must be able to see the estimated time available for their line number.
+    \item \textbf{$R_{22}$} Customers must be able to set or update their phone number, password, name and surname. % TODO: Roberto add use case
+    \item \textbf{$R_{23}$} Customers can select specific product and/or product categories they plan to visit in the location while obtaining a line number.
+    \item \textbf{$R_{24}$} Customers can set an estimated time for their visit while obtaining a line number.
+    \item \textbf{$R_{25}$} Customers must be able to view the shop location
+    \item \textbf{$R_{26}$} Customers can view the occupation forecasts for the location at different time slots.
+    \item \textbf{$R_{27}$} Customers can see the alternative suggestions for time slots while obtaining a line number for the future.
+    \item \textbf{$R_{28}$} Customers can view the occupancy for the partner stores, if preferred time slot is not available while obtaining a line number.
+    \item \textbf{$R_{29}$} Customers can view their line numbers with the number and the QR code.
+    \item \textbf{$R_{30}$} The system must be able to provide a forecast for the occupancy of each location for any given time based on past visits.
 \end{itemize}
 
 % Goals, mapped to the requirements and domain assumptions they relate to
@@ -75,7 +298,7 @@
 
 % Some basic stuff about how much users the system takes, speed etc...
 
-
+% TODO: @Hrvoje Complete these
 \subsection{Design Constraints}
 
 \subsubsection{Standards compliance}
