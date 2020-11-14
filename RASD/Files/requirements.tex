@@ -33,8 +33,14 @@
 % For each use case:
 %   Use case table
 %   Use case sequence diagram
+\subsubsection{Customer}
 
-% TODO: @Ozan make exceptions italic
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Images/UseCaseDiagrams/Customer.png}
+    \caption{Use Case Diagram for Customer}
+\end{figure}
+\textbf{Use cases}
 \begin{table}[H]
     \begin{tabular}{|p{8cm}|p{8cm}|}
         \hline
@@ -42,108 +48,23 @@
         \textit{Actors} & Customer \\ \hline
         \textit{Entry conditions} & The customer is logged in the app and wants to book a visit to the store. \\ \hline
         \textit{Event flows}      & \tabitem The customer clicks on the "Book a Visit" button in the app. \\
-                                  & \tabitem The app asks the time slot and the estimated time of the visit presenting as default value the average of the previous times of visit of the same user. \\
-                                  & \tabitem The customer sets the time slot and the estimated time of their visit. \\
-                                  & \tabitem The app asks what category of products the customer wants to buy. \\
-                                  & \tabitem The customer set the products categories. \\
-                                  & \tabitem The app requests the line number from the server. \\
-                                  & \tabitem The app generates the QR code on the response from the server. \\
+        & \tabitem The app asks the time slot and the estimated time of the visit presenting as default value the average of the previous times of visit of the same user. \\
+        & \tabitem The customer sets the time slot and the estimated time of their visit. \\
+        & \tabitem The app asks what category of products the customer wants to buy. \\
+        & \tabitem The customer set the products categories. \\
+        & \tabitem The app requests the line number from the server. \\
+        & \tabitem The app generates the QR code on the response from the server. \\
         \hline
         \textit{Exit conditions} & The customer has booked a visit for the store. \\ \hline
         \textit{Exceptions} & \tabitem The server cannot retrieve the line number since the time slot is full.\\ \hline
     \end{tabular}
     \caption{Use Case: Book future line number}
 \end{table}
-
-\begin{table}[H]
-    \begin{tabular}{|p{8cm}|p{8cm}|}
-        \hline
-        \textit{Name}    & \textbf{Grant access} \\ \hline
-        \textit{Actors} & Clerk, Customer \\ \hline
-        \textit{Entry conditions} & The customer has already obtained the QR code and they plan on entering the store.\\ \hline
-        \textit{Event flows}      & \tabitem The Clerk scans the QR code from the customer's smartphone or printed ticket using the app \\
-                                  & \tabitem The app analyzes the QR code and contacts to the Server \\
-                                  & \tabitem The server decides if the customer can enter based on the information received in the QR code \\
-                                  & \tabitem The server responds to the clerk app with the result \\
-                                  & \tabitem The clerk let the customer enter the store \\ % TODO: Are we supposed to write about world phenomena?
-        \\ \hline
-        \textit{Exit conditions} & The customer enters the store \\ \hline
-        \textit{Exceptions} & \tabitem The server communicates to the clerk that the customer cannot enter because their line number is not available.\\ \hline
-    \end{tabular}
-    \caption{Use Case: Grant access}
-\end{table}
-
-\begin{table}[H]
-    \begin{tabular}{|p{8cm}|p{8cm}|}
-        \hline
-        \textit{Name}    & \textbf{Initialize} \\ \hline
-        \textit{Actors} & Manager \\ \hline
-        \textit{Entry conditions} & The manager of the store needs to set the basic information of the store in order to start the service \\ \hline
-        \textit{Event flows}      & \tabitem The manager clicks on the initialize button \\
-        & \tabitem The app shows the location form to the manager \\
-        & \tabitem The manager fills the form and sends ıt to the server via the app\\
-        & \tabitem The server registers the information and acknowledges \\
-        \hline
-        \textit{Exit conditions} & The system is initialized and can offer all its functions \\ \hline
-        \textit{Exceptions} & \tabitem Some mandatory parts of the form are not filled. \\ \hline
-    \end{tabular}
-    \caption{Use Case: Initialize}
-\end{table}
-
-\begin{table}[H]
-    \begin{tabular}{|p{8cm}|p{8cm}|}
-        \hline
-        \textit{Name}    & \textbf{Monitor state} \\ \hline
-        \textit{Actors} & Manager \\ \hline
-        \textit{Entry conditions} & The manager wants to monitor the number of customers in the store in real time. \\ \hline
-        \textit{Event flows}      & \tabitem The manager clicks on the "Monitoring" button. \\
-        & \tabitem The app sends the number request to the server.  \\
-        & \tabitem The server returns the number of customers in the store. \\
-        & \tabitem The app repeats the process periodically as long as the monitoring page is open. \\ % TODO: What period? Do we need to specify this?
-        \hline
-        \textit{Exit conditions} & The manager is informed on the number of the customers in the store in real time. \\ \hline
-        \textit{Exceptions} & \tabitem \\ \hline
-    \end{tabular}
-    \caption{Use Case: Monitor state}
-\end{table}
-
-\begin{table}[H]
-    \begin{tabular}{|p{8cm}|p{8cm}|}
-        \hline
-        \textit{Name}    & \textbf{Print guest ticket} \\ \hline
-        \textit{Actors} & Clerk, Customer \\ \hline
-        \textit{Entry conditions} & The customer has arrived to the location, doesn't have a ticket on their smartphone, and needs a physical ticket to enter. \\ \hline
-        \textit{Event flows}      & \tabitem The customer asks the clerk for a ticket. \\
-        & \tabitem The clerk generate a ticket using the app. \\
-        & \tabitem The app sends a request to the server to generate a ticket. \\
-        & \tabitem The server generates a line number and a ticket. \\
-        & \tabitem The server sends the ticket back to the app. \\
-        & \tabitem The clerk prints the ticket. \\ % TODO: Real world phenomena here again?
-        & \tabitem The clerk gives the ticket to the customer. \\
-        \hline
-        \textit{Exit conditions} & The customer has a ticket. \\ \hline
-        \textit{Exceptions} & \tabitem The server cannot generate a line number due to capacity constraints. \\ \hline
-    \end{tabular}
-    \caption{Use Case: Print guest ticket}
-\end{table}
-
-\begin{table}[H]
-    \begin{tabular}{|p{8cm}|p{8cm}|}
-        \hline
-        \textit{Name}    & \textbf{Schedule a stop} \\ \hline
-        \textit{Actors} & Manager \\ \hline
-        \textit{Entry conditions} & The manager wants to schedule a period of time in which the store will be closed so the users can not book a visit for that time. \\ \hline
-        \textit{Event flows}      & \tabitem The manager clicks on the "Schedule a Stop" button. \\
-        & \tabitem The app shows a form for the time of the stop. \\
-        & \tabitem The manager fills the form and submits it to the server through the app. \\
-        & \tabitem The server stores the information in the database and returns an acknowledgement. \\
-        \hline
-        \textit{Exit conditions} & The system has a scheduled stop stored in its database and will use it to prevent customers from booking a visit in that time period. \\ \hline
-        \textit{Exceptions} & \tabitem There is already a planned stop in that period. \\ \hline
-    \end{tabular}
-    \caption{Use Case: Schedule a stop}
-\end{table}
-
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Images/SequenceDiagrams/Customer/BookFutureLineNumberUseCaseSequenceDiagram.png}
+    \caption{Sequence Diagram for Use Case: Book future line number}
+\end{figure}
 \begin{table}[H]
     \begin{tabular}{|p{8cm}|p{8cm}|}
         \hline
@@ -159,7 +80,11 @@
     \end{tabular}
     \caption{Use Case: See amount of customers in the store}
 \end{table}
-
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Images/SequenceDiagrams/Customer/SeeAmountOfCustomersInStoreUseCaseSequenceDiagram.png}
+    \caption{Sequence Diagram for Use Case: See amount of customers in the store}
+\end{figure}
 \begin{table}[H]
     \begin{tabular}{|p{8cm}|p{8cm}|}
         \hline
@@ -177,6 +102,11 @@
     \end{tabular}
     \caption{Use Case: See store location}
 \end{table}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Images/SequenceDiagrams/Customer/SeeStoreLocationUseCaseSequenceDiagram.png}
+    \caption{Sequence Diagram for Use Case: See store location}
+\end{figure}
 
 \begin{table}[H]
     \begin{tabular}{|p{8cm}|p{8cm}|}
@@ -198,6 +128,220 @@
     \caption{Use Case: Sign up}
 \end{table}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Images/SequenceDiagrams/Customer/SignUpUseCaseSequenceDiagram.png}
+    \caption{Sequence Diagram for Use Case: Sign up}
+\end{figure}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Login} \\ \hline
+        \textit{Actors} & User \\ \hline
+        \textit{Entry conditions} & The user has already sign up and wants to login to use CLup functionalities \\ \hline
+        \textit{Event flows}     & \tabitem The customer clicks on the "Login" button\\
+        & \tabitem The user provides their login credentials. \\
+        & \tabitem The system authenticates the user \\
+        \hline
+        \textit{Exit conditions} & The user is logged in and can now use all the CLup functionalities \\ \hline
+        \textit{Exceptions} & \tabitem The credentials are wrong \\
+        \hline
+    \end{tabular}
+    \caption{Use Case: Login}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Images/SequenceDiagrams/LogInUseCaseSequenceDiagram.png}
+    \caption{Sequence Diagram for Use Case: Login}
+\end{figure}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Notify ticket delete} \\ \hline
+        \textit{Actors} & Customer \\ \hline
+        \textit{Entry conditions} & A ticket of the Customer was deleted from the server. \\ \hline
+        \textit{Event flows}     & \tabitem The system sends an email to the customer to notify the deletion of their ticket\\
+        \hline
+        \textit{Exit conditions} & The customer is informed about the deletion of their ticket. \\ \hline
+        \textit{Exceptions} & \tabitem \\
+        \hline
+    \end{tabular}
+    \caption{Use Case: Notify ticket delete}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Images/SequenceDiagrams/Customer/NotifyTicketDeleteUseCaseSequenceDiagram.png}
+    \caption{Sequence Diagram for Use Case: Notify ticket delete}
+\end{figure}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Update user information} \\ \hline
+        \textit{Actors} & User \\ \hline
+        \textit{Entry conditions} & The user wants to change an information of themselves. \\ \hline
+        \textit{Event flows}     & \tabitem The user clicks on the "Update User Information" button. \\
+        & \tabitem The app shows a form precompiled with user's previous information. \\
+        & \tabitem The user changes the information on the respective fields and presses the "Submit" button. \\
+        & \tabitem The system saves the changes. \\
+        \hline
+        \textit{Exit conditions} & The user successfully updated their information. \\ \hline
+        \textit{Exceptions} & \tabitem The new information provided is ill-formatted. \\
+        \hline
+    \end{tabular}
+    \caption{Use Case: Update user information}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Images/SequenceDiagrams/UpdateUserInformationUseCaseSequenceDiagram.png}
+    \caption{Sequence Diagram for Use Case: Update user information}
+\end{figure}
+
+\subsubsection{Clerk}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Images/UseCaseDiagrams/Clerk.png}
+    \caption{Use Case Diagram for Clerk}
+\end{figure}
+
+\textbf{Use cases}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Grant access} \\ \hline
+        \textit{Actors} & Clerk, Customer \\ \hline
+        \textit{Entry conditions} & The customer has already obtained the QR code and they plan on entering the store.\\ \hline
+        \textit{Event flows}      & \tabitem The Clerk scans the QR code from the customer's smartphone or printed ticket using the app \\
+        & \tabitem The app analyzes the QR code and contacts to the Server \\
+        & \tabitem The server decides if the customer can enter based on the information received in the QR code \\
+        & \tabitem The server responds to the clerk app with the result \\
+        & \tabitem The clerk let the customer enter the store \\ % TODO: Are we supposed to write about world phenomena?
+        \\ \hline
+        \textit{Exit conditions} & The customer enters the store \\ \hline
+        \textit{Exceptions} & \tabitem The server communicates to the clerk that the customer cannot enter because their line number is not available.\\ \hline
+    \end{tabular}
+    \caption{Use Case: Grant access}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Images/SequenceDiagrams/Clerk/GrantAccessUseCaseSequenceDiagram.png}
+    \caption{Sequence Diagram for Use Case: Update user information}
+\end{figure}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Print guest ticket} \\ \hline
+        \textit{Actors} & Clerk, Customer \\ \hline
+        \textit{Entry conditions} & The customer has arrived to the location, doesn't have a ticket on their smartphone, and needs a physical ticket to enter. \\ \hline
+        \textit{Event flows}      & \tabitem The customer asks the clerk for a ticket. \\
+        & \tabitem The clerk generate a ticket using the app. \\
+        & \tabitem The app sends a request to the server to generate a ticket. \\
+        & \tabitem The server generates a line number and a ticket. \\
+        & \tabitem The server sends the ticket back to the app. \\
+        & \tabitem The clerk prints the ticket. \\ % TODO: Real world phenomena here again?
+        & \tabitem The clerk gives the ticket to the customer. \\
+        \hline
+        \textit{Exit conditions} & The customer has a ticket. \\ \hline
+        \textit{Exceptions} & \tabitem The server cannot generate a line number due to capacity constraints. \\ \hline
+    \end{tabular}
+    \caption{Use Case: Print guest ticket}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Images/SequenceDiagrams/Clerk/PrintGuestTicketUseCaseSequenceDiagram.png}
+    \caption{Sequence Diagram for Use Case: Print guest ticket}
+\end{figure}
+
+\subsubsection{Manager}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Images/UseCaseDiagrams/Manager.png}
+    \caption{Use Case Diagram for Manager}
+\end{figure}
+
+\textbf{Use cases}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Initialize} \\ \hline
+        \textit{Actors} & Manager \\ \hline
+        \textit{Entry conditions} & The manager of the store needs to set the basic information of the store in order to start the service \\ \hline
+        \textit{Event flows}      & \tabitem The manager clicks on the initialize button \\
+        & \tabitem The app shows the location form to the manager \\
+        & \tabitem The manager fills the form and sends ıt to the server via the app\\
+        & \tabitem The server registers the information and acknowledges \\
+        \hline
+        \textit{Exit conditions} & The system is initialized and can offer all its functions \\ \hline
+        \textit{Exceptions} & \tabitem Some mandatory parts of the form are not filled. \\ \hline
+    \end{tabular}
+    \caption{Use Case: Initialize}
+\end{table}
+
+% TODO: There is no request for info form, front-end is capable of generating such info.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Images/SequenceDiagrams/Manager/SetStoreInfoUseCaseSequenceDiagram.png}
+    \caption{Sequence Diagram for Use Case: Initialize}
+\end{figure}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Monitor state} \\ \hline
+        \textit{Actors} & Manager \\ \hline
+        \textit{Entry conditions} & The manager wants to monitor the number of customers in the store in real time. \\ \hline
+        \textit{Event flows}      & \tabitem The manager clicks on the "Monitoring" button. \\
+        & \tabitem The app sends the number request to the server.  \\
+        & \tabitem The server returns the number of customers in the store. \\
+        & \tabitem The app repeats the process periodically as long as the monitoring page is open. \\ % TODO: What period? Do we need to specify this?
+        \hline
+        \textit{Exit conditions} & The manager is informed on the number of the customers in the store in real time. \\ \hline
+        \textit{Exceptions} & \tabitem \\ \hline
+    \end{tabular}
+    \caption{Use Case: Monitor state}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Images/SequenceDiagrams/Manager/MonitorStateUseCaseSequenceDiagram.png}
+    \caption{Sequence Diagram for Use Case: Monitor state}
+\end{figure}
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Schedule a stop} \\ \hline
+        \textit{Actors} & Manager \\ \hline
+        \textit{Entry conditions} & The manager wants to schedule a period of time in which the store will be closed so the users can not book a visit for that time. \\ \hline
+        \textit{Event flows}      & \tabitem The manager clicks on the "Schedule a Stop" button. \\
+        & \tabitem The app shows a form for the time of the stop. \\
+        & \tabitem The manager fills the form and submits it to the server through the app. \\
+        & \tabitem The server stores the information in the database and returns an acknowledgement. \\
+        \hline
+        \textit{Exit conditions} & The system has a scheduled stop stored in its database and will use it to prevent customers from booking a visit in that time period. \\ \hline
+        \textit{Exceptions} & \tabitem There is already a planned stop in that period. \\ \hline
+    \end{tabular}
+    \caption{Use Case: Schedule a stop}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Images/SequenceDiagrams/Manager/ScheduleAStopUseCaseSequenceDiagram.png}
+    \caption{Sequence Diagram for Use Case: Schedule a stop}
+\end{figure}
+
 \begin{table}[H]
     \begin{tabular}{|p{8cm}|p{8cm}|}
         \hline
@@ -217,6 +361,12 @@
     \caption{Use Case: Stop for emergency}
 \end{table}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Images/SequenceDiagrams/Manager/StopForEmergencyUseCaseSequenceDiagram.png}
+    \caption{Sequence Diagram for Use Case: Stop for emergency}
+\end{figure}
+
 \begin{table}[H]
     \begin{tabular}{|p{8cm}|p{8cm}|}
         \hline
@@ -233,6 +383,12 @@
     \end{tabular}
     \caption{Use Case: Add Clerk}
 \end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Images/SequenceDiagrams/Manager/AddClerkUseCaseSequenceDiagram.png}
+    \caption{Sequence Diagram for Use Case: Add Clerk}
+\end{figure}
 
 \begin{table}[H]
     \begin{tabular}{|p{8cm}|p{8cm}|}
@@ -251,55 +407,11 @@
     \caption{Use Case: Add Manager}
 \end{table}
 
-\begin{table}[H]
-    \begin{tabular}{|p{8cm}|p{8cm}|}
-        \hline
-        \textit{Name}    & \textbf{Login} \\ \hline
-        \textit{Actors} & User \\ \hline
-        \textit{Entry conditions} & The user has already sign up and wants to login to use CLup functionalities \\ \hline
-        \textit{Event flows}     & \tabitem The customer clicks on the "Login" button\\
-        & \tabitem The user provides their login credentials. \\
-        & \tabitem The system authenticates the user \\
-        \hline
-        \textit{Exit conditions} & The user is logged in and can now use all the CLup functionalities \\ \hline
-        \textit{Exceptions} & \tabitem The credentials are wrong \\
-        \hline
-    \end{tabular}
-    \caption{Use Case: Login}
-\end{table}
-
-\begin{table}[H]
-    \begin{tabular}{|p{8cm}|p{8cm}|}
-        \hline
-        \textit{Name}    & \textbf{Notify ticket delete} \\ \hline
-        \textit{Actors} & Customer \\ \hline
-        \textit{Entry conditions} & A ticket of the Customer was deleted from the server. \\ \hline
-        \textit{Event flows}     & \tabitem The system sends an email to the customer to notify the deletion of their ticket\\
-        \hline
-        \textit{Exit conditions} & The customer is informed about the deletion of their ticket. \\ \hline
-        \textit{Exceptions} & \tabitem \\
-        \hline
-    \end{tabular}
-    \caption{Use Case: Notify ticket delete}
-\end{table}
-
-\begin{table}[H]
-    \begin{tabular}{|p{8cm}|p{8cm}|}
-        \hline
-        \textit{Name}    & \textbf{Update user information} \\ \hline
-        \textit{Actors} & User \\ \hline
-        \textit{Entry conditions} & The user wants to change an information of themselves. \\ \hline
-        \textit{Event flows}     & \tabitem The user clicks on the "Update User Information" button. \\
-        & \tabitem The app shows a form precompiled with user's previous information. \\
-        & \tabitem The user changes the information on the respective fields and presses the "Submit" button. \\
-        & \tabitem The system saves the changes. \\
-        \hline
-        \textit{Exit conditions} & The user successfully updated their information. \\ \hline
-        \textit{Exceptions} & \tabitem The new information provided is ill-formatted. \\
-        \hline
-    \end{tabular}
-    \caption{Use Case: Update user information}
-\end{table}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Images/SequenceDiagrams/Manager/AddManagerUseCaseSequenceDiagram.png}
+    \caption{Sequence Diagram for Use Case: Add Manager}
+\end{figure}
 
 \subsubsection{Requirements}
 \begin{itemize}
@@ -337,6 +449,9 @@
 % Goals, mapped to the requirements and domain assumptions they relate to
 % (Requirements are vaguely given in Overview -> Product functions)
 % (Domain assumptions are in Overview -> Assumptions,dependencies and constraints -> Domain Assumptions)
+
+
+% TODO: Tracability Matrix, Summary table
 \subsection{Performance Requirements}
 
 % Some basic stuff about how much users the system takes, speed etc...
