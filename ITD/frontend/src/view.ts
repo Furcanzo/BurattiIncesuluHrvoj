@@ -1,5 +1,5 @@
 import {LineNumber, LineNumberRequest, Product, ShopLocation, Time, TimeSlot} from "./models";
-import {Nothing, SelectDay, ToggleProduct, ToggleTimeSlot} from "./actions";
+import {Nothing, SelectDay, SelectLineNumber, ToggleProduct, ToggleTimeSlot} from "./actions";
 import {
     card,
     column,
@@ -11,7 +11,7 @@ import {
     formField,
     button,
     smallColumn,
-    Color
+    Color, centered
 } from "./widgets";
 import {addZero, timeSlotEq} from "./util";
 import {CHECK_CIRCLE, CIRCLE} from "./icons";
@@ -64,31 +64,57 @@ export const dateTimeSlotSelection = (lineNumberRequest: LineNumberRequest, date
     } else {
         cardBody = titleText(`Select a date to view the timeslots available!`, "4");
     }
-    return navigationCard(navigation, row(cardBody));
+    return centered(navigationCard(navigation, row(cardBody)));
 
 }
 
 export const estimatedStaySelector = (estimatedTime: Time) => {
-    return form([
-            card(titleText("Estimated time for visit:", "5"), row([
-                smallColumn(formField(estimatedTime.hour.toString(), "Hours", Nothing, "number")),
-                smallColumn(formField(estimatedTime.minute.toString(), "Minutes", Nothing, "number")),
-            ]), "light"),
-        ]
-    )
+    return centered(card(titleText("Estimated time for visit:", "5"), row([
+                column([]),
+                column(formField(estimatedTime.hour.toString(), "Hours", Nothing, "number")),
+                column(formField(estimatedTime.minute.toString(), "Minutes", Nothing, "number")),
+                column([]),
+            ]), "secondary"));
 }
 const productCard = (product: Product, selected: boolean) => {
     return selectionCard(product.name, [ToggleProduct, product], selected, "dark");
 }
 export const productSelector = (products: Product[], selectedProducts: Product[]) => {
-    return card(
+    return centered(card(
         titleText("Please select the products/categories that you would like to visit:", "5"),
         row(products.map((product) => {
             return smallColumn(productCard(product, selectedProducts.includes(product)));
         })), "dark"
-    )
+    ));
 }
 
-export const lineNumbers = (lineNumbers: LineNumber[]) => {
+const lineNumberCard = (lineNumber: LineNumber) => {
+    return clickable(card(
+        titleText(lineNumber.number.toString(), "2"),
+        [
+            titleText(lineNumber.location.name),
+            titleText(`${timeStr(lineNumber.time.start)} - ${timeStr(lineNumber.time.end)}`, "4"),
+            titleText(dateStr(lineNumber.time.day), "4"),
+        ],
+        "primary",
+        [SelectLineNumber, LineNumber]
+    ))
+}
 
+const lineNumberSort = (a: LineNumber, b: LineNumber): number => {
+    if (a.time.day !== b.time.day) {
+        return a.time.day.valueOf() - b.time.day.valueOf();
+    }
+    if (a.time.start.hour !== b.time.start.hour) {
+        return a.time.start.hour - b.time.start.hour;
+    }
+    return a.time.start.minute - b.time.start.minute;
+}
+export const lineNumberSelector = (lineNumbers: LineNumber[]) => {
+    return centered(card(
+        titleText("My Line Numbers:", "2"),
+        row(lineNumbers.sort(lineNumberSort).map(lineNumber => {
+            return smallColumn(lineNumberCard(lineNumber))
+        })),
+    ));
 }

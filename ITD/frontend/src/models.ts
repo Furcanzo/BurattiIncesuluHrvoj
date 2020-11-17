@@ -59,6 +59,7 @@ export class NewUser extends User {
     password: string;
 }
 export class Product {
+    id?: number; // undefined if product is new
     location: any; // TODO: How to represent product location? Actually do we need this on client side?
     name: string;
 }

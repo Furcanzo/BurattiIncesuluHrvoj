@@ -1,7 +1,7 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 import {app} from "hyperapp";
-import {titleText, navbar, row, wrapper, button} from "../../src/widgets";
+import {titleText, navbar, row, wrapper, button, column} from "../../src/widgets";
 import {Nothing} from "../../src/actions";
 import {dateTimeSlotSelection, estimatedStaySelector, productSelector} from "../../src/view";
 import {customerNavigation, dates, lineNumberRequest} from "../sampleData";

@@ -7,7 +7,6 @@ import {
     row,
     wrapper,
     button,
-    qrCodeReader,
     qrCodeGenerator,
     card,
     centered
