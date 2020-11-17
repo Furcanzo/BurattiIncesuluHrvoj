@@ -22,7 +22,7 @@ export const background = (content: any, backgroundColor: Color) => {
 export type Color =
     "primary"
     | "secondary"
-    | "error"
+    | "danger"
     | "warning"
     | "success"
     | "info"
@@ -235,4 +235,8 @@ export const centered = (content: any) => {
 
 export const fillWidth = (content: any) => {
     return addClass(content, ["w-100"]);
+}
+
+export const inlineForm = (content: any) => {
+    return addClass(content, ["form-inline"]);
 }

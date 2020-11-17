@@ -1,4 +1,4 @@
-import {Product, TimeSlot} from "./models";
+import {LineNumber, Product, TimeSlot} from "./models";
 
 export const ToggleTimeSlot = (state: any, timeSlot: TimeSlot) => {
     return state;
@@ -22,4 +22,16 @@ export const SelectDay = (state: any, date: Date) => {
 
 export const Nothing = (state: any, ...args:any[]) => {
     return state;
+}
+
+export const SelectLineNumber = (state: any, lineNumber: LineNumber) => {
+
+}
+
+export const UpdateProduct = (state: any, product: Product) => {
+
+}
+
+export const DeleteProduct = (state: any, product: Product) => {
+
 }

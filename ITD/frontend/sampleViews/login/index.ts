@@ -3,7 +3,7 @@ import "regenerator-runtime/runtime";
 import {app} from "hyperapp";
 import {titleText, navbar, row, wrapper, button, qrCodeReader, card, formField, centered} from "../../src/widgets";
 import {Nothing} from "../../src/actions";
-import {clerkNavigation, dates, lineNumberRequest, loginUser} from "../sampleData";
+import {loginUser} from "../sampleData";
 
 const layout = (state = undefined) => {
     const menu = navbar([], Nothing);

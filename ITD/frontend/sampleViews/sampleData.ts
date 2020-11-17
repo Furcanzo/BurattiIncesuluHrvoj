@@ -31,10 +31,10 @@ export const bakery: Shop = {
     reservationLimit: {limit: 3, interval: TimeInterval.ONE_DAY},
     timeout: 30,
     products: [
-        {name: "Bread", location: null},
-        {name: "Sweets", location: null},
-        {name: "Sandwiches", location: null},
-        {name: "Coffee & Tea", location: null}
+        {name: "Bread", location: null, id: 1},
+        {name: "Sweets", location: null, id: 2},
+        {name: "Sandwiches", location: null, id: 3},
+        {name: "Coffee & Tea", location: null, id: 4}
     ]
 }
 
