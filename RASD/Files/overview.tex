@@ -1,4 +1,9 @@
 \subsection{Product Perspective}
+
+The CLup system is expected to be developed ground-up, without any core components being shared with other services, and is expected to integrate with few external services.
+The system will be using a mapping API to allow its various requirements regarding navigation.
+The system will be used to control, verify and schedule customer visits to different stores.
+
 % Introductory text describing system's integration with other products, considering shared phenomena.
 
 % Text for Class Diagram
@@ -6,22 +11,38 @@
 
 \begin{figure}[H]
     \centering
-    \includegraphics[height=0.4\textwidth]{Images/ClassDiagram.png}
+    \includegraphics[height=0.5\textwidth]{Images/ClassDiagram.png}
     \caption{Class Diagram}
     \label{fig:ClassDiagram}
 \end{figure}
+The \nameref{fig:ClassDiagram} provided above illustrates the core high-level components of the system and their interactions.
 
-% TODO: @Ozan If have time start this.
+
+The system is designed to be used by different types of users, the \textbf{Customer}s whom visit or plan to visit the \textbf{Store}, the \textbf{Manager}s who are responsible for handling management related tasks like providing store details and handling system stops, and the \textbf{clerk}s whom are on active duty for monitoring the entrance and exit of customers.
+All users on the system are identified with their \textit{e-mail}s and require their \textit{password}s to authenticate.
+The \textbf{Customer}s need to register to the system with their \textit{name}, \textit{surname} and \textit{phoneNumber}, in addition to the information required for authentication.
+All \textbf{Line Number}s feature a unique \textit{id} and an actual \textit{number} that indicate their order in line.
+Customers can have many \textbf{Booked Line Number}s, limited by the \textit{reservationLimit}, from various stores, which provide many \textbf{Time Slot}s that the customers can select from under \textit{availableTimeSlots}, which then becomes the time slot the booking is \textit{on}.
+The line number is to be invalidated after \textit{timeoutMinutes} from its target time interval.
+The \textbf{Store}'s \textbf{Location} is set by the manager and observed by customers through a \textbf{Maps API}.
+The \textbf{Reservation Limit} imposes a customer can book a line number at most for some \textit{times} \ \textit{per} a specific \textbf{Reservation Limit Interval} (one of \textit{PER\_MONTH}, \textit{PER\_WEEK} or \textit{PER\_DAY}).
+Customers' visits can also feature different \textbf{Product}s or \textbf{Product Category}ies that they might want to visit under their line number's \textit{productsToVisit} and \textit{productCategoriesToVisit}, each having a \textit{name} and \textit{locatedAt} their own \textbf{In-store Location}.
+\textbf{Clerks} can generate \textbf{Physical Line Numbers} for customers that don't have the app available for them.
+
+Below some scenarios, state charts and their brief description are enumerated for some core and critical functionalities of the system.
+It is important to note that the app is targeted for users of all age ranges, thus the scenarios feature different users of different age.
+The state charts apply to many other scenarios that might occur out of interaction with various types of users.
 
 % For each core feature (which are they? all?):
 %   - Scenario
 %   - State Chart
 %   - Explanation
 
-% TODO: @Ozan go with these.
 % Core features: Future book line number, now retrieve line number, Guest arrives to store, System stop (Shop's on fire), schedule system stop (don't forget to notify customer),
 \subsubsection{Book Line Number}
+
 \textbf{Scenario}
+
 Ozan wants to visit the new hamburger place that has recently opened just around the corner of his house.
 However, Ozan doesn't want to wait on a long line to purchase a burger and some fries.
 The fast food joint has incorporated the CLup system in their customer service portfolio, making it possible to Ozan to reserve his ticket beforehand without visiting the location.
