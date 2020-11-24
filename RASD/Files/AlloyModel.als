@@ -1,3 +1,5 @@
+//Signatures-------------------------------------------------------------------------------------------------------------------------
+
 abstract sig Store {
 	sections : some Section
 }
@@ -82,17 +84,20 @@ abstract sig LineNumber {
 	timeSlot : one TimeSlot,
 	number : one Int
 }{
-	number > 0
+	number >= 0
 }
 
 sig ActualLineNumber extends LineNumber{}
 
 sig BookedLineNumber extends LineNumber{}
 
+//Facts-------------------------------------------------------------------------------------------------------------------------
+
 fact credentialInUsers {
 	all mail : Email | mail in User.email
 	all pw : Password | pw in User.password
 	no mail : Email, disj user1, user2 : User | mail in user1.email && mail in user2.email
+	no pw : Password, disj user1, user2 : User | pw in user1.password && pw in user2.password
 }
 
 fact everySectionInAStore {
@@ -102,9 +107,8 @@ fact everySectionInAStore {
 
 fact everyLineNumberInAnAccessTitle {
 	all ln : LineNumber | ln in (Ticket.lineNumber + Booking.lineNumber)
-	all ln1, ln2 :LineNumber | ln1.number = ln2.lineNumber => ln1.timeSlot != ln2.timeSlot
+	all disj ln1, ln2 :LineNumber | ln1.number = ln2.number => ln1.timeSlot != ln2.timeSlot
 }
-
 
 fact everyPartnerSoreInAPrimaryStore {
 	all partnerStore : PartnerStore | partnerStore in PrimaryStore.partnerStores
@@ -114,7 +118,7 @@ fact bookOnlyAStore {
 	all accessTitle : AccessTitle | one store : Store | accessTitle.sections in store.sections
 }
 
-fact consistenQueue { // maybe assertion
+fact consistenQueue {
 	all disj at1, at2 : AccessTitle |
 		((at1<:Ticket).lineNumber.number < (at2<:Ticket).lineNumber.number && (at1<:Ticket).lineNumber.timeSlot = (at2<:Ticket).lineNumber.timeSlot) =>
 			at1.estimatedEnterTime.timestamp =< at2.estimatedEnterTime.timestamp
@@ -124,7 +128,7 @@ fact consistenQueue { // maybe assertion
 			at1.estimatedEnterTime.timestamp =< at2.estimatedEnterTime.timestamp
 }
 
-fact socialDistance { // maybe assetion
+fact socialDistance {
 	all  time : Time, section : Section |
 		#{c: Customer | c in 
 		{visit : Visit | 
@@ -136,9 +140,14 @@ fact socialDistance { // maybe assetion
 	 } =< section.maxCapacity
 }
 
-pred show{
+//Assertions-------------------------------------------------------------------------------------------------------------------------
 
+
+
+//Worlds-------------------------------------------------------------------------------------------------------------------------
+pred world1{
+	#LineNumber>1
+	#Ticket =1
 }
 
-//check socialDistance
-run show for 10
+run world1 for 10
