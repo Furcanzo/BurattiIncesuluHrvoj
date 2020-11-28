@@ -27,11 +27,11 @@ abstract sig User {
 
 sig Customer extends User {}
 
-sig Manager extends User {
+some sig Manager extends User {
 	store : one Store
 }
 
-sig Clerk extends User {
+some sig Clerk extends User {
 	manager : one Manager,
 	store : one Store
 }{
@@ -39,12 +39,13 @@ sig Clerk extends User {
 }
 
 abstract sig AccessTitle{
-	customer : one Customer,
+	customer : lone Customer,
 	sections: some Section,
 	estimatedEnterTime : one Time,
 	estimatedExitTime: one Time,
 }{
 	estimatedEnterTime.timestamp < estimatedExitTime.timestamp
+	
 }
 
 sig Ticket extends AccessTitle{
@@ -56,6 +57,7 @@ sig Booking extends AccessTitle{
 }{
 	estimatedEnterTime.timestamp > lineNumber.timeSlot.start.timestamp
 	estimatedEnterTime.timestamp < lineNumber.timeSlot.end.timestamp
+	#customer = 1
 }
 
 sig Visit{
@@ -107,7 +109,13 @@ fact everySectionInAStore {
 
 fact everyLineNumberInAnAccessTitle {
 	all ln : LineNumber | ln in (Ticket.lineNumber + Booking.lineNumber)
+	no ln: LineNumber, disj t1, t2 : Ticket | ln in t1.lineNumber && ln in t2.lineNumber
+	no ln: LineNumber, disj t1, t2 : Booking | ln in t1.lineNumber && ln in t2.lineNumber
 	all disj ln1, ln2 :LineNumber | ln1.number = ln2.number => ln1.timeSlot != ln2.timeSlot
+}
+
+fact AVisitForEachAccessTitle {
+	no at: AccessTitle, disj visit1, visit2 : Visit | at in visit1.accessTitle && at in visit2.accessTitle
 }
 
 fact everyPartnerSoreInAPrimaryStore {
@@ -128,26 +136,77 @@ fact consistenQueue {
 			at1.estimatedEnterTime.timestamp =< at2.estimatedEnterTime.timestamp
 }
 
-fact socialDistance {
+fact noOverBooking {
 	all  time : Time, section : Section |
-		#{c: Customer | c in 
-		{visit : Visit | 
-			((visit.enterTime.timestamp < time.timestamp && visit.exitTime.timestamp> time.timestamp) ||
-			(visit.enterTime.timestamp < time.timestamp && visit.accessTitle.estimatedExitTime.timestamp> time.timestamp) ||
-			(visit.accessTitle.estimatedEnterTime.timestamp < time.timestamp && visit.accessTitle.estimatedExitTime.timestamp> time.timestamp) )&&
-			section in visit.accessTitle.sections
-		}.accessTitle.customer
-	 } =< section.maxCapacity
+		#{at : AccessTitle | at in 
+			{visit : Visit | 
+				((visit.enterTime.timestamp =< time.timestamp && visit.exitTime.timestamp>= time.timestamp) ||
+				(visit.enterTime.timestamp =< time.timestamp && visit.accessTitle.estimatedExitTime.timestamp>= time.timestamp) ||
+				(visit.accessTitle.estimatedEnterTime.timestamp =< time.timestamp && visit.accessTitle.estimatedExitTime.timestamp>= time.timestamp) )&&
+				section in visit.accessTitle.sections
+			}.accessTitle
+		 } =< section.maxCapacity
+}
+
+fact equallyLongTimeSlots{
+	all ts1, ts2 : TimeSlot | ts1.end-ts1.start = ts2.end-ts2.start
 }
 
 //Assertions-------------------------------------------------------------------------------------------------------------------------
 
+assert noMoreVisitsThanAccessTitle {
+	#Visit =< #AccessTitle
+}
+check noMoreVisitsThanAccessTitle
 
+assert atLeastACustomerForHavingAnAccessTitle {
+	#Customer = 0 => #Booking=0
+}
+check atLeastACustomerForHavingAnAccessTitle
+
+assert neverMoreCustomerThanMaxCapacity {
+	all  time : Time, section : Section |
+		#{c : Customer | c in 
+			{visit : Visit | 
+				((visit.enterTime.timestamp =< time.timestamp && visit.exitTime.timestamp>= time.timestamp) ||
+				(visit.enterTime.timestamp =< time.timestamp && visit.accessTitle.estimatedExitTime.timestamp>= time.timestamp) ||
+				(visit.accessTitle.estimatedEnterTime.timestamp =< time.timestamp && visit.accessTitle.estimatedExitTime.timestamp>= time.timestamp) )&&
+				section in visit.accessTitle.sections
+			}.accessTitle.customer
+		 } =< section.maxCapacity
+}
+check neverMoreCustomerThanMaxCapacity
 
 //Worlds-------------------------------------------------------------------------------------------------------------------------
+
+//Normal Condition
 pred world1{
-	#LineNumber>1
-	#Ticket =1
+	#PartnerStore=1
+	#Section=3
+	#User=5
+	#Customer=3
+	#AccessTitle=5
+	#Visit=3
+	#TimeSlot=5
+}
+
+//No Customers
+pred world2{
+	#Customer=0
+}
+
+//Saturated Store
+pred world3{
+	#PartnerStore=0
+	#Section=1
+	Section.maxCapacity=3
+	#Visit=3
+	no cus : Customer | cus not in AccessTitle.customer
+	#TimeSlot=1
+	#Time = 2
 }
 
 run world1 for 10
+run world2 for 10
+run world3 for 10
+
