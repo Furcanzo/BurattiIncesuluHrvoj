@@ -264,7 +264,7 @@ Below are some sample screenshots from the project's user interfaces with Samsun
 \begin{figure}[H]
     \centering
     \includegraphics[height=0.5\textwidth]{Images/SequenceDiagrams/Clerk/GrantAccessUseCaseSequenceDiagram.png}
-    \caption{Sequence Diagram for Use Case: Update user information}
+    \caption{Sequence Diagram for Use Case: Grant Access}
 \end{figure}
 \begin{table}[H]
     \begin{tabular}{|p{8cm}|p{8cm}|}
@@ -449,28 +449,117 @@ Below are some sample screenshots from the project's user interfaces with Samsun
     \item \textbf{$R_{13}$} In case of a ticket cancel, customer must be notified with an e-mail notification.
     \item \textbf{$R_{14}$} Clerks must register the entrance and exit of customers via scanning the QR code for their line number.
     \item \textbf{$R_{15}$} Clerks must be able to generate line number tickets in a printer compatible format.
-    \item \textbf{$R_{17}$} Customers must be able to obtain a line number, except when the system is stopped or the store is full.
-    \item \textbf{$R_{18}$} Customers must be able to obtain line numbers for different time slots in the future.
-    \item \textbf{$R_{19}$} Customers can not obtain line numbers that exceed the quantity per time interval limits.
-    \item \textbf{$R_{20}$} Customers can not obtain line numbers for time intervals that the system is stopped by a manager.
-    \item \textbf{$R_{21}$} Customers must be able to see the estimated time available for their line number.
-    \item \textbf{$R_{22}$} Customers must be able to set or update their phone number, password, name and surname.
-    \item \textbf{$R_{23}$} Customers can select specific product and/or product categories they plan to visit in the location while obtaining a line number.
-    \item \textbf{$R_{24}$} Customers can set an estimated time for their visit while obtaining a line number.
-    \item \textbf{$R_{25}$} Customers must be able to view the shop location
-    \item \textbf{$R_{26}$} Customers can view the occupation forecasts for the location at different time slots.
-    \item \textbf{$R_{27}$} Customers can see the alternative suggestions for time slots while obtaining a line number for the future.
-    \item \textbf{$R_{28}$} Customers can view the occupancy for the partner stores, if preferred time slot is not available while obtaining a line number.
-    \item \textbf{$R_{29}$} Customers can view their line numbers with the number and the QR code.
-    \item \textbf{$R_{30}$} The system must be able to provide a forecast for the occupancy of each location for any given time based on past visits.
+    \item \textbf{$R_{16}$} Customers must be able to obtain a line number, except when the system is stopped or the store is full.
+    \item \textbf{$R_{17}$} Customers must be able to obtain line numbers for different time slots in the future.
+    \item \textbf{$R_{18}$} Customers can not obtain line numbers that exceed the quantity per time interval limits.
+    \item \textbf{$R_{19}$} Customers can not obtain line numbers for time intervals that the system is stopped by a manager.
+    \item \textbf{$R_{20}$} Customers must be able to see the estimated time available for their line number.
+    \item \textbf{$R_{21}$} Customers must be able to set or update their phone number, password, name and surname.
+    \item \textbf{$R_{22}$} Customers can select specific product and/or product categories they plan to visit in the location while obtaining a line number.
+    \item \textbf{$R_{23}$} Customers can set an estimated time for their visit while obtaining a line number.
+    \item \textbf{$R_{24}$} Customers must be able to view the shop location
+    \item \textbf{$R_{25}$} Customers can view the occupation forecasts for the location at different time slots.
+    \item \textbf{$R_{26}$} Customers can see the alternative suggestions for time slots while obtaining a line number for the future.
+    \item \textbf{$R_{27}$} Customers can view the occupancy for the partner stores, if preferred time slot is not available while obtaining a line number.
+    \item \textbf{$R_{28}$} Customers can view their line numbers with the number and the QR code.
+    \item \textbf{$R_{29}$} The system must be able to provide a forecast for the occupancy of each location for any given time based on past visits.
 \end{itemize}
 
 % Goals, mapped to the requirements and domain assumptions they relate to
 % (Requirements are vaguely given in Overview -> Product functions)
 % (Domain assumptions are in Overview -> Assumptions,dependencies and constraints -> Domain Assumptions)
+\subsubsection{Summary Table}
+\begin{table}[H]
+    \begin{tabular}{|p{1cm}|p{7cm}|p{7cm}|}
+        \hline
+        % R1 all users
+        % R2 customers
+        % R3, R4 managers
+        % R4 clerks
+        \textbf{Goal} & \textbf{Requirements} & \textbf{Domain Assumptions} \\ \hline
+        $G_{1}$ & $R_{1}$, $R_{2}$, $R_{12}$, $R_{16}$, $R_{18}$, $R_{19}$ & $D_{1}$, $D_{13}$\\ \hline
+        $G_{2}$ & $R_{1}$, $R_{2}$, $R_{12}$, $R_{17}$, $R_{18}$, $R_{19}$, $R_{27}$ & $D_{1}$\\ \hline
+        $G_{3}$ & $R_{1}$, $R_{2}$, $R_{9}$, $R_{22}$, $R_{23}$ & $D_{1}$\\ \hline
+        $G_{4}$ & $R_{1}$, $R_{2}$, $R_{13}$, $R_{20}$, $R_{24}$, $R_{25}$, $R_{28}$, $R_{29}$ & $D_{1}$, $D_{3}$, $D_{6}$, $D_{8}$\\ \hline
+        $G_{5}$ & $R_{1}$, $R_{2}$, $R_{6}$, $R_{25}$, $R_{26}$, $R_{27}$ & $D_{1}$\\ \hline
+        $G_{6}$ & $R_{1}$, $R_{3}$, $R_{4}$, $R_{7}$, $R_{8}$, $R_{10}$, $R_{11}$, $R_{13}$, $R_{19}$ & $D_{1}$, $D_{11}$\\ \hline
+        $G_{7}$ & $R_{1}$, $R_{3}$, $R_{4}$, $R_{5}$, $R_{12}$, $R_{18}$, $R_{29}$ & $D_{1}$, $D_{7}$\\ \hline
+        $G_{8}$ & $R_{1}$, $R_{3}$, $R_{4}$, $R_{14}$, $R_{21}$, $R_{28}$ & $D_{1}$, $D_{3}$, $D_{4}$, $D_{5}$, $D_{6}$, $D_{9}$, $D_{11}$, $D_{12}$, $D_{13}$\\ \hline
+        $G_{9}$ & $R_{4}$, $R_{15}$ & $D_{2}$, $D_{6}$, $D_{10}$, $D_{13}$\\ \hline
+    \end{tabular}
+    \caption{Summary Table}
+\end{table}
 
+\iffalse
+Usecases:
+Customer:
 
-% TODO: Tracability Matrix, Summary table
+Book future line number
+See amount of customers in the store
+See store location
+Sign Up
+Login
+Notify ticket delete
+Update user information
+
+% TODO: See ticket use case?
+% TODO: Is there a table for Retrieve Line Number?
+
+Clerk:
+Grant access
+Print Guest Ticket
+
+Manager:
+Initialize
+Monitor State
+Schedule a stop
+Stop for Emengency
+Add clerk
+Add manager
+\fi
+\subsubsection{Tracability Matrix}
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textbf{Requirement} & \textbf{Use case} \\ \hline
+        $R_{1}$ & Login\\ \hline
+        $R_{2}$ & Sign Up\\ \hline
+        $R_{3}$ & \\ \hline
+        $R_{4}$ & Add Clerk\\
+        & Add Manager \\ \hline
+        $R_{5}$ & Initialize \\ \hline
+        $R_{6}$ & Initialize \\ \hline
+        $R_{7}$ & Stop for Emergency\\ \hline
+        $R_{8}$ & Schedule a Stop\\ \hline
+        $R_{9}$ & Initialize \\ \hline
+        $R_{10}$ & Schedule a Stop\\
+        & Stop for Emergency \\ \hline
+        $R_{11}$ & Schedule a Stop\\
+        & Stop for Emergency\\ \hline
+        $R_{12}$ & \\ \hline
+        $R_{13}$ & Notify Ticket Delete \\ \hline
+        $R_{14}$ & Grant Access \\ \hline
+        $R_{15}$ & Print Guest Ticket \\ \hline
+        $R_{16}$ & \\ \hline
+        $R_{17}$ & Book Future Line Number\\ \hline
+        $R_{18}$ & Book Future Line Number\\
+        & Initialize \\ \hline
+        $R_{19}$ & Book Future Line Number \\
+        & Schedule a Stop \\
+        & Stop for Emergency\\ \hline
+        $R_{20}$ & \\ \hline
+        $R_{21}$ & Update User Information\\ \hline
+        $R_{22}$ & Book Future Line Number\\ \hline
+        $R_{23}$ & Book Future Line Number\\ \hline
+        $R_{24}$ & See Store Location\\ \hline
+        $R_{25}$ & See Amount of Customers in the Store\\ \hline
+        $R_{26}$ & Book Future Line Number\\ \hline
+        $R_{27}$ & Book Future Line Number\\ \hline
+        $R_{28}$ & \\ \hline
+        $R_{29}$ & See Number of Customers in the Store\\ \hline
+    \end{tabular}
+    \caption{Tracability Matrix}
+\end{table}
 \subsection{Performance Requirements}
 
 % Some basic stuff about how much users the system takes, speed etc...
