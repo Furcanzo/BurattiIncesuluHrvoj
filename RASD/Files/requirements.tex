@@ -234,6 +234,30 @@ Below are some sample screenshots from the project's user interfaces with Samsun
     \caption{Sequence Diagram for Use Case: Update user information}
 \end{figure}
 
+
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Retrieve line number} \\ \hline
+        \textit{Actors} & Customer \\ \hline
+        \textit{Entry conditions} & The customer is logged in the application and wants to retrieve a line number. \\ \hline
+        \textit{Event flows}      & \tabitem The customer clicks on the "retrieve line number" button in the application \\
+        & \tabitem The application returns an ETA and ask confirm to the customer. \\
+        & \tabitem The customer confirms. \\
+        & \tabitem The customer ask the application to generate the QR code. \\
+        & \tabitem The application returns the QR code. \\
+        \hline
+        \textit{Exit conditions} & The customer have retrieved a line number. \\ \hline
+        \textit{Exceptions} & \tabitem The server cannot retrieve the line number since the time slot is full. \\ \hline
+    \end{tabular}
+    \caption{Use Case: Retrieve line number}
+\end{table}
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.5\textwidth]{Images/SequenceDiagrams/Customer/RetriveLineNumberUseCaseSequenceDiagram.png}
+    \caption{Sequence Diagram for Use Case: Retrieve line number}
+\end{figure}
+
 \subsubsection{Clerk}
 
 \begin{figure}[H]
@@ -290,6 +314,7 @@ Below are some sample screenshots from the project's user interfaces with Samsun
     \includegraphics[height=0.5\textwidth]{Images/SequenceDiagrams/Clerk/PrintGuestTicketUseCaseSequenceDiagram.png}
     \caption{Sequence Diagram for Use Case: Print guest ticket}
 \end{figure}
+
 
 \subsubsection{Manager}
 
@@ -501,9 +526,8 @@ Sign Up
 Login
 Notify ticket delete
 Update user information
-
+Retrieve line number
 % TODO: See ticket use case?
-% TODO: Is there a table for Retrieve Line Number?
 
 Clerk:
 Grant access
@@ -536,18 +560,18 @@ Add manager
         & Stop for Emergency \\ \hline
         $R_{11}$ & Schedule a Stop\\
         & Stop for Emergency\\ \hline
-        $R_{12}$ & \\ \hline
+        $R_{12}$ & Retrieve Line Number\\ \hline
         $R_{13}$ & Notify Ticket Delete \\ \hline
         $R_{14}$ & Grant Access \\ \hline
         $R_{15}$ & Print Guest Ticket \\ \hline
-        $R_{16}$ & \\ \hline
+        $R_{16}$ & Retrieve Line Number \\ \hline
         $R_{17}$ & Book Future Line Number\\ \hline
         $R_{18}$ & Book Future Line Number\\
         & Initialize \\ \hline
         $R_{19}$ & Book Future Line Number \\
         & Schedule a Stop \\
         & Stop for Emergency\\ \hline
-        $R_{20}$ & \\ \hline
+        $R_{20}$ & Retrieve Line Number \\ \hline
         $R_{21}$ & Update User Information\\ \hline
         $R_{22}$ & Book Future Line Number\\ \hline
         $R_{23}$ & Book Future Line Number\\ \hline
