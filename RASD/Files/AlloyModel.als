@@ -159,10 +159,10 @@ assert noMoreVisitsThanAccessTitle {
 }
 check noMoreVisitsThanAccessTitle
 
-assert atLeastACustomerForHavingAnAccessTitle {
+assert atLeastACustomerForHavingABooking {
 	#Customer = 0 => #Booking=0
 }
-check atLeastACustomerForHavingAnAccessTitle
+check atLeastACustomerForHavingABooking
 
 assert neverMoreCustomerThanMaxCapacity {
 	all  time : Time, section : Section |
