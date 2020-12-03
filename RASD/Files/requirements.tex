@@ -459,35 +459,33 @@ Below are some sample screenshots from the project's user interfaces with Samsun
 
 \subsubsection{Requirements}
 \begin{itemize}
-    \item \textbf{$R_1$} The system must allow users to authenticate using their e-mail address and password.
-    \item \textbf{$R_2$} The system must allow customers to register using their e-mail address, their name, surname, phone number and a new password.
-    \item \textbf{$R_3$} The system must provide a hard-coded super user to allow addition of locations and managers of locations. % TODO: Remove
-    \item \textbf{$R_4$} Managers must be able to add additional managers and clerks as users.
-    \item \textbf{$R_5$} Managers must be able to set and update location specific information, that are maximum number of customers in the location at any given time, opening and closing hours of the store per each day, line number timeout, limit of reservation per customer on a predetermined time interval that is one of month, week or day, and location of the place % One form
-    \item \textbf{$R_6$} Managers can add any other location as a partner store.
-    \item \textbf{$R_7$} Managers can stop the system from issuing any more tickets for a given day
-    \item \textbf{$R_8$} Managers can schedule the system stop for a future time.
-    \item \textbf{$R_9$} Managers can set the in-shop locations for different categories and product items.
-    \item \textbf{$R_{10}$} In case of a system stop, no further line numbers can be issued for the given time slots.
-    \item \textbf{$R_{11}$} In case of a system stop, all line numbers in the stop time slots has to be cancelled.
-    \item \textbf{$R_{12}$} The system must cancel those line numbers that the customer didn't arrive to the location for more than the set timeout interval.
-    \item \textbf{$R_{13}$} In case of a ticket cancel, customer must be notified with an e-mail notification.
-    \item \textbf{$R_{14}$} Clerks must register the entrance and exit of customers via scanning the QR code for their line number.
-    \item \textbf{$R_{15}$} Clerks must be able to generate line number tickets in a printer compatible format.
-    \item \textbf{$R_{16}$} Customers must be able to obtain a line number, except when the system is stopped or the store is full.
-    \item \textbf{$R_{17}$} Customers must be able to obtain line numbers for different time slots in the future.
-    \item \textbf{$R_{18}$} Customers can not obtain line numbers that exceed the quantity per time interval limits.
-    \item \textbf{$R_{19}$} Customers can not obtain line numbers for time intervals that the system is stopped by a manager.
-    \item \textbf{$R_{20}$} Customers must be able to see the estimated time available for their line number.
-    \item \textbf{$R_{21}$} Customers must be able to set or update their phone number, password, name and surname.
-    \item \textbf{$R_{22}$} Customers can select specific product and/or product categories they plan to visit in the location while obtaining a line number.
-    \item \textbf{$R_{23}$} Customers can set an estimated time for their visit while obtaining a line number.
-    \item \textbf{$R_{24}$} Customers must be able to view the shop location
-    \item \textbf{$R_{25}$} Customers can view the occupation forecasts for the location at different time slots.
-    \item \textbf{$R_{26}$} Customers can see the alternative suggestions for time slots while obtaining a line number for the future.
-    \item \textbf{$R_{27}$} Customers can view the occupancy for the partner stores, if preferred time slot is not available while obtaining a line number.
-    \item \textbf{$R_{28}$} Customers can view their line numbers with the number and the QR code. % TODO: Remove
-    \item \textbf{$R_{29}$} The system must be able to provide a forecast for the occupancy of each location for any given time based on past visits.
+    \item \textbf{$R_{1}$} The system must allow users to authenticate using their e-mail address and password.
+    \item \textbf{$R_{2}$} The system must allow customers to register using their e-mail address, their name, surname, phone number and a new password.
+    \item \textbf{$R_{3}$} Managers must be able to add additional managers and clerks as users.
+    \item \textbf{$R_{4}$} Managers must be able to set and update location specific information, that are maximum number of customers in the location at any given time, opening and closing hours of the store per each day, line number timeout, limit of reservation per customer on a predetermined time interval that is one of month, week or day, and location of the place % One form
+    \item \textbf{$R_{5}$} Managers can add any other location as a partner store.
+    \item \textbf{$R_{6}$} Managers can stop the system from issuing any more tickets for a given day
+    \item \textbf{$R_{7}$} Managers can schedule the system stop for a future time.
+    \item \textbf{$R_{8}$} Managers can set the in-shop locations for different categories and product items.
+    \item \textbf{$R_{9}$} In case of a system stop, no further line numbers can be issued for the given time slots.
+    \item \textbf{$R_{10}$} In case of a system stop, all line numbers in the stop time slots has to be cancelled.
+    \item \textbf{$R_{11}$} The system must cancel those line numbers that the customer didn't arrive to the location for more than the set timeout interval.
+    \item \textbf{$R_{12}$} In case of a ticket cancel, customer must be notified with an e-mail notification.
+    \item \textbf{$R_{13}$} Clerks must register the entrance and exit of customers via scanning the QR code for their line number.
+    \item \textbf{$R_{14}$} Clerks must be able to generate line number tickets in a printer compatible format.
+    \item \textbf{$R_{15}$} Customers must be able to obtain a line number, except when the system is stopped or the store is full.
+    \item \textbf{$R_{16}$} Customers must be able to obtain line numbers for different time slots in the future.
+    \item \textbf{$R_{17}$} Customers can not obtain line numbers that exceed the quantity per time interval limits.
+    \item \textbf{$R_{18}$} Customers can not obtain line numbers for time intervals that the system is stopped by a manager.
+    \item \textbf{$R_{19}$} Customers must be able to see the estimated time available for their line number.
+    \item \textbf{$R_{20}$} Customers must be able to set or update their phone number, password, name and surname.
+    \item \textbf{$R_{21}$} Customers can select specific product and/or product categories they plan to visit in the location while obtaining a line number.
+    \item \textbf{$R_{22}$} Customers can set an estimated time for their visit while obtaining a line number.
+    \item \textbf{$R_{23}$} Customers must be able to view the shop location
+    \item \textbf{$R_{24}$} Customers can view the occupation forecasts for the location at different time slots.
+    \item \textbf{$R_{25}$} Customers can see the alternative suggestions for time slots while obtaining a line number for the future.
+    \item \textbf{$R_{26}$} Customers can view the occupancy for the partner stores, if preferred time slot is not available while obtaining a line number.
+    \item \textbf{$R_{27}$} The system must be able to provide a forecast for the occupancy of each location for any given time based on past visits.
 \end{itemize}
 
 % Goals, mapped to the requirements and domain assumptions they relate to
@@ -497,20 +495,16 @@ Below are some sample screenshots from the project's user interfaces with Samsun
 \begin{table}[H]
     \begin{tabular}{|p{1cm}|p{7cm}|p{7cm}|}
         \hline
-        % R1 all users
-        % R2 customers
-        % R3, R4 managers
-        % R4 clerks
         \textbf{Goal} & \textbf{Requirements} & \textbf{Domain Assumptions} \\ \hline
-        $G_{1}$ & $R_{1}$, $R_{2}$, $R_{12}$, $R_{16}$, $R_{18}$, $R_{19}$ & $D_{1}$, $D_{13}$\\ \hline
-        $G_{2}$ & $R_{1}$, $R_{2}$, $R_{12}$, $R_{17}$, $R_{18}$, $R_{19}$, $R_{27}$ & $D_{1}$\\ \hline
-        $G_{3}$ & $R_{1}$, $R_{2}$, $R_{9}$, $R_{22}$, $R_{23}$ & $D_{1}$\\ \hline
-        $G_{4}$ & $R_{1}$, $R_{2}$, $R_{13}$, $R_{20}$, $R_{24}$, $R_{25}$, $R_{28}$, $R_{29}$ & $D_{1}$, $D_{3}$, $D_{6}$, $D_{8}$\\ \hline
-        $G_{5}$ & $R_{1}$, $R_{2}$, $R_{6}$, $R_{25}$, $R_{26}$, $R_{27}$ & $D_{1}$\\ \hline
-        $G_{6}$ & $R_{1}$, $R_{3}$, $R_{4}$, $R_{7}$, $R_{8}$, $R_{10}$, $R_{11}$, $R_{13}$, $R_{19}$ & $D_{1}$, $D_{11}$\\ \hline
-        $G_{7}$ & $R_{1}$, $R_{3}$, $R_{4}$, $R_{5}$, $R_{12}$, $R_{18}$, $R_{29}$ & $D_{1}$, $D_{7}$\\ \hline
-        $G_{8}$ & $R_{1}$, $R_{3}$, $R_{4}$, $R_{14}$, $R_{21}$, $R_{28}$ & $D_{1}$, $D_{3}$, $D_{4}$, $D_{5}$, $D_{6}$, $D_{9}$, $D_{11}$, $D_{12}$, $D_{13}$\\ \hline
-        $G_{9}$ & $R_{4}$, $R_{15}$ & $D_{2}$, $D_{6}$, $D_{10}$, $D_{13}$\\ \hline
+        $G_{1}$ & $R_{1}$, $R_{2}$, $R_{11}$, $R_{15}$, $R_{17}$, $R_{18}$ & $D_{1}$, $D_{13}$\\ \hline
+        $G_{2}$ & $R_{1}$, $R_{2}$, $R_{11}$, $R_{16}$, $R_{17}$, $R_{18}$, $R_{26}$ & $D_{1}$\\ \hline
+        $G_{3}$ & $R_{1}$, $R_{2}$, $R_{8}$, $R_{21}$, $R_{22}$ & $D_{1}$\\ \hline
+        $G_{4}$ & $R_{1}$, $R_{2}$, $R_{12}$, $R_{19}$, $R_{23}$, $R_{24}$, $R_{27}$ & $D_{1}$, $D_{3}$, $D_{6}$, $D_{8}$\\ \hline
+        $G_{5}$ & $R_{1}$, $R_{2}$, $R_{5}$, $R_{24}$, $R_{25}$, $R_{26}$ & $D_{1}$\\ \hline
+        $G_{6}$ & $R_{1}$, $R_{3}$, $R_{6}$, $R_{7}$, $R_{9}$, $R_{10}$, $R_{12}$, $R_{18}$ & $D_{1}$, $D_{11}$\\ \hline
+        $G_{7}$ & $R_{1}$, $R_{3}$, $R_{4}$, $R_{11}$, $R_{17}$, $R_{27}$ & $D_{1}$, $D_{7}$\\ \hline
+        $G_{8}$ & $R_{1}$, $R_{3}$, $R_{13}$, $R_{20}$ & $D_{1}$, $D_{3}$, $D_{4}$, $D_{5}$, $D_{6}$, $D_{9}$, $D_{11}$, $D_{12}$, $D_{13}$\\ \hline
+        $G_{9}$ & $R_{3}$, $R_{14}$ & $D_{2}$, $D_{6}$, $D_{10}$, $D_{13}$\\ \hline
     \end{tabular}
     \caption{Summary Table}
 \end{table}
@@ -527,7 +521,6 @@ Login
 Notify ticket delete
 Update user information
 Retrieve line number
-% TODO: See ticket use case?
 
 Clerk:
 Grant access
@@ -548,39 +541,37 @@ Add manager
         \textbf{Requirement} & \textbf{Use case} \\ \hline
         $R_{1}$ & Login\\ \hline
         $R_{2}$ & Sign Up\\ \hline
-        $R_{3}$ & \\ \hline
-        $R_{4}$ & Add Clerk\\
+        $R_{3}$ & Add Clerk\\
         & Add Manager \\ \hline
+        $R_{4}$ & Initialize \\ \hline
         $R_{5}$ & Initialize \\ \hline
-        $R_{6}$ & Initialize \\ \hline
-        $R_{7}$ & Stop for Emergency\\ \hline
-        $R_{8}$ & Schedule a Stop\\ \hline
-        $R_{9}$ & Initialize \\ \hline
-        $R_{10}$ & Schedule a Stop\\
+        $R_{6}$ & Stop for Emergency\\ \hline
+        $R_{7}$ & Schedule a Stop\\ \hline
+        $R_{8}$ & Initialize \\ \hline
+        $R_{9}$ & Schedule a Stop\\
         & Stop for Emergency \\ \hline
-        $R_{11}$ & Schedule a Stop\\
+        $R_{10}$ & Schedule a Stop\\
         & Stop for Emergency\\ \hline
-        $R_{12}$ & Retrieve Line Number\\ \hline
-        $R_{13}$ & Notify Ticket Delete \\ \hline
-        $R_{14}$ & Grant Access \\ \hline
-        $R_{15}$ & Print Guest Ticket \\ \hline
-        $R_{16}$ & Retrieve Line Number \\ \hline
-        $R_{17}$ & Book Future Line Number\\ \hline
-        $R_{18}$ & Book Future Line Number\\
+        $R_{11}$ & Retrieve Line Number\\ \hline
+        $R_{12}$ & Notify Ticket Delete \\ \hline
+        $R_{13}$ & Grant Access \\ \hline
+        $R_{14}$ & Print Guest Ticket \\ \hline
+        $R_{15}$ & Retrieve Line Number \\ \hline
+        $R_{16}$ & Book Future Line Number\\ \hline
+        $R_{17}$ & Book Future Line Number\\
         & Initialize \\ \hline
-        $R_{19}$ & Book Future Line Number \\
+        $R_{18}$ & Book Future Line Number \\
         & Schedule a Stop \\
         & Stop for Emergency\\ \hline
-        $R_{20}$ & Retrieve Line Number \\ \hline
-        $R_{21}$ & Update User Information\\ \hline
+        $R_{19}$ & Retrieve Line Number \\ \hline
+        $R_{20}$ & Update User Information\\ \hline
+        $R_{21}$ & Book Future Line Number\\ \hline
         $R_{22}$ & Book Future Line Number\\ \hline
-        $R_{23}$ & Book Future Line Number\\ \hline
-        $R_{24}$ & See Store Location\\ \hline
-        $R_{25}$ & See Amount of Customers in the Store\\ \hline
+        $R_{23}$ & See Store Location\\ \hline
+        $R_{24}$ & See Amount of Customers in the Store\\ \hline
+        $R_{25}$ & Book Future Line Number\\ \hline
         $R_{26}$ & Book Future Line Number\\ \hline
-        $R_{27}$ & Book Future Line Number\\ \hline
-        $R_{28}$ & \\ \hline
-        $R_{29}$ & See Number of Customers in the Store\\ \hline
+        $R_{27}$ & See Number of Customers in the Store\\ \hline
     \end{tabular}
     \caption{Tracability Matrix}
 \end{table}
