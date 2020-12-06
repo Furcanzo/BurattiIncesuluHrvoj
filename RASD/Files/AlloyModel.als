@@ -126,7 +126,7 @@ fact bookOnlyAStore {
 	all accessTitle : AccessTitle | one store : Store | accessTitle.sections in store.sections
 }
 
-fact consistenQueue {
+fact consistentQueue {
 	all disj at1, at2 : AccessTitle |
 		((at1<:Ticket).lineNumber.number < (at2<:Ticket).lineNumber.number && (at1<:Ticket).lineNumber.timeSlot = (at2<:Ticket).lineNumber.timeSlot) =>
 			at1.estimatedEnterTime.timestamp =< at2.estimatedEnterTime.timestamp
