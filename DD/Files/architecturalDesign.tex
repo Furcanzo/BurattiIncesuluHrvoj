@@ -40,21 +40,9 @@ This tier contains also a mail Server to notify the users in case their line num
 - Data tier ( tier 1 in the diagram) is the lowest-level tier as it contains all the information required to fuel the
 application services, most prominently the query manager. The
 databases are thought to be managed through an RDBMS
-(Relational Database Management System). Relational databases
-have the advantage of having near-maximum information density
-(i.e. they require close to the theoretical minimum number of bytes
-to store the average tuple). This is in contrast with the
-multidimensional model, which is faster because it works around the
-very expensive join operations by having a degree of freedom for
-each field of a tuple, but has the major drawback of being a sparse
-database model, since any combination of values that do not
-correspond to any occurrence still takes up space, resulting in a net
-waste. The relational model is also chosen due to the wide amount of
-indexing structures (such as trees or hash tables) that can be used to
-optimize operations that are primarily analysis-oriented, reducing
-the computational complexity of the most expensive operations on
-large amounts of data. Relational constraints (again, unavailable in
-multidimensional models) can further improve the quality and
+(Relational Database Management System), in particular MySQL. Relational databases
+have the advantage of having near-maximum information density.
+Relational constraints can improve the quality and
 integrity of the content of the database.
 
 \subsection{Runtime view}
