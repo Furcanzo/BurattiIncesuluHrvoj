@@ -1,14 +1,5 @@
 \input{commandsFile}
 
-\usepackage{listings}
-\lstset{
-basicstyle=\ttfamily,
-columns=fullflexible,
-frame=single,
-breaklines=true,
-postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
-}
-
 \begin{document}
 
 %TITLE PAGE
@@ -30,7 +21,7 @@ postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
 \begin{flushleft}
 
 %Replace the text string with your title
-{\textcolor{Blue}{\textbf{\Huge{Requirement Analysis and Specification
+{\textcolor{Blue}{\textbf{\Huge{Design
         Document}}}} \\ [1cm]
 
 \end{flushleft}
@@ -43,8 +34,8 @@ postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
 \begin{tabu} to \textwidth { X[0.3,r,p] X[0.7,l,p] }
 \hline
 
-\textbf{Deliverable:} & RASD\\
-\textbf{Title:} & Requirement Analysis and Verification Document \\
+\textbf{Deliverable:} & DD\\
+\textbf{Title:} & Design Document \\
 \textbf{Authors:} & Roberto Buratti, Hrvoje Hrvoj, Ozan Incesulu \\
 \textbf{Version:} & 1.0 \\ 
 \textbf{Date:} & \the\day{}-\the\month{}-\the\year{} \\
@@ -78,21 +69,27 @@ postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
 
 %------------------------------------------------------------------------------------------------------------------------------------------------
 \clearpage
-{\color{Blue}{\section{Overall Description}}}
-\label{sect:overview}
-\input{Files/overview}
+{\color{Blue}{\section{Architectural Design}}}
+\label{sect:arch}
+\input{Files/architecturalDesign}
 
 %------------------------------------------------------------------------------------------------------------------------------------------------
 \clearpage
-{\color{Blue}{\section{Specific Requirements}}}
-\label{sect:requirements}
-\input{Files/requirements}
+{\color{Blue}{\section{User Interface Design}}}
+\label{sect:ui}
+\input{Files/userInterfaceDesign}
 
 %------------------------------------------------------------------------------------------------------------------------------------------------
 \clearpage
-{\color{Blue}{\section{Formal Analysis Using Alloy}}}
-\label{sect:alloy}
-\input{Files/alloy}
+{\color{Blue}{\section{Requirements Traceability}}}
+\label{sect:trace}
+\input{Files/requirementsTraceability}
+
+%------------------------------------------------------------------------------------------------------------------------------------------------
+\clearpage
+{\color{Blue}{\section{Requirements Traceability}}}
+\label{sect:iitp}
+\input{Files/implementationIntegrationTestPlan}
 
 %------------------------------------------------------------------------------------------------------------------------------------------------
 \clearpage
