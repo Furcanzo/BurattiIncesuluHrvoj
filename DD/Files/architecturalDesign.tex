@@ -5,9 +5,7 @@
 % TODO: @Ozan
 % Component diagram combining all components and each component having it's subcomponents in a different diagram with explanations
 \subsection{Deployment view}
-% TODO: @Roberto
 % Deployment diagram with explaining each tier
-
 The following diagram illustrates the physical architecture and the
 deployment of the system.
 Each node represents a piece of hardware which harbours one or more software units.
@@ -26,9 +24,8 @@ architecture, where the three tiers consist of: \\
 The application is thought to be a web app, so it's accessible from every device with a browser, but it's probable that
 a smartphone should be the most used device to access the application so there will be android and ios applications to access
 the web app.
-The smartphones applications will be more similar to a browser than to a real application.
-In this tier there will not be application logic, so the architecture should be thin-client.
-The only data stored on this tier is the jwt used for authentication. \\
+The smartphones applications will be more similar to a browser than to a real application, therefore in the diagram is represented asa browser.
+In this tier there will not be application logic, so the architecture should be thin-client.\\
 - Application tier is the core level from the standpoint of logical management of the application services.
 This tier contains all the application logic, from the scheduling of the line numbers to the managment of the store.
 This tier is connected to the presentation tier through APIs.
