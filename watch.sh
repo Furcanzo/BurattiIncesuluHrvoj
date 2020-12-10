@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-DOC=RASD
+DOC=DD
 VERSION=1
 while :
 do
