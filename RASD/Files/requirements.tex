@@ -58,7 +58,12 @@ Below are some sample screenshots from the project's user interfaces with Samsun
 %It also covers such matters as what devices are to be supported, how they are to be supported, and protocols.
 %For example, terminal support may specify full-screen support as opposed to line-by-line support.
 
-The application will be able to run on desktop as well as tablet and smartphone. Operating system or exact performances of the device you are using are not important since the vast majority of devices will be supported. On the user end it would be best if users could use a smartphone or a tablet so they could bring it with them to the store. Clerk should have a smartphone as mention in the domain assumptions with a working camera module. The manager should mainly use a desktop computer so he could manage store information easily, he should be able to do all his tasks from smartphone or a tablet but a desktop computer remains recommended.
+The application will be able to run on a desktop as well as tablet and smartphone.
+The operating system or actual performance of the device used are not critical since the vast majority of devices will be supported.
+Usage of a smartphone or a tablet could be beneficial to the user since they can bring them to the store.
+As mentioned in the domain assumptions, the clerk should have a smartphone with a working camera module.
+The manager should mainly use a desktop computer to manage store information quickly.
+He should be able to do all his tasks from a smartphone or a tablet, but a desktop computer should be the primary target device for the functionality.
 
 \subsubsection{Software Interfaces}
 % Do we integrate with custom software, expose an API?
@@ -71,13 +76,14 @@ The application will be able to run on desktop as well as tablet and smartphone.
 %d) Version number;
 %e) Source.
 
-Application should run on every operating system such as Windows, Linux or MacOS for desktop device, and Android or iOS for mobile devices. Application will use QR code generator to produce QR code which will be scanned when entering the store and which will contain all the information related to the visit time of the customer.
+The application should run on every operating system such as Windows, Linux, or macOS for desktop devices, and Android or iOS.
+The application will use a QR code generator to produce QR codes that will be scanned when entering the store and contain all the information related to the customer's visit time.
 
 \subsubsection{Communication Interfaces}
 % What is a communication interface? the Internet? RF port? Radio? Bluetooth?
 
 %Specify the various interfaces to communications such as local network protocols.
-Device should have an active internet connection and the application should communicate through TCP/IP.
+The device should have an active internet connection, and the application should communicate through TCP/IP .
 
 \subsection{Functional Requirements}
 % Use draw.io, compatible with GitHub.
@@ -104,10 +110,10 @@ Device should have an active internet connection and the application should comm
         \textit{Actors} & Customer \\ \hline
         \textit{Entry conditions} & The customer is logged in the application and wants to book a visit to the store. \\ \hline
         \textit{Event flows}      & \tabitem The customer clicks on the "Book a Visit" button in the application. \\
-        & \tabitem The application asks the time slot and the estimated time of the visit presenting as default value the average of the previous times of visit of the same user. \\
+        & \tabitem The application asks the time slot and the estimated time of the visit presenting as a default value the average of the previous visit of the same user. \\
         & \tabitem The customer sets the time slot and the estimated time of their visit. \\
         & \tabitem The application asks what category of products the customer wants to buy. \\
-        & \tabitem The customer set the products categories. \\
+        & \tabitem The customer sets the product categories. \\
         & \tabitem The application requests the line number from the server. \\
         & \tabitem The application generates the QR code on the response from the server. \\
         \hline
@@ -126,12 +132,12 @@ Device should have an active internet connection and the application should comm
         \hline
         \textit{Name}    & \textbf{See amount of customers in the store} \\ \hline
         \textit{Actors} & Customer \\ \hline
-        \textit{Entry conditions} & The customer is logged in the application and wants to know how many customers are in the store in order to decide whether to book a visit or retrieve a line number \\ \hline
+        \textit{Entry conditions} & The customer is logged in to the application and wants to know how many customers are in the store to decide whether to book a visit or retrieve a line number. \\ \hline
         \textit{Event flows}      & \tabitem The customer clicks on the  "Live Store Info" button. \\
         & \tabitem The application sends a count request to the server. \\
-        & \tabitem The server returns the live data for the amount of customers in the store for each time slot. \\
+        & \tabitem The server returns the live data for the number of customers in the store for each time slot. \\
         \hline
-        \textit{Exit conditions} & The customer knows the amount of customers in the store and can plan their visit. \\ \hline
+        \textit{Exit conditions} & The customer knows the number of customers in the store and can plan their visit. \\ \hline
         \textit{Exceptions} & \\ \hline
     \end{tabular}
     \caption{Use Case: See amount of customers in the store}
@@ -149,10 +155,9 @@ Device should have an active internet connection and the application should comm
         \textit{Name}    & \textbf{See store location} \\ \hline
         \textit{Actors} & Customer, Maps API \\ \hline
         \textit{Entry conditions} & The customer needs to know where the store is located and the travel time \\ \hline
-        % TODO: Are entry conditions things already met (user logged in) or intention (Customer wants, needs etc...)
         \textit{Event flows}      & \tabitem The customer clicks on the "Store Location" button. \\
         & \tabitem The application contacts the Maps API with the store location. \\
-        & \tabitem The Maps API returns a map from the customer position to the store with a time estimation. \\
+        & \tabitem The Maps API returns a map from the customer position to the store with the time estimation. \\
         \hline
         \textit{Exit conditions} & The customer knows how to go to the store and the travel time needed. \\ \hline
         \textit{Exceptions} & \tabitem The customer's smartphone doesn't provide or allow access to location services. \\
@@ -170,12 +175,12 @@ Device should have an active internet connection and the application should comm
         \hline
         \textit{Name}    & \textbf{Sign up} \\ \hline
         \textit{Actors} & Customer \\ \hline
-        \textit{Entry conditions} & The customer opened the application and they are not registered yet, and they want to register. \\ \hline
+        \textit{Entry conditions} & The customer opened the application, and they are not registered yet, and they want to register. \\ \hline
         \textit{Event flows}      & \tabitem The customer clicks on the "Sign Up" button. \\
         & \tabitem The customer inserts their credentials. \\
         & \tabitem The application sends the information to the server. \\
         & \tabitem The server stores the data related to the user. \\
-        & \tabitem The server returns an acknowledgement to the app. \\
+        & \tabitem The server returns an acknowledgment to the app. \\
         \hline
         \textit{Exit conditions} & The customer is now registered and can use all the functionalities of the app. \\ \hline
         \textit{Exceptions} & \tabitem The e-mail provided in the registration form is already used by another user. \\
@@ -194,7 +199,7 @@ Device should have an active internet connection and the application should comm
         \hline
         \textit{Name}    & \textbf{Login} \\ \hline
         \textit{Actors} & User \\ \hline
-        \textit{Entry conditions} & The user has already sign up and wants to login to use CLup functionalities \\ \hline
+        \textit{Entry conditions} & The user has already signed up and wants to login to use CLup functionalities \\ \hline
         \textit{Event flows}     & \tabitem The customer clicks on the "Login" button\\
         & \tabitem The user provides their login credentials. \\
         & \tabitem The system authenticates the user \\
@@ -215,7 +220,7 @@ Device should have an active internet connection and the application should comm
         \hline
         \textit{Name}    & \textbf{Notify ticket delete} \\ \hline
         \textit{Actors} & Customer \\ \hline
-        \textit{Entry conditions} & A ticket of the Customer was deleted from the server. \\ \hline
+        \textit{Entry conditions} & A ticket of the customer was deleted from the server. \\ \hline
         \textit{Event flows}     & \tabitem The system sends an email to the customer to notify the deletion of their ticket\\
         \hline
         \textit{Exit conditions} & The customer is informed about the deletion of their ticket. \\ \hline
@@ -234,9 +239,9 @@ Device should have an active internet connection and the application should comm
         \hline
         \textit{Name}    & \textbf{Update user information} \\ \hline
         \textit{Actors} & User \\ \hline
-        \textit{Entry conditions} & The user wants to change an information of themselves. \\ \hline
+        \textit{Entry conditions} & The user wants to change the information about themselves. \\ \hline
         \textit{Event flows}     & \tabitem The user clicks on the "Update User Information" button. \\
-        & \tabitem The application shows a form precompiled with user's previous information. \\
+        & \tabitem The application shows a precompiled form with user's previous information. \\
         & \tabitem The user changes the information on the respective fields and presses the "Submit" button. \\
         & \tabitem The system saves the changes. \\
         \hline
@@ -260,9 +265,9 @@ Device should have an active internet connection and the application should comm
         \textit{Actors} & Customer \\ \hline
         \textit{Entry conditions} & The customer is logged in the application and wants to retrieve a line number. \\ \hline
         \textit{Event flows}      & \tabitem The customer clicks on the "retrieve line number" button in the application \\
-        & \tabitem The application returns an ETA and ask confirm to the customer. \\
+        & \tabitem The application returns an ETA and asks for confirmation from the customer.  \\
         & \tabitem The customer confirms. \\
-        & \tabitem The customer ask the application to generate the QR code. \\
+        & \tabitem The customer asks the application to generate the QR code. \\
         & \tabitem The application returns the QR code. \\
         \hline
         \textit{Exit conditions} & The customer have retrieved a line number. \\ \hline
@@ -291,9 +296,9 @@ Device should have an active internet connection and the application should comm
         \hline
         \textit{Name}    & \textbf{Grant access} \\ \hline
         \textit{Actors} & Clerk, Customer \\ \hline
-        \textit{Entry conditions} & The customer has already obtained the QR code and they plan on entering the store.\\ \hline
-        \textit{Event flows}      & \tabitem The Clerk scans the QR code from the customer's smartphone or printed ticket using the application \\
-        & \tabitem The application analyzes the QR code and contacts to the Server \\
+        \textit{Entry conditions} & The customer has already obtained the QR code, and they plan on entering the store.\\ \hline
+        \textit{Event flows}      & \tabitem The clerk scans the QR code from the customer's smartphone or printed ticket using the application \\
+        & \tabitem The application analyzes the QR code and contacts  the server \\
         & \tabitem The server decides if the customer can enter based on the information received in the QR code \\
         & \tabitem The server responds to the clerk application with the result \\
         & \tabitem The clerk let the customer enter the store \\ % TODO: Are we supposed to write about world phenomena?
@@ -313,9 +318,9 @@ Device should have an active internet connection and the application should comm
         \hline
         \textit{Name}    & \textbf{Print guest ticket} \\ \hline
         \textit{Actors} & Clerk, Customer \\ \hline
-        \textit{Entry conditions} & The customer has arrived to the location, doesn't have a ticket on their smartphone, and needs a physical ticket to enter. \\ \hline
+        \textit{Entry conditions} & The customer has arrived at the location, doesn't have a ticket on their smartphone, and needs a physical ticket to enter. \\ \hline
         \textit{Event flows}      & \tabitem The customer asks the clerk for a ticket. \\
-        & \tabitem The clerk generate a ticket using the app. \\
+        & \tabitem The clerk generates a ticket using the app. \\
         & \tabitem The application sends a request to the server to generate a ticket. \\
         & \tabitem The server generates a line number and a ticket. \\
         & \tabitem The server sends the ticket back to the app. \\
@@ -349,10 +354,10 @@ Device should have an active internet connection and the application should comm
         \hline
         \textit{Name}    & \textbf{Initialize} \\ \hline
         \textit{Actors} & Manager \\ \hline
-        \textit{Entry conditions} & The manager of the store needs to set the basic information of the store in order to start the service \\ \hline
+        \textit{Entry conditions} & The manager of the store needs to set the necessary information of the store to start the service \\ \hline
         \textit{Event flows}      & \tabitem The manager clicks on the initialize button \\
         & \tabitem The application shows the location form to the manager \\
-        & \tabitem The manager fills the form and sends ıt to the server via the app\\
+        & \tabitem The manager fills the form and sends it to the server via the app\\
         & \tabitem The server registers the information and acknowledges \\
         \hline
         \textit{Exit conditions} & The system is initialized and can offer all its functions \\ \hline
@@ -361,7 +366,6 @@ Device should have an active internet connection and the application should comm
     \caption{Use Case: Initialize}
 \end{table}
 
-% TODO: There is no request for info form, front-end is capable of generating such info.
 \begin{figure}[!htbp]
     \centering
     \includegraphics[height=0.5\textwidth]{Images/SequenceDiagrams/Manager/SetStoreInfoUseCaseSequenceDiagram.png}
@@ -372,13 +376,13 @@ Device should have an active internet connection and the application should comm
         \hline
         \textit{Name}    & \textbf{Monitor state} \\ \hline
         \textit{Actors} & Manager \\ \hline
-        \textit{Entry conditions} & The manager wants to monitor the number of customers in the store in real time. \\ \hline
+        \textit{Entry conditions} & The manager wants to monitor the number of customers in the store in real-time. \\ \hline
         \textit{Event flows}      & \tabitem The manager clicks on the "Monitoring" button. \\
         & \tabitem The application sends the number request to the server.  \\
         & \tabitem The server returns the number of customers in the store. \\
         & \tabitem The application repeats the process periodically as long as the monitoring page is open. \\ % TODO: What period? Do we need to specify this?
         \hline
-        \textit{Exit conditions} & The manager is informed on the number of the customers in the store in real time. \\ \hline
+        \textit{Exit conditions} & The manager is informed of the number of customers in the store in real-time. \\ \hline
         \textit{Exceptions} & \tabitem \\ \hline
     \end{tabular}
     \caption{Use Case: Monitor state}
@@ -393,13 +397,13 @@ Device should have an active internet connection and the application should comm
         \hline
         \textit{Name}    & \textbf{Schedule a stop} \\ \hline
         \textit{Actors} & Manager \\ \hline
-        \textit{Entry conditions} & The manager wants to schedule a period of time in which the store will be closed so the users can not book a visit for that time. \\ \hline
+        \textit{Entry conditions} & The manager wants to schedule a period in which the store will be closed so the users can not book a visit. \\ \hline
         \textit{Event flows}      & \tabitem The manager clicks on the "Schedule a Stop" button. \\
         & \tabitem The application shows a form for the time of the stop. \\
         & \tabitem The manager fills the form and submits it to the server through the app. \\
-        & \tabitem The server stores the information in the database and returns an acknowledgement. \\
+        & \tabitem The server stores the information in the database and returns an acknowledgment. \\
         \hline
-        \textit{Exit conditions} & The system has a scheduled stop stored in its database and will use it to prevent customers from booking a visit in that time period. \\ \hline
+        \textit{Exit conditions} & The system has a scheduled stop stored in its database and will use it to prevent customers from booking a visit in that period. \\ \hline
         \textit{Exceptions} & \tabitem There is already a planned stop in that period. \\ \hline
     \end{tabular}
     \caption{Use Case: Schedule a stop}
@@ -414,7 +418,7 @@ Device should have an active internet connection and the application should comm
         \hline
         \textit{Name}    & \textbf{Stop for emergency} \\ \hline
         \textit{Actors} & Manager \\ \hline
-        \textit{Entry conditions} & An emergency occurred and the manager wants to immediately stop the system from distributing line numbers. \\ \hline
+        \textit{Entry conditions} & An emergency occurred, and the manager wants to stop the system from distributing line numbers immediately. \\ \hline
         \textit{Event flows}     & \tabitem The manager click on the "Emergency Stop" button \\
         & \tabitem The application asks for confirmation from the manager. \\
         & \tabitem The manager confirms the stop of the system. \\
@@ -438,9 +442,9 @@ Device should have an active internet connection and the application should comm
         \textit{Name}    & \textbf{Add Clerk} \\ \hline
         \textit{Actors} & Manager \\ \hline
         \textit{Entry conditions} & The manager wants to add a new clerk to the system \\ \hline
-        \textit{Event flows}     & \tabitem The manager click on the "add clerk" button \\
-        & \tabitem The system asks the data of the new clerk (e.g. the credentials) \\
-        & \tabitem The manager inserts the data and press "submit" \\
+        \textit{Event flows}     & \tabitem The manager clicks on the "Add Clerk" button \\
+        & \tabitem The system asks the data of the new clerk (e.g., the credentials) \\
+        & \tabitem The manager inserts the data and press "Submit" \\
         \hline
         \textit{Exit conditions} & The new clerk is added to the system \\ \hline
         \textit{Exceptions} & \tabitem The data of the clerk are incomplete or incorrect \\
@@ -459,12 +463,12 @@ Device should have an active internet connection and the application should comm
         \textit{Name}    & \textbf{Add Manager} \\ \hline
         \textit{Actors} & Manager \\ \hline
         \textit{Entry conditions} & The manager wants to add a new manager to the system \\ \hline
-        \textit{Event flows}     & \tabitem The manager click on the "Add Manager" button \\
-        & \tabitem The system asks the data of the new manager (e.g. the credentials) \\
+        \textit{Event flows}     & \tabitem The manager clicks on the "Add Manager" button \\
+        & \tabitem The system asks the data of the new manager (e.g., the credentials) \\
         & \tabitem The manager inserts the data and press "Submit" \\
         \hline
-        \textit{Exit conditions} & The new Manager is added to the system \\ \hline
-        \textit{Exceptions} & \tabitem The data of the Manager are incomplete or incorrect \\
+        \textit{Exit conditions} & The new manager is added to the system \\ \hline
+        \textit{Exceptions} & \tabitem The data of the manager are incomplete or incorrect \\
         \hline
     \end{tabular}
     \caption{Use Case: Add Manager}
@@ -484,14 +488,14 @@ Device should have an active internet connection and the application should comm
     \item \textbf{$R_{5}$} Managers can add any other location as a partner store.
     \item \textbf{$R_{6}$} Managers can stop the system from issuing any more tickets for a given day
     \item \textbf{$R_{7}$} Managers can schedule the system stop for a future time.
-    \item \textbf{$R_{8}$} Managers can set the in-shop locations for different categories and product items.
-    \item \textbf{$R_{9}$} In case of a system stop, no further line numbers can be issued for the given time slots.
-    \item \textbf{$R_{10}$} In case of a system stop, all line numbers in the stop time slots has to be canceled.
-    \item \textbf{$R_{11}$} The system must cancel those line numbers that the customer did not arrive at the location for more than the set timeout interval.
+    \item \textbf{$R_{8}$} Managers can set in-shop locations for different categories and product items.
+    \item \textbf{$R_{9}$} In case of a system stop, no other line numbers can be issued for the given time slots.
+    \item \textbf{$R_{10}$} In case of a system stop, all line numbers in the stop time slots have to be canceled.
+    \item \textbf{$R_{11}$} The system must cancel those line numbers that the customer did not arrive at the store for more than the set timeout interval.
     \item \textbf{$R_{12}$} In case of ticket cancellation, the customer must be notified with an e-mail notification.
-    \item \textbf{$R_{13}$} Clerks must register the entrance and exit of customers via scanning the QR code for their line number.
+    \item \textbf{$R_{13}$} Clerks must register the customers' entrance and exit via scanning the QR code for their line number.
     \item \textbf{$R_{14}$} Clerks must be able to generate line number tickets in a compatible printer format.
-    \item \textbf{$R_{15}$} Customers must be able to obtain a line number, except when the system is stopped, or the store is full.
+    \item \textbf{$R_{15}$} Customers must be able to obtain a line number, except when the system is stopped or the store is full.
     \item \textbf{$R_{16}$} Customers must be able to obtain line numbers for different time slots in the future.
     \item \textbf{$R_{17}$} Customers can not obtain line numbers that exceed the quantity per time interval limits.
     \item \textbf{$R_{18}$} Customers can not obtain line numbers for time intervals that the system is stopped by a manager.
@@ -502,7 +506,7 @@ Device should have an active internet connection and the application should comm
     \item \textbf{$R_{23}$} Customers must be able to view the shop location
     \item \textbf{$R_{24}$} Customers can view the occupation forecasts for the location at different time slots.
     \item \textbf{$R_{25}$} Customers can see the alternative suggestions for time slots while obtaining a line number for the future.
-    \item \textbf{$R_{26}$} Customers can view the occupancy for the partner stores if the preferred time slot is not available while obtaining a line number.
+    \item \textbf{$R_{26}$} Customers can view the partner stores occupancies' if the preferred time slot is not available while obtaining a line number.
     \item \textbf{$R_{27}$} The system must be able to provide a forecast for each location's occupancy for any given time based on past visits.
 \end{itemize}
 
@@ -614,12 +618,17 @@ Add manager
 %Such traces are needed for some applications to meet minimum regulatory or financial standards.
 %An audit trace requirement may, for example, state that all changes to a payroll database shall be recorded in a trace file with before and after values.
 
-The code produced should follow the requirements contained in this document. Furthermore, its comments should be clear and focused. The application will use QR code generated accordingly with the ISO/IEC 18004:2015 standard. All date and time shown will be in compliance with the ISO 8601 UTC timing standard.
+The code produced should follow the requirements contained in this document.
+Furthermore, its comments should be clear and focused.
+The application shall use QR codes generated accordingly with the ISO/IEC 18004:2015 standard.
+All dates and times shown shall comply with the ISO 8601 UTC timing standard.
 
 \subsubsection{Hardware limitations}
 % What needs to be on the phone?
 
-To be able to use the application, customer should have a smartphone, tablet or desktop computer with working display, input device such as keyboard, physical or on touch screen keyboard and active internet connection. Clerk should have smartphone with working display, input device and a working camera module and active internet connection. Manager should have a desktop computer with working display, input device and active internet connection.
+To use the application, the customers should have a smartphone, tablet, or desktop computer with a working display, an input device such as a keyboard, a physical or touch screen keyboard, and an active internet connection.
+The clerks should have a smartphone with a working display, an input device, a working camera module, and an active internet connection.
+The managers should have a desktop computer with a working display, input device, and an active internet connection.
 
 \subsubsection{Any other constraint}
 % GDPR regulations, local laws, etc...
@@ -627,7 +636,7 @@ To be able to use the application, customer should have a smartphone, tablet or 
 % Isn't this similar to Overview -> Assumptions,dependencies and constraints -> Constraints?
 % Everything is similar to everything
 
-The application will use and store users data accordingly with GDPR rules.
+The application shall use and store user data according to GDPR.
 
 \subsection{Software System Attributes}
 
@@ -636,32 +645,39 @@ The application will use and store users data accordingly with GDPR rules.
 
 % Specify the factors required to establish the required reliability of the software system at time of delivery.
 
-The application should produce the same results independet on the system it is used on. For example, a customer should be able to schedule a time visit for a store using either his smartphone, tablet or desktop computer. The application should give consistently correct results.
+The application should produce the same results independent of the system it is used on.
+For example, a customer should schedule a time visit for a store using their smartphone, tablet, or desktop computer.
+The application should give consistently correct results.
+
 
 \subsubsection{Availability}
 % 99.5% availability minimum, release any hardware control in case of power cut or unavailability.
 
 % Specify the factors required to guarantee a defined availability level for the entire system such as checkpoint, recovery, and restart.
 
-The system should have 99,5\% available time per month with maximum monthly 33m 49.7s downtime. In case of upgrade or maintenance, the maintenance window will be out of business hours.
+The system should have 99,5\% available time per month with a maximum monthly 33m 49.7s downtime.
+In case of upgrade or maintenance, the maintenance window will be out of business hours.
 
 \subsubsection{Security}
 % Data hashing, salting, encryption of user data if necessary.
 
 % Specify the requirements to protect the software from accidental or malicious access, use modification, destruction, or disclosure.
 
-System integrity or security should be sufficient to prevent unauthorized access to application functions, preventing information loss, ensure that the application is protected from virus infection, and protecting the privacy of data entered into the system. All user data must be encrypted before being stored. Furthermore all passwords must be hashed.
+System integrity or security should be sufficient to prevent unauthorized access to application functions, preventing information loss, ensure that the application is protected from virus infection, and protecting the privacy of data entered into the system.
+All user data must be encrypted before being stored.
+Furthermore, all passwords must be hashed.
 
 \subsubsection{Maintainability}
 % Testing practices on all levels
 
 % Specify attributes of software that relate to the ease of maintenance of the software itself. These may include requirements for certain modularity, interfaces, or complexity limitation.
 
-Application should be developed before the Covid-19 crises ends. Its maintainability isn't concern since the application will be developed for the purpose of this pandemic only.
+The application should be developed before the COVID-19 crisis is over.
+Its maintainability isn't a concern since the application will be developed for this pandemic only.
 
 \subsubsection{Portability}
 % Usage of widely adopted platforms (Java, .NET, Browser), no custom protocol implementation apart from wide-spread
 
 % Specify attributes of software that relate to the ease of porting the software to other host machines and/or operating systems, including:
 
-Application should be available to vast majority of people.
+The application should be available to the vast majority of people.

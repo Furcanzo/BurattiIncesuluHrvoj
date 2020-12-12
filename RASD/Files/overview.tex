@@ -1,7 +1,7 @@
 \subsection{Product Perspective}
 
 The CLup system is expected to be developed ground-up, without any core components being shared with other services, and is expected to integrate with few external services.
-The system will be using a mapping API to allow its various requirements regarding navigation.
+The system will be using a maps API to allow its various requirements regarding navigation.
 The system will be used to control, verify, and schedule customer visits to different stores.
 
 % Introductory text describing system's integration with other products, considering shared phenomena.
@@ -35,7 +35,7 @@ The statecharts apply to many other scenarios that might occur out of interactio
 
 % For each core feature (which are they? all?):
 %   - Scenario
-%   - State Chart
+%   - State Diagram
 %   - Explanation
 
 % Core features: Future book line number, now retrieve line number, Guest arrives to store, System stop (Shop's on fire), schedule system stop (don't forget to notify customer),
@@ -49,7 +49,7 @@ The fast-food joint has incorporated the CLup system in its customer service por
 Ozan downloads the CLup application and books his line number from his house.
 Using the app, he can plan his route and schedule to the location beforehand and place his order directly upon his arrival.
 
-\textbf{State Chart}
+\textbf{State Diagram}
 
 \begin{figure}[H]
     \centering
@@ -76,7 +76,7 @@ He wants to obtain a line number for his visit through his phone not to waste ti
 He hears that the store he plans to visit has been on CLup, so he downloads the application and opens it.
 Using the app, Roberto can now see when he should take off to reach the shop without waiting in front of the store.
 
-\textbf{State Chart}
+\textbf{State Diagram}
 
 \begin{figure}[H]
     \centering
@@ -98,7 +98,7 @@ Hrvoje, a Croatian who recently arrived in Italy, is not aware of the popularity
 Upon arrival, since he does not have a phone, he can not register to the CLup system; however, the security, that is also in charge of validating line numbers, prints him a ticket that he should keep during his whole visit.
 Therefore, Hrvoje is allowed in the store, even if he does not have the application, and the shop manager can monitor his entrance and exit.
 
-\textbf{State Chart}
+\textbf{State Diagram}
 
 \begin{figure}[H]
     \centering
@@ -124,7 +124,7 @@ Gianfranco coordinates the evacuation of the factory and the store.
 He also uses the CLup application to issue a system stop to prevent further customers from flooding in.
 All the store customers receive notification regarding this unfortunate event and do not arrive at the location.
 
-\textbf{State Chart}
+\textbf{State Diagram}
 
 \begin{figure}[H]
     \centering
@@ -152,7 +152,7 @@ They have a meeting next week during work hours, and he does not have anyone to 
 Therefore, he has to shut the store down for half the day.
 He schedules a system stop from the CLup system to prevent ticket numbers from being issued on that day for his store.
 
-\textbf{State Chart}
+\textbf{State Diagram}
 
 \begin{figure}[H]
     \centering
@@ -184,16 +184,28 @@ The mechanism of customer notification is detailed in the description of the \na
 %Sometimes the function summary that is necessary for this part can be taken directly from the section of the higher-level specification (if one exists) that allocates particular functions to the software product.
 %The product functions should be organized in a way that makes the list of functions understandable to the acquirer or to anyone else reading the document for the first time.
 
-This section describes some basic functions of the software that are the most important ones and which sum up the whole idea of the CLup application.
+This section describes some essential functions of the software that are the most important ones and sums up the whole idea of the CLup application.
 
 \subsubsection {Schedule store visit}
-Since the start of the Covid-19 pandemic, keeping physical distance from unknown people has never been more important. A lot of new restrictions were introduced, which were mainly oriented towards keeping people physicly separated. Stores now have a restriction on a number of people they could let in. To prevent people from waiting in lines on the streets CLup application comes in handy. It allows customers to schedule a visit to the store in their desired time slot if available. Each customer can registrate through CLup application and then reserve his visit to the store. Furthermore a customer can choose which products or products section he is going to buy and for how long his shopping will approximatly last. After a customer has successfully scheduled his visit time he will recieve a line number which he is obligated to show in order to enter the store.
+Since the start of the COVID-19 pandemic, keeping a physical distance from unknown people has never been more critical.
+A lot of new restrictions were introduced, which were mainly oriented towards keeping people separated.
+Stores now have a restriction on the number of people they could let in.
+The CLup application helps people and the community prevent its users from waiting in long lines on the streets during pandemic conditions.
+It allows customers to schedule a visit to the store in their desired time slot if available.
+Each customer can register through the CLup application and then reserve his visit to the store.
+Furthermore, a customer can choose which products or products section he will buy and how long his shopping will approximately last.
+After a customer has successfully scheduled his visit time, he will receive a line number, which he is obligated to show to enter the store.
 
 \subsubsection {Line number ticket entry}
-Before entering the store, a customer is required to show his line number ticket to a clerk who will then proceede to scan his ticket. If the customer has arrived in the scheduled time slot, he will be able to enter the store. If the customer does not have a line number ticket, clerk will provide him with one but he will not be able to enter the store immediately unless the time slot for that moment is not occupied with other customers. To sum up, a customer with scheduled store visit is able to visit the store in scheduled time without the need of waiting in line in front of a store while customer without the line number ticket depends on the free available time slots.
+Before entering the store, a customer must show his line number ticket to a clerk who will then scan his ticket.
+If the customer has arrived in the scheduled time slot, he will enter the store.
+If the customer does not have a line number ticket, the clerk will provide him with one, but he will not be able to enter the store immediately unless the time slot for that moment is not occupied with other customers.
+To sum up, a customer with a scheduled store visit can visit the store at a scheduled time without waiting in line in front of a store, while a customer without the line number ticket depends on the free available time slots.
 
 \subsubsection {Store managment}
-Through the CLup application, manager is able to edit all the store information such as location specific information, maximum number of customers in the store at any given time, opening and closing hours of the store per each day, line number timeout and much more. Customers can see working hours and in store occupancy and therefore they are able to visit the store in desired time if available. Manager can also select which product categories or products are available at the store and by doing so customers can know precisely in which store to go based on the products available.
+Through the CLup application, the manager can edit all the store information such as location specific information, the maximum number of customers in the store at any given time, opening and closing hours of the store per each day, line number timeout, and much more.
+Customers can see working hours and in-store occupancy, and therefore, they can visit the store at the desired time if available.
+The manager can also select which product categories or products are available at the store. By doing so, customers can know precisely in which store to go based on the products available.
 
 \subsection{User characteristics}
 % User roles: Manager & User & Clerk (& maybe unregistered user?)
@@ -205,13 +217,18 @@ Through the CLup application, manager is able to edit all the store information 
 %are later specified in specific requirements
 
 \subsubsection {Customer}
-A person who is registered on the CLup application and is able to use its functionalities to be able to successfully schedule a visit to the store in desired visit time if available. The amount of product training needed for a customer is none since the level of technical expertise and educational background is unknown as the range of customers include all demographics. The only skill needed by a user is the ability to use the application.
+A person who is registered on the CLup application can use its functionalities to successfully schedule a visit to the store in the desired visit time if available.
+The amount of product training needed for a customer is none since the level of technical expertise and educational background is unknown as the range of customers includes all demographics.
+The only skill needed by a user is the ability to use the application.
+
 
 \subsubsection {Clerk}
-An employee of the store with basic knowledge about the application. Clerk must be able to use its functionalities so he could handle all physical visits of customers.
+An employee of the store with basic knowledge about the application.
+The clerk must be able to use its functionalities so he could handle all physical visits of customers.
 
 \subsubsection {Manager}
-A special employee of the store with basic knowledge about the application. Manager is in charge of managing a particular store through CLup application, he doesn't need to be a real store manager as well.
+A particular employee of the store with basic knowledge about the application.
+The manager is in charge of managing a particular store through the CLup application; they don't need to be a real store manager.
 
 \subsection{Assumptions,dependencies and constraints}
 
@@ -235,7 +252,7 @@ A special employee of the store with basic knowledge about the application. Mana
     \item \textbf{$D_{10}$} Locations have printing equipment in 5 meters range of all the entrances that can print QR codes and line numbers.
     \item \textbf{$D_{11}$} At least one manager is available in the location during the working hours.
     \item \textbf{$D_{12}$} The customer's entry and exit to the store are determined by whether the clerks have checked them in and out.
-    \item \textbf{$D_{13}$} The customer has their line number or line number ticket available with them through their visit, including their exit from the store
+    \item \textbf{$D_{13}$} The customer has their line number or line number ticket available with them through their visit, including their exit from the store.
 \end{itemize}
 
 % here we include domain assumptions
@@ -245,11 +262,16 @@ A special employee of the store with basic knowledge about the application. Mana
 % Maps API
 % What external libraries, tools, integrations does the system rely on
 
-Application will be running on a server provided by the hosting provider. Application will be dependent on Map API which will be chosen later in design document.
+The application will be running on a server provided by the hosting provider.
+The application will be dependant on Maps API, of which the details will be determined later in the Design Document.
 
 \subsubsection{Constraints}
 % Maps API failure
 % All user and location info can be represented with UTF-8 character encoding.
 % What are the limits imposed by the environment, regulatory policies, hardware & software limitations, etc...
 
-Application interface should be user friendly and intuitive enough for all demographics to use, it should also be mobile friendly as well as desktop friendly. Application should work on smartphones, tablets and desktop devices in order to be available to as many devices as possible. Application should be developed and fully functional before the end of Covid-19 crises.
+Application interface should be user friendly and intuitive enough for all demographics to use.
+It should also be mobile friendly as well as desktop friendly.
+The application should work on smartphones, tablets, and desktop devices to be available to as many devices as possible.
+The application should be developed and fully functional before the end of the COVID-19 crisis.
+
