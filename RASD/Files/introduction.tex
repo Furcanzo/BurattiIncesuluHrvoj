@@ -11,12 +11,7 @@ Also, "CLup" provides uniquely generated QR codes per the line number, which can
 The product's general purpose is to keep the congestion levels in line with the locations at a minimum via providing useful features for all the users.
 
 
-% TODO: All: Does system notification use cases originate from another actor on use case diagrams? How are they modeled to users?
-% TODO: @Hrvoje Check use case descriptions.
 
-
-% TODO: @Ozan listen the class 17.11.2020 and update state charts
-% TODO: Let's discuss this
 
 \subsubsection{Goals}
 
@@ -99,15 +94,16 @@ Also, for chains and relevant stores, the manager can add chain members for the 
         \textbf{Phenomenon}    & \textbf{World / Machine}       & \textbf{Shared } \\ \hline
         Line Number & Machine & Yes \\ \hline
         Line Number Ticket & World & No \\ \hline
-        Product & World & No \\ \hline
-        Product Category & World & No \\ \hline
+        Product & World & Yes \\ \hline
+        Product Category & World & Yes \\ \hline
         In-store Location & World & Yes \\ \hline
         Occupancy Forecast & Machine & No \\ \hline
         Store & World & Yes \\ \hline
         Time Slot & Machine & Yes \\ \hline
-        Ticket Printer & World & Yes \\ \hline
+        Ticket Printer & World & No \\ \hline
         Line Number Timer & Machine & No \\ \hline
         Customer Scheduling Algorithm & Machine & No \\ \hline
+
         % Line template:
         %          &               &  \\ \hline
     \end{tabular}
@@ -124,14 +120,13 @@ Also, for chains and relevant stores, the manager can add chain members for the 
     \item \textit{Manager}: the user in charge of executive action within the location
     \item \textit{Customer}: the user to visit the location
     \item \textit{Clerk}: the user in charge of handling the entrance and exit of customers
-    \item \textit{Hard-coded Super User}: a single user used to create managers of locations administered by the software vendor
     \item \textit{Visit Time}: the time interval in which a customer performs a visit to the location
     \item \textit{Line Number}: A number that indicates the ordering of a specific customer in the line
     \item \textit{Line Number Ticket}: A physical ticket printed that features the line number and the QR code.
     \item \textit{Time Slot}: Specific intervals of time determined by the opening hours and average visit time per customer.
     \item \textit{Partner Store}: A different location included in the same beneficiary chain of command (such as another member of the franchise or store chain) or a mutual agreement with the specific location
-    \item \textit{Product}: Any item, items, service or services demanded by the customer, and provided by the location to the customer.
-    \item \textit{In-store Location}: A location of a specific product or a product category inside the location.
+    \item \textit{Product}: Any item, items, service or services demanded by the customer, and provided by the store to the customer.
+    \item \textit{In-store Location}: A location of a specific product or a product category inside the store.
     \item \textit{Working hours}: The time intervals that the store is open during each day.
     \item \textit{Maps API}: A third-party mapping service implementation used for location tracking
 \end{itemize}
@@ -139,7 +134,7 @@ Also, for chains and relevant stores, the manager can add chain members for the 
 \begin{itemize}
     \item \textbf{RASD}: Requirement Analysis and Specification Document
     \item \textbf{QR Code}: Quick Response Code
-    \item \textit{API}: Application Programming Interface
+    \item \textbf{API}: Application Programming Interface
     \item \textit{ETA}: Estimated Time of Arrival
 \end{itemize}
 \subsubsection{Abbreviations}
@@ -156,7 +151,7 @@ Also, for chains and relevant stores, the manager can add chain members for the 
     \item \href{https://beep.metid.polimi.it/documents/121843524/23d1869d-ab17-4e36-979e-f1ccbc59be24}{Specification Document: R\&DD Assignment AY 2020-2021}
     \item \href{https://standards.ieee.org/standard/29148-2011.html}{IEEE Std 830-1998: IEEE Recommended Practice for Software Requirements Specifications}
     \item \href{https://www.iso.org/standard/62021.html}{ISO/IEC 18004:2015 QR Code bar code symbology specification}
-    \item \href{https://developers.google.com/maps/documentation/javascript/overview}{Maps API documentation}
+    % \item \href{https://developers.google.com/maps/documentation/javascript/overview}{Maps API documentation}
     \item \href{https://www.iso.org/iso-8601-date-and-time-format.html}{IEEE Std 8601 Date and time format}
 \end{itemize}
 
