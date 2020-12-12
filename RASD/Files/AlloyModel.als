@@ -1,14 +1,8 @@
 //Signatures-------------------------------------------------------------------------------------------------------------------------
 
-abstract sig Store {
+sig Store {
 	sections : some Section
 }
-
-one sig PrimaryStore extends Store{
-	partnerStores : set PartnerStore
-}
-
-sig PartnerStore extends Store {}
 
 sig Section {
 	maxCapacity: one Int
@@ -118,10 +112,6 @@ fact AVisitForEachAccessTitle {
 	no at: AccessTitle, disj visit1, visit2 : Visit | at in visit1.accessTitle && at in visit2.accessTitle
 }
 
-fact everyPartnerSoreInAPrimaryStore {
-	all partnerStore : PartnerStore | partnerStore in PrimaryStore.partnerStores
-}
-
 fact bookOnlyAStore {
 	all accessTitle : AccessTitle | one store : Store | accessTitle.sections in store.sections
 }
@@ -181,7 +171,7 @@ check neverMoreCustomerThanMaxCapacity
 
 //Normal Condition
 pred world1{
-	#PartnerStore=1
+	#Store=2
 	#Section=3
 	#User=5
 	#Customer=3
@@ -193,11 +183,13 @@ pred world1{
 //No Customers
 pred world2{
 	#Customer=0
+	#Ticket=1
+	#TimeSlot=1
 }
 
 //Saturated Store
 pred world3{
-	#PartnerStore=0
+	#Store=1
 	#Section=1
 	Section.maxCapacity=3
 	#Visit=3
