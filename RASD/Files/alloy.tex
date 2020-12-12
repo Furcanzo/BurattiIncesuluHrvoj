@@ -2,7 +2,6 @@
 % as well as a description of the model itself, what can be proved with it, and why what is proved is important
 % given the problem at hand. To show the soundness and correctness of the model, this section can show some worlds
 % obtained by running it, and/or the results of the checks performed on meaningful assertions.
-% TODO: @Roberto: start
 \subsection{Alloy introduction}
 
 In this section is presented the Alloy representation of some critical
@@ -19,15 +18,9 @@ In particular, the following features are modelled:\\
 \begin{lstlisting}
     //Signatures--------------------------------------
 
-    abstract sig Store {
+    sig Store {
         sections : some Section
     }
-
-    one sig PrimaryStore extends Store{
-        partnerStores : set PartnerStore
-    }
-
-    sig PartnerStore extends Store {}
 
     sig Section {
         maxCapacity: one Int
@@ -136,10 +129,6 @@ In particular, the following features are modelled:\\
         no at: AccessTitle, disj visit1, visit2 : Visit | at in visit1.accessTitle && at in visit2.accessTitle
     }
 
-    fact everyPartnerSoreInAPrimaryStore {
-        all partnerStore : PartnerStore | partnerStore in PrimaryStore.partnerStores
-    }
-
     fact bookOnlyAStore {
         all accessTitle : AccessTitle | one store : Store | accessTitle.sections in store.sections
     }
@@ -199,7 +188,7 @@ In particular, the following features are modelled:\\
 
     //Normal Condition
     pred world1{
-        #PartnerStore=1
+        #Store=2
         #Section=3
         #User=5
         #Customer=3
@@ -211,11 +200,13 @@ In particular, the following features are modelled:\\
     //No Customers
     pred world2{
         #Customer=0
+        #Ticket=1
+        #TimeSlot=1
     }
 
     //Saturated Store
     pred world3{
-        #PartnerStore=0
+        #Store=1
         #Section=1
         Section.maxCapacity=3
         #Visit=3
