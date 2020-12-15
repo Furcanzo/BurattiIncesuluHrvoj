@@ -127,14 +127,13 @@ integrity of the content of the database.
 
 \subsection{Runtime view}
 
-% General TODO: Hrvoje
-\subsubsection{Register}
-\subsubsection{Login}
-\subsubsection{Update User Information}
+\subsubsection{Register} % TODO: Text
+\subsubsection{Login}% TODO: Text
+\subsubsection{Update User Information} % TODO: Graph + Text
 % Customer TODO: Roberto
-\subsubsection{Book Future Line Number}
-\subsubsection{Retrieve Line Number}
-\subsubsection{View Store} % See location, amount of customers, if manager, more detailed monitoring
+\subsubsection{Book Future Line Number} % TODO: Text
+\subsubsection{Retrieve Line Number} % TODO: Text
+\subsubsection{View Store} % See location, amount of customers% TODO: Text
 % Manager TODO: Ozan
 \subsubsection{Add Staff Member}
 
@@ -153,7 +152,6 @@ The UserFactory then creates the actual user through the DBMS, while applying ne
 The DBMS might persist the data given, but it might also fail to do so with a unique constraint failure error, if the provided user credentials is already used by another user.
 In case the user didn't exist in the system before the transaction, DBMS emits a message indicating that the user is created, and that message is propagated through the call stack, finally rendering a success screen on the mananger's interface.
 However, if the user credentials were already used for another user, the error message emitted by the DBMS gets translated into a simpler form and propagated through the components, with a failure screen shown to the manager.
-\subsubsection{Schedule Emergency Stop} % TODO: Schedule and Stop are essentially the same thing, so make it one?
 \subsubsection{Stop for Emergency}
 \begin{figure}[H]
     \centering
@@ -181,26 +179,26 @@ When the response from DBMS is retrieved the SystemStopCoordinator starts sendin
 \end{figure}
 \nameref{fig:SDUpdateStoreInformation} shows the interactions between the components of the related parts of the system to update store information by the manager.
 When the manager requests to see the information for the store, the client application displays the related information with an update button.
-Upon trigger of the button, the CLup Application shows the editing form for the general information about the store, with the current values already prefilled.
+Upon trigger of the button, the CLup Application shows the editing form for the general information about the store, with the current values already pre-filled.
 Optionally, from this moment, if the manager wants to update the store's location, they can do so by pressing the update location button, which in turn, triggers the Google Maps component to show the location selector.
 Once the manager sets the new location, the service returns the new location selected by the manager, to be updated on the form.
 After all the necessary changes are made, the manager submits the form which makes the CLup Application perform a request to the StoreDetailsRepository.
 The StoreDetailsRepository, after processing the data, calls the DBMS to update the database entry for the store.
-Once the updated message is retrieved from the DBMS, the message propogates through the calls and a success screen is shown to the manager.
-% TODO: Ozan End
+Once the updated message is retrieved from the DBMS, the message propagates through the calls and a success screen is shown to the manager.
+\subsubsection{Monitor Customers} %TODO: Ozan check use case diagrams for this
 % Clerk
-\subsubsection{Grant Access}
-\subsubsection{Generate Guest Ticket}
+\subsubsection{Grant Access} %TODO: Hrvoje
+\subsubsection{Generate Guest Ticket} % TODO: Hrvoje
 
 % You can use sequence diagrams to describe the way components interact to accomplish specific tasks typically related to your use cases
 
 % Main use cases with sequence diagrams indicating relations of each diagram to one another.
 
 \subsection{Component interfaces}
-
+% TODO: Ozan for 2 week
 % Class diagram with only methods demonstrating how components interact with each other.
 % Also an ER or Class diagram to indicate data.
-\subsection{Selected architectural styles and patterns}
+\subsection{Selected architectural styles and patterns} % Do as we proceed
 % Please explain which styles/patterns you used, why, and how
-\subsection{Other design decisions}
+\subsection{Other design decisions} % Do as we proceed.
 
