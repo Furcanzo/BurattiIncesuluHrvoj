@@ -127,33 +127,78 @@ integrity of the content of the database.
 
 \subsection{Runtime view}
 
-% General TODO: Hrvoje
-\subsubsection{Register}
-\subsubsection{Login}
-\subsubsection{Update User Information}
+\subsubsection{Register} % TODO: Text
+\subsubsection{Login}% TODO: Text
+\subsubsection{Update User Information} % TODO: Graph + Text
 % Customer TODO: Roberto
-\subsubsection{Book Future Line Number}
-\subsubsection{Retrieve Line Number}
-\subsubsection{View Store} % See location, amount of customers, if manager, more detailed monitoring
+\subsubsection{Book Future Line Number} % TODO: Text
+\subsubsection{Retrieve Line Number} % TODO: Text
+\subsubsection{View Store} % See location, amount of customers% TODO: Text
 % Manager TODO: Ozan
 \subsubsection{Add Staff Member}
-\subsubsection{Schedule emergency Stop}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.4\textwidth]{Images/SequenceDiagrams/AddStaffMember.png}
+    \caption{Sequence Diagram for Add Staff Member}
+    \label{fig:SDAddStaffMember}
+\end{figure}
+\nameref{fig:SDAddStaffMember} represents the event flow taking place during the process of adding a new staff member to the store by the manager.
+After the manager clicks the "Add Member" button on the application, the application displays a new form featuring the necessary information to create a new staff member user.
+When the manager fills in the relevant information and submits the form, the provided information is transferred from the CLup Application to the StaffRepository to be processed.
+It shall be noted that the verification of the information (such as valid e-mail address and valid password) is performed within the application, which is not represented in this graph for simplicity.
+Upon the retrieval of the information related to the new member to be added, the StaffRepository calls the UserFactory with the information, to create the new user.
+The UserFactory then creates the actual user through the DBMS, while applying necessary security measures to the user data, like password hashing.
+The DBMS might persist the data given, but it might also fail to do so with a unique constraint failure error, if the provided user credentials is already used by another user.
+In case the user didn't exist in the system before the transaction, DBMS emits a message indicating that the user is created, and that message is propagated through the call stack, finally rendering a success screen on the mananger's interface.
+However, if the user credentials were already used for another user, the error message emitted by the DBMS gets translated into a simpler form and propagated through the components, with a failure screen shown to the manager.
 \subsubsection{Stop for Emergency}
-% TODO: Ozan End
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.4\textwidth]{Images/SequenceDiagrams/EmergencyStop.png}
+    \caption{Sequence Diagram for Emergency Stop}
+    \label{fig:SDEmergencyStop}
+\end{figure}
+\nameref{fig:SDEmergencyStop} demonstrates the flow of communication between different components of the system to create a emergency system stop, that can be issued immediately or scheduled to a future day, by the manager.
+When the manager wants to open the "System Stop" tab, the application renders a form providing input fields for details regarding the system stop, which is about whether it is immediate or when it shall be performed.
+After the manager providing the details of the stop, the application performs a request to the SystemStopCoordinator, the component responsible for handling system stop actions, which includes all the details provided by the manager.
+The coordinator first initiates the transaction for disabling all the time slots affected by the specific request from the store by sending message to StoreDetailsCoordinator, which in turn sends the disabling query for all the timeslots of the specific store to the DBMS.
+The DBMS then returns a message with the list of disabled time slots, which then the StoreDetailsRepository propagates back to the SystemStopCoordinator.
+It shall be noted that, due to various reasons, the actual disabled time slots might be less than the affected time slots, since it can be the case that some of the slots were already disabled before this transaction.
+After the disabling of the time slots an action receipt is returned to the CLup application indicating completion of the process, which in turn renders a success screen to the manager.
+Meanwhile, the SystemStopCoordinator also starts sending email notifications for each time slot that has been removed from the store.
+For each slot, a query to the DBMS is sent to determine the users that have already booked like numbers for the specific slot.
+When the response from DBMS is retrieved the SystemStopCoordinator starts sending emails to all those users, through the Email Server component.
+
 \subsubsection{Update Store Information}
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.4\textwidth]{Images/SequenceDiagrams/UpdateStoreInformation.png}
+    \caption{Sequence Diagram for Update Store Information}
+    \label{fig:SDUpdateStoreInformation}
+\end{figure}
+\nameref{fig:SDUpdateStoreInformation} shows the interactions between the components of the related parts of the system to update store information by the manager.
+When the manager requests to see the information for the store, the client application displays the related information with an update button.
+Upon trigger of the button, the CLup Application shows the editing form for the general information about the store, with the current values already pre-filled.
+Optionally, from this moment, if the manager wants to update the store's location, they can do so by pressing the update location button, which in turn, triggers the Google Maps component to show the location selector.
+Once the manager sets the new location, the service returns the new location selected by the manager, to be updated on the form.
+After all the necessary changes are made, the manager submits the form which makes the CLup Application perform a request to the StoreDetailsRepository.
+The StoreDetailsRepository, after processing the data, calls the DBMS to update the database entry for the store.
+Once the updated message is retrieved from the DBMS, the message propagates through the calls and a success screen is shown to the manager.
+\subsubsection{Monitor Customers} %TODO: Ozan check use case diagrams for this
 % Clerk
-\subsubsection{Grant Access}
-\subsubsection{Generate Guest Ticket}
+\subsubsection{Grant Access} %TODO: Hrvoje
+\subsubsection{Generate Guest Ticket} % TODO: Hrvoje
 
 % You can use sequence diagrams to describe the way components interact to accomplish specific tasks typically related to your use cases
 
 % Main use cases with sequence diagrams indicating relations of each diagram to one another.
 
 \subsection{Component interfaces}
-
+% TODO: Ozan for 2 week
 % Class diagram with only methods demonstrating how components interact with each other.
 % Also an ER or Class diagram to indicate data.
-\subsection{Selected architectural styles and patterns}
+\subsection{Selected architectural styles and patterns} % Do as we proceed
 % Please explain which styles/patterns you used, why, and how
-\subsection{Other design decisions}
+\subsection{Other design decisions} % Do as we proceed.
 
