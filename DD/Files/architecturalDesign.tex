@@ -1,6 +1,35 @@
 \subsection{Overview}
-% High-level components and their interaction
-% TODO: @Hrvoje
+% High-level components and their interaction% High-level components and their interaction
+The application is divided in three logical layers:
+\subsubsection{Presentation layer}
+The presentation layer occupies the top level and displays information related to the services available on the CLup application in the form of an intuitive graphical user interface.
+It constitutes the front-end layer of the application and the interface with which end-users will interact through a web-based application.
+For example: if a user wants to schedule a visit to the store they can do so by selecting the schedule button on the main page, which is a part of the presentation layer.
+The logic behind opening a new graphical interface for the user to select the exact store, date, day, and other preferences is a part of the application layer.
+\subsubsection{Application layer}
+The application layer coordinates the application, processes user requests, makes logical and business decisions, and performs calculations.
+This layer is in charge of the workflows by which the data and requests travel, starting from the input received from the presentation layer
+to the data layer alongside the business logic on the data collected.
+In this project, the application layer resides on the server-side, meaning that all the computing is done outside the user scope.
+For example: if a user wants to enter the store they can do so by showing the clerk a QR code that contains information about their visit time.
+The clerk then proceeds to scan the user QR code and after successfully scanning it, the application layer residing on the server-side processes
+the clerk request and responds to the clerk, furthermore to the presentation layer with a message whether or not a user is permitted to enter the store.
+\subsubsection{Data layer}
+The data layer is a centralized location that receives all data calls and provides access to the persistent storage of an application.
+The data layer is closely connected to the business layer, so the logic knows which database to talk to and the data retrieving process is more optimized.
+%Is the data layer divided somehow?
+For example: when a user requests to schedule a visit time for a certain store, all available time slots are calculated from the data stored in the database.
+That data is then processed using the application layer to the presentation layer and shown to the user.
+
+Described architecture is a thin client architecture, in which the server does most of the work, which includes performing calculations and storing data.
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.7\textwidth]{Images/Overview.png}
+    \caption{High level component architecture}
+\end{figure}
+%Need some more explaining on this part, I dont know what more to write about here :(
+
+
 \subsection{Component view}
 In the following section, components used to implement different functionalities of the system is described, aided with component diagrams demonstrating their separation and interactions within each other and with other external interfaces.
 \begin{figure}[H]
