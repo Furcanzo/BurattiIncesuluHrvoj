@@ -65,6 +65,32 @@ The product's general purpose is to keep the congestion levels in line with the 
 % 80/20 percent split between bookings and physical appearence on domain assumptions for us to schedule in an easy way.
 \subsection{Scope}
 
+The system is expected to implement the following features, which are detailed in the future sections of this document: \\
+\begin{itemize}
+    \item \textbf{Generate Line Number}: The customers of the store can generate a line number for themselves as soon as possible to visit a store.
+    \item \textbf{Schedule Line Number}: The customers can generate a line number for a future planned visit.
+    Using the CLup app the customers can further define the products and product categories that they plan to visit to allow finer granularity and better time estimation for a visit.
+    The system thus will allocate them a line number according to the time slot the customer has selected and it will send an email to the customer if the line number is canceled for a reason.
+    From the system, the customers can view the store's location and plan their route accordingly.
+     While scheduling their line numbers, the customers can see an occupancy forecast for the store during time slots so that they can further decide on visiting the store.
+    If added by the manager, the customers can instead prefer to visit a partner store.
+    \item \textbf{Print Line Number}: The clerks in the store can generate line number tickets for those customers who have not used the CLup app to generate a line number.
+    \item \textbf{Manage Store}: The managers in the store can update the information regarding the store, which are the name and the location of the store.
+    Furthermore, the managers can use this feature to activate or deactivate additional features provided by the system to manage customers more effectively.
+    They can update the timeout interval for a ticket to expire, to manage the queue in front of the store.
+    They can add products or product categories that their store provides, for the customers to select before booking their visit as mentioned before.
+    They can assign more managers and clerks if necessary to use the system to its full extent.
+    They can administer the time slots for their customers by setting the opening and closing hours, with possible breaks in between.
+    They can administer the partner stores of their stores if they exist, for their customers to select instead.
+    They can enable the reservation limit to prevent any customer from abusing the system by setting the limit for how many tickets a customer can generate per a given time interval of a month, a week, or a day.
+\end{itemize}
+
+The system is expected to be delivered in two parts, a client application, and a server.
+Given its functionality is depending on the current ongoing pandemic, the app is expected to be implemented before the COVID-19 crisis ends.
+For this, the client application is expected to be implemented as an app running on a browser, increasing the range of devices being able to run the app, without increasing the development costs, which can then be ported to a mobile application if needed.
+The server is expected to serve the client application to its users and handle any transaction incoming.
+To implement the location-specific features of the system, due to the complexity of those, namely location finding, addressing, and route planning tasks, an external Maps API is used.
+
 \subsubsection{Targeted Users}
 
 "CLup" aims to resolve the problem of Customers queueing up in front of a location, without control of availability of place in the location and future contact tracing by managers.
@@ -88,6 +114,10 @@ Also, for chains and relevant stores, the manager can add chain members for the 
 
 \subsubsection{Relevant Phenomena}
 
+To define the limits for the scope of the system, the following Relevant Phenomena table is provided.
+In this table, the specific entities related to the proposed system is given as various phenomena.
+If an entity provided in this table is bound to the physical world, it is marked as a world phenomenon, while an entity exists in the proposed system's implementation and does not directly exist on the world, it is marked as a machine phenomena.
+Furthermore, if an entity has a relevance to both the physical world and the system, it is labeled as shared.
 \begin{table}[H]
     \begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|}
         \hline
@@ -108,7 +138,10 @@ Also, for chains and relevant stores, the manager can add chain members for the 
         %          &               &  \\ \hline
     \end{tabular}
     \caption{Relevant Phenomena of CLup}
+    \label{tab:Phenomenon}
 \end{table}
+
+Since the entities that solely exist in the world and solely in the system won't be related to how the system adds value to its users, the requirements and related aspects are given in this document will be described considering solely the shared phenomena mentioned on \nameref{tab:Phenomenon} table.
 
 % here we include an analysis of the world and of the shared phenomena
 
