@@ -130,10 +130,50 @@ integrity of the content of the database.
 \subsubsection{Register} % TODO: Text
 \subsubsection{Login}% TODO: Text
 \subsubsection{Update User Information} % TODO: Graph + Text
-% Customer TODO: Roberto
-\subsubsection{Book Future Line Number} % TODO: Text
-\subsubsection{Retrieve Line Number} % TODO: Text
-\subsubsection{View Store} % See location, amount of customers% TODO: Text
+
+% Customer
+\subsubsection{Book Future Line Number}
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.4\textwidth]{Images/CustomerSequenceDiagrams/BookLineNumberSequenceDiagram.png}
+    \caption{Sequence Diagram for Book Future Line Number}
+    \label{fig:SDBookLineNumber}
+\end{figure}
+\nameref{fig:SDBookLineNumber} represent the flow of events needed to book a line number.
+When the customer clicks on the "Book a Line Number" button they need  to provide the TimeSlot in which they want to book, the product category that they need to buy, an estimated duration of their visit and the store they want to visit.
+After that the Client application contacts the LineNumberManager that retrieve from the Database the information needed to calculate which timeslots are available in that store, for that product category.
+If the timeslot that the customer put in their request is available the linenumber is generated and returned to the customer.
+Otherwise if the timeslot that the customer requested is not available, but there are others timeslots available in that store for that product categories, the system returns the timeslots available to the customer as an advice.
+If that store has no timeslots available for that product categories, then a list of partner stores is returned to the user as an advice.
+
+\subsubsection{Retrieve Line Number}
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.4\textwidth]{Images/CustomerSequenceDiagrams/RetriveLineNumberSequenceDiagram.png}
+    \caption{Sequence Diagram for Retrieve Line Number}
+    \label{fig:SDRetrieveLineNumber}
+\end{figure}
+\nameref{fig:SDRetrieveLineNumber} represent how the system acts when a customer try to retrieve a linenumber.
+First of all the customer inserts the request in the client application, providing the store they want to visit and the product category of the products they want to buy.
+Then the Client application contacts the LineNumberManager in order to have an ETA for that store.
+The LineNumberManager retrieve the information needed to calculate the ETA, calculate it and returns it tio the customer.
+The customer now can choose if they want to confirm and actually retrieve the linenumber, or deny and stops the operations.
+In case the customer confirms a second request is sent to the LineNumberManager that generate the lineNumber and stores it in the database.
+Notice that the request of the ETA and the request of generating a new linenumber are completely independent, this mean that the ETA can increase in the meantime, if someone else retrieve a linenumber.
+This is not a problem under the assumption that the time between the two request is short and makes the implementation easier and avoids the handling of a lot of corner cases, such as if the application crashes between the two requests.
+
+\subsubsection{View Store} % See location, amount of customers%
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.4\textwidth]{Images/CustomerSequenceDiagrams/ViewStoreSequenceDiagram.png}
+    \caption{Sequence Diagram for View store}
+    \label{fig:SDViewStore}
+\end{figure}
+\nameref{fig:SDViewStore} shows how the customer can retrieve information about a store.
+The customer request to the client application the information of a store, including the number of custumers actually in the store.
+The client application forwards the request to the StoreManager that retrieve the information from the database and returns it to the application.
+The client application before returning the information to the customer contacts Google Map to calculate the route to the store.
+
 % Manager TODO: Ozan
 \subsubsection{Add Staff Member}
 
