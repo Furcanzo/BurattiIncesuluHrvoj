@@ -495,17 +495,16 @@ The device should have an active internet connection, and the application should
     \item \textbf{$R_{14}$} Clerks must be able to generate line number tickets in a compatible printer format.
     \item \textbf{$R_{15}$} Customers must be able to obtain a line number, except when the system is stopped or the store is full.
     \item \textbf{$R_{16}$} Customers must be able to obtain line numbers for different time slots in the future.
-    \item \textbf{$R_{17}$} Customers can not obtain line numbers that exceed the quantity per time interval limits.
-    \item \textbf{$R_{18}$} Customers can not obtain line numbers for time intervals that the system is stopped by a manager.
-    \item \textbf{$R_{19}$} Customers must be able to see the estimated time available for their line number.
-    \item \textbf{$R_{20}$} Customers must be able to set or update their phone number, password, name, and surname.
-    \item \textbf{$R_{21}$} Customers can select a specific product or product categories they plan to visit in the location while obtaining a line number.
-    \item \textbf{$R_{22}$} Customers can set an estimated time for their visit while obtaining a line number.
-    \item \textbf{$R_{23}$} Customers must be able to view the shop location
-    \item \textbf{$R_{24}$} Customers can view the occupation forecasts for the location at different time slots.
-    \item \textbf{$R_{25}$} Customers can see the alternative suggestions for time slots while obtaining a line number for the future.
-    \item \textbf{$R_{26}$} Customers can view the partner stores occupancies' if the preferred time slot is not available while obtaining a line number.
-    \item \textbf{$R_{27}$} The system must be able to provide a forecast for each location's occupancy for any given time based on past visits.
+    \item \textbf{$R_{17}$} Customers can not obtain line numbers for time intervals that the system is stopped by a manager.
+    \item \textbf{$R_{18}$} Customers must be able to see the estimated time available for their line number.
+    \item \textbf{$R_{19}$} Customers must be able to set or update their phone number, password, name, and surname.
+    \item \textbf{$R_{20}$} Customers can select a specific product or product categories they plan to visit in the location while obtaining a line number.
+    \item \textbf{$R_{21}$} Customers can set an estimated time for their visit while obtaining a line number.
+    \item \textbf{$R_{22}$} Customers must be able to view the shop location
+    \item \textbf{$R_{23}$} Customers can view the occupation forecasts for the location at different time slots.
+    \item \textbf{$R_{24}$} Customers can see the alternative suggestions for time slots while obtaining a line number for the future.
+    \item \textbf{$R_{25}$} Customers can view the partner stores occupancies' if the preferred time slot is not available while obtaining a line number.
+    \item \textbf{$R_{26}$} The system must be able to provide a forecast for each location's occupancy for any given time based on past visits.
 \end{itemize}
 
 
@@ -517,15 +516,8 @@ The device should have an active internet connection, and the application should
     \begin{tabular}{|p{1cm}|p{7cm}|p{7cm}|}
         \hline
         \textbf{Goal} & \textbf{Requirements} & \textbf{Domain Assumptions} \\ \hline
-        $G_{1}$ & $R_{1}$, $R_{2}$, $R_{11}$, $R_{15}$, $R_{17}$, $R_{18}$ & $D_{1}$, $D_{13}$\\ \hline
-        $G_{2}$ & $R_{1}$, $R_{2}$, $R_{11}$, $R_{16}$, $R_{17}$, $R_{18}$, $R_{26}$ & $D_{1}$\\ \hline
-        $G_{3}$ & $R_{1}$, $R_{2}$, $R_{8}$, $R_{21}$, $R_{22}$ & $D_{1}$\\ \hline
-        $G_{4}$ & $R_{1}$, $R_{2}$, $R_{12}$, $R_{19}$, $R_{23}$, $R_{24}$, $R_{27}$ & $D_{1}$, $D_{3}$, $D_{6}$, $D_{8}$\\ \hline
-        $G_{5}$ & $R_{1}$, $R_{2}$, $R_{5}$, $R_{24}$, $R_{25}$, $R_{26}$ & $D_{1}$\\ \hline
-        $G_{6}$ & $R_{1}$, $R_{3}$, $R_{6}$, $R_{7}$, $R_{9}$, $R_{10}$, $R_{12}$, $R_{18}$ & $D_{1}$, $D_{11}$\\ \hline
-        $G_{7}$ & $R_{1}$, $R_{3}$, $R_{4}$, $R_{11}$, $R_{17}$, $R_{27}$ & $D_{1}$, $D_{7}$\\ \hline
-        $G_{8}$ & $R_{1}$, $R_{3}$, $R_{13}$, $R_{20}$ & $D_{1}$, $D_{3}$, $D_{4}$, $D_{5}$, $D_{6}$, $D_{9}$, $D_{11}$, $D_{12}$, $D_{13}$\\ \hline
-        $G_{9}$ & $R_{3}$, $R_{14}$ & $D_{2}$, $D_{6}$, $D_{10}$, $D_{13}$\\ \hline
+        $G_{1}$ & $R_{1}$, $R_{2}$, $R_{3}$, $R_{4}$, $R_{5}$, $R_{8}$, $R_{10}$, $R_{11}$, $R_{13}$, $R_{14}$, $R_{15}$, $R_{16}$, $R_{17}$, $R_{19}$, $R_{20}$, $R_{21}$, $R_{24}$, $R_{25}$ & $D_{1}$, $D_{3}$, $D_{4}$, $D_{5}$, $D_{8}$, $D_{9}$ \\ \hline
+        $G_{2}$ & $R_{6}$, $R_{7}$, $R_{9}$, $R_{12}$, $R_{15}$, $R_{16}$, $R_{18}$, $R_{22}$, $R_{23}$, $R_{26}$ & $D_{2}$, $D_{3}$, $D_{6}$, $D_{7}$ \\ \hline
     \end{tabular}
     \caption{Summary Table}
 \end{table}
@@ -579,20 +571,18 @@ Add manager
         $R_{14}$ & Print Guest Ticket \\ \hline
         $R_{15}$ & Retrieve Line Number \\ \hline
         $R_{16}$ & Book Future Line Number\\ \hline
-        $R_{17}$ & Book Future Line Number\\
-        & Initialize \\ \hline
-        $R_{18}$ & Book Future Line Number \\
+        $R_{17}$ & Book Future Line Number \\
         & Schedule a Stop \\
         & Stop for Emergency\\ \hline
-        $R_{19}$ & Retrieve Line Number \\ \hline
-        $R_{20}$ & Update User Information\\ \hline
+        $R_{18}$ & Retrieve Line Number \\ \hline
+        $R_{19}$ & Update User Information\\ \hline
+        $R_{20}$ & Book Future Line Number\\ \hline
         $R_{21}$ & Book Future Line Number\\ \hline
-        $R_{22}$ & Book Future Line Number\\ \hline
-        $R_{23}$ & See Store Location\\ \hline
-        $R_{24}$ & See Amount of Customers in the Store\\ \hline
+        $R_{22}$ & See Store Location\\ \hline
+        $R_{23}$ & See Amount of Customers in the Store\\ \hline
+        $R_{24}$ & Book Future Line Number\\ \hline
         $R_{25}$ & Book Future Line Number\\ \hline
-        $R_{26}$ & Book Future Line Number\\ \hline
-        $R_{27}$ & See Number of Customers in the Store\\ \hline
+        $R_{26}$ & See Number of Customers in the Store\\ \hline
     \end{tabular}
     \caption{Tracability Matrix}
 \end{table}
@@ -634,6 +624,7 @@ The managers should have a desktop computer with a working display, input device
 % Everything is similar to everything
 
 The application shall use and store user data according to GDPR.
+Customers can not obtain line numbers that exceed the quantity per time interval limits.
 
 \subsection{Software System Attributes}
 
