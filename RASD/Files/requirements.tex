@@ -58,7 +58,7 @@ Below are some sample screenshots from the project's user interfaces with Samsun
 %For example, terminal support may specify full-screen support as opposed to line-by-line support.
 
 The application will be able to run on a desktop as well as tablet and smartphone.
-The operating system or actual performance of the device used are not critical since the vast majority of devices will be supported.
+The operating system or actual performance of the device used are not critical since the application will be browser based.
 Usage of a smartphone or a tablet could be beneficial to the user since they can bring them to the store.
 As mentioned in the domain assumptions, the clerk should have a smartphone with a working camera module.
 The manager should mainly use a desktop computer to manage store information quickly.
@@ -75,14 +75,26 @@ He should be able to do all his tasks from a smartphone or a tablet, but a deskt
 %d) Version number;
 %e) Source.
 
-The application should run on every operating system such as Windows, Linux, or macOS for desktop devices, and Android or iOS.
+The application should run on operating systems such as Windows, Linux, or macOS for desktop devices, and Android or iOS.
+The application will be supported on the popular browser mentioned in the list below from that version above:
+\begin{itemize}
+    \item {Google Chrome} version 69
+    \item {Firefox} version 77
+    \item {Safari} version 13
+    \item {Opera} version 71
+    \item {Edge} version 18
+    \item {Chrome for Android} version 57
+    \item {Samsung Internet} version 11.2
+    \item {Firefox for Android} version 73
+    \item {iOS Safari} version 11.4
+\end{itemize}
 The application will use a QR code generator to produce QR codes that will be scanned when entering the store and contain all the information related to the customer's visit time.
 
 \subsubsection{Communication Interfaces}
 % What is a communication interface? the Internet? RF port? Radio? Bluetooth?
 
 %Specify the various interfaces to communications such as local network protocols.
-The device should have an active internet connection, and the application should communicate through TCP/IP .
+Since the application will be browser based, the device should have an active internet connection, and the application should communicate through TCP/IP .
 
 \subsection{Functional Requirements}
 % Use draw.io, compatible with GitHub.
@@ -668,4 +680,5 @@ Its maintainability isn't a concern since the application will be developed for 
 
 % Specify attributes of software that relate to the ease of porting the software to other host machines and/or operating systems, including:
 
-The application should be available to the vast majority of people.
+As mentioned previously in this document the application should be browser based and therefore easily portable so it can be used with poopular browsers.
+In the future the application can be bundled up as a mobile application using progressive web applications technology and distributed as a mobile application.

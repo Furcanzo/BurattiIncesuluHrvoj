@@ -3,7 +3,7 @@
 
 \subsubsection{Description of the Proposed System}
 The project "CLup - Customer Line up" is a line spot reservation system planned to be used by managers, clerks, and customers of many local vendors and chains.
-The system aims to come up with a handy solution for the ongoing issue of proper social distancing management, particularly in grocery shopping, by providing assistance to cope with the customer load for managers and helping customers access products in a safe and controlled manner.
+The system proposes a handy solution for the ongoing issue of proper social distancing management, particularly in grocery shopping, by providing assistance to cope with the customer load for managers and helping customers access stores in a safe and controlled manner.
 
 In particular, users will be able to see the locations, get a line number, and book in advance for the grocery stores they would like to visit.
 Once assigned a line number, the customer will track the estimated time of arrival of the line and wait for the notification that informs about his or her line's forthcoming arrival; hence waiting time in the line in the crowd is minimum.
@@ -16,8 +16,8 @@ The product's general purpose is to keep the congestion levels in line with the 
 \subsubsection{Goals}
 
 \begin{itemize}
-    \item \textbf{$G_{1}$} Regulate the influx of people in the stores that are using the system.
-    \item \textbf{$G_{2}$} Avoid people lining up in font of the stores to avoid the spreading of corona-virus.
+    \item \textbf{$G_{1}$} Regulate the influx of people in the stores.
+    \item \textbf{$G_{2}$} Avoid people lining up in front of the stores in order to reduce the spreading of COVID-19.
 \end{itemize}
 
 % Manager:
@@ -98,15 +98,15 @@ The system is going to provide the following functions:
 \end{itemize}
 
 \subsubsection{Targeted Users}
-
 "CLup" aims to resolve the problem of Customers queueing up in front of a location, without control of availability of place in the location and future contact tracing by managers.
-\\[0.5cm]
-\textbf{Customer:} \\
 
+\\[0.5cm]
+
+\textbf{Customer:} \\
 Customers will be able to obtain specific line numbers for various locations using CLup, which they can track the estimated time available with and also view the location on a map application to plan their visit.
 Customers can further obtain line numbers for future visits, based on the system's info about the availability of free spots on the specific time intervals.
 They may prefer to visit a different branch of the same chain.
-Furthermore, they can provide specific products they intend to purchase or set an estimated time for their visit to allow finer granularity.
+Furthermore, they can provide specific product categories they intend to purchase or set an estimated time for their visit to allow finer granularity.
 Some customers may also prefer to obtain a line number upon visiting the store physically.
 To plan their visit in a time slot where the location will be less crowded, the users can see the location's occupancy based on already taken line numbers and forecasts provided by the system.
 \\[0.5cm]
@@ -114,9 +114,10 @@ To plan their visit in a time slot where the location will be less crowded, the 
 The clerk (which can be a shopping assistant or a security detail) can monitor customers' flow and manually intervene in case of missing line numbers via performing manual checkout for a specific customer or by printing line numbers physically for some customers.
 \\[0.5cm]
 \textbf{Manager:} \\
-
 The location manager (which could be an actual manager or someone responsible for handling customer management) can provide details regarding the availability of products and the location in general, by setting the opening hours, maximum allowed customers in the shop, in-shop location of different products and categories, the maximum amount of reservations that can be made per customer, line number timeout and the location.
 Also, for chains and relevant stores, the manager can add chain members for the location.
+\textbf{Super User:} \\
+In order to use the CLup application, store or buisness owners should contact CLup Super User who will give them permission to use the application and create a Manager account for them.
 
 \subsubsection{Relevant Phenomena}
 
@@ -155,14 +156,14 @@ Since the entities that solely exist in the world and solely in the system won't
 \subsection{Definitions, Acronyms, Abbreviations}
 \subsubsection{Definitions}
 \begin{itemize}
-    \item \textit{Location}: the physical location of the business that operates the line reservation system
-    \item \textit{Manager}: the user in charge of executive action within the location
-    \item \textit{Customer}: the user to visit the location
-    \item \textit{Clerk}: the user in charge of handling the entrance and exit of customers
+    \item \textit{Location}: The physical location of the business that uses the line reservation system
+    \item \textit{Manager}: A person in charge of executive action within the location
+    \item \textit{Customer}: A person to visit the location
+    \item \textit{Clerk}: A person in charge of handling the entrance and exit of customers
     \item \textit{Visit Time}: the time interval in which a customer performs a visit to the location
-    \item \textit{Line Number}: A number that indicates the ordering of a specific customer in the line
+    \item \textit{Line Number}: A number that indicates the ordering of a specific customer in the line % Rephrase
     \item \textit{Line Number Ticket}: A physical ticket printed that features the line number and the QR code.
-    \item \textit{Time Slot}: Specific intervals of time determined by the opening hours and average visit time per customer.
+    \item \textit{Time Slot}: Specific intervals of time in which a customer can schedule their visits determined by the opening hours.
     \item \textit{Partner Store}: A different location included in the same beneficiary chain of command (such as another member of the franchise or store chain) or a mutual agreement with the specific location
     \item \textit{Product}: Any item, items, service or services demanded by the customer, and provided by the store to the customer.
     \item \textit{In-store Location}: A location of a specific product or a product category inside the store.
@@ -226,10 +227,10 @@ This document is composed of six sections, each with the purpose described below
     Furthermore, under the project's scope, the relevant phenomena of the project are presented through their relevance to the world and the machine.
     \item \textbf{Overall Description}: This section builds upon the introduction section by providing an expansion of the system's scope and relevant functionalities.
     The fundamental perspective is provided considering the shared phenomena between the world and the system and the system's integrations with other parties and products.
-    The overall actions that can be conducted over the system are described using a detailed class diagram, portraying all required components of the system, their inner state, and provided functionalities for other components to facilitate their purpose.
+    The overall actions that can be conducted over the system are described using a detailed UML Class Diagram, portraying all required components of the system, their inner state, and provided functionalities for other components to facilitate their purpose.
     All core features of the system are listed and explained using user scenarios to understand better the real-world condition on which the use case should apply, a state chart for demonstrating the relationship between various states the system can be in during the execution of the provided core feature scenario.
-    Next, the system's requirements to archive the goals mentioned above and allow the provided scenarios' execution are given.
-    Based on their roles in the system, the user characteristics are further evaluated in this section through the means of the needs that they have, how the system archives those needs via its requirements and goals.
+    Next, the system's requirements to achive the goals mentioned above and allow the provided scenarios' execution are given.
+    Based on their roles in the system, the user characteristics are further evaluated in this section through the means of the needs that they have, how the system achives those needs via its requirements and goals.
     No system can be designed without a broad idea of what domain it exists and how much the environment limits its ability to perform its features.
     Ergo, we provide the standard assumptions of the domain, the system's dependencies to external components, and the world's limits on the system.
     \item \textbf{Specific Requirements}: This section is the main section of the document.
