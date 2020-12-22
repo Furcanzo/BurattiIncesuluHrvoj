@@ -43,7 +43,7 @@ The statecharts apply to many other scenarios that might occur out of interactio
 
 \textbf{Scenario}
 
-Ozan wants to visit the new hamburger place that has recently opened just around the corner of his house.
+Ozan is a customer who wants to visit the new hamburger place that has recently opened just around the corner of his house.
 However, Ozan does not want to wait in a long line to purchase a burger and some fries.
 The fast-food joint has incorporated the CLup system in its customer service portfolio, making it possible for Ozan to reserve his ticket beforehand without visiting the location.
 Ozan downloads the CLup application and books his line number from his house.
@@ -94,9 +94,10 @@ If the system can not fulfill the user's request, it communicates the problem to
 
 \textbf{Scenario}
 
-Hrvoje, a Croatian who recently arrived in Italy, is not aware of the popularity of the CLup app; however, he wants to visit an electronics store to purchase a new phone because his current phone has died out of battery failure.
-Upon arrival, since he does not have a phone, he can not register to the CLup system; however, the security, that is also in charge of validating line numbers, prints him a ticket that he should keep during his whole visit.
-Therefore, Hrvoje is allowed in the store, even if he does not have the application, and the shop manager can monitor his entrance and exit.
+Hrvoje, a Croatian who recently arrived in Italy, is not aware of the popularity of the CLup application. However, he wants to visit an electronics store to purchase a new phone because his current phone has died out of a battery failure.
+Upon arrival, since he does not have a phone, he can not registrate to the CLup application. However, the Clerk, that is also in charge of validating line numbers, can print Hrvoje a ticket in the first next available time slot.
+If the store is fully occupied with customers at the moment, Hrvoje may have to wait before he can enter the store, but that shouldn't be a problem because now Hrvoje has a line number ticket and knows exactly when he will
+be able to enter the store and therefore he doesn't have to wait in line in front of the store. If the store is not fully occupied with customers Hrvoje may enter the store straight away. Either way he should keep the ticket he has during his visit.
 
 \textbf{State Diagram}
 
@@ -111,7 +112,7 @@ The \nameref{fig:SDPrintLine} represents the execution flow of a similar use cas
 Upon the arrival of a new customer that does not have a line number, the clerk opens the generate ticket tab and presses the "Generate" button to create a new line number.
 If all the constraints are satisfied, the system allocates a new ticket number for the customer.
 The clerk can then print the ticket out using a printer.
-In case there are no line numbers left, the system notifies the clerk as such, with an option to retry the operation.
+In case there are no line numbers left because all time slots are occupied, the system notifies the clerk as such, with an option to retry the operation, hoping that someone has cancelled their visit.
 
 \subsubsection{System Stop}
 
@@ -197,9 +198,9 @@ After a customer has successfully scheduled his visit time, he will receive a li
 
 \subsubsection {Line number ticket entry}
 Before entering the store, a customer must show his line number ticket to a clerk who will then scan his ticket.
-If the customer has arrived in the scheduled time slot, he will enter the store.
-If the customer does not have a line number ticket, the clerk will provide him with one, but he will not be able to enter the store immediately unless the time slot for that moment is not occupied with other customers.
-To sum up, a customer with a scheduled store visit can visit the store at a scheduled time without waiting in line in front of a store, while a customer without the line number ticket depends on the free available time slots.
+If the customer has arrived in the scheduled time slot, he may enter the store.
+If the customer does not have a line number ticket, the clerk will provide him with one, but he will not be able to enter the store immediately unless the time slot for that moment is not fully occupied with other customers.
+To sum up, a customer with a scheduled store visit can visit the store at a scheduled time without waiting, while a customer without the line number ticket depends on the free available time slots.
 
 \subsubsection {Store managment}
 Through the CLup application, the manager can edit all the store information such as location-specific information, the maximum number of customers in the store at any given time, opening and closing hours of the store per each day, line number timeout, and much more.
@@ -240,18 +241,14 @@ The manager is in charge of managing a particular store through the CLup applica
 
 \begin{itemize}
     \item \textbf{$D_1$} \%80 of the customers and all clerks and managers have basic ICT skills, has an e-mail address that they are willing to use to authenticate to the system, and has a smartphone or equivalent device that can connect to the Internet, have a browser that supports UTF-8, display QR codes and has a mapping application.
-    \item \textbf{$D_2$} Locations will be visited by no more than 1000 people in any time slot.
-    \item \textbf{$D_3$} \%98 of the customers will arrive at the given location either without a ticket or with a ticket that has not timed out.
-    \item \textbf{$D_4$} E-mail addresses are not shared by multiple users of the system.
-    \item \textbf{$D_5$} Clerks' mobile devices are equipped with at least one camera that the system can use.
-    \item \textbf{$D_6$} All users have a basic understanding of how the line numbering system works and respects the system's ordering.
-    \item \textbf{$D_7$} Managers have an estimate for the number of reservations that their location can at most have.
-    \item \textbf{$D_8$} Managers' device has location services with a location acquisition error for no more than 20 meters.
-    \item \textbf{$D_9$} Clerks are continually monitoring the locations entrances and exits.
-    \item \textbf{$D_{10}$} Locations have printing equipment in 5 meters range of all the entrances that can print QR codes and line numbers.
-    \item \textbf{$D_{11}$} At least one manager is available in the location during the working hours.
-    \item \textbf{$D_{12}$} The customer's entry and exit to the store are determined by whether the clerks have checked them in and out.
-    \item \textbf{$D_{13}$} The customer has their line number or line number ticket available with them through their visit, including their exit from the store.
+    \item \textbf{$D_2$} Clerks' mobile devices are equipped with at least one camera that the system can use.
+    \item \textbf{$D_3$} All users have a basic understanding of how the line numbering system works and respects the system's ordering.
+    \item \textbf{$D_4$} Managers have an estimate for the number of reservations that their location can at most have.
+    \item \textbf{$D_5$} Managers' device has location services with a location acquisition error for no more than 20 meters.
+    \item \textbf{$D_6$} Clerks are continually monitoring the locations entrances and exits.
+    \item \textbf{$D_7$} Locations have printing equipment in 5 meters range of all the entrances that can print QR codes and line numbers.
+    \item \textbf{$D_8$} The customer's entry and exit to the store are determined by whether the clerks have checked them in and out.
+    \item \textbf{$D_9$} The customer has their line number or line number ticket available with them through their visit, including their exit from the store.
 \end{itemize}
 
 % here we include domain assumptions
@@ -268,7 +265,7 @@ The application will be dependant on Maps API, of which the details will be dete
 % All user and location info can be represented with UTF-8 character encoding.
 % What are the limits imposed by the environment, regulatory policies, hardware & software limitations, etc...
 
-Application interface should be user friendly and intuitive enough for all demographics to use.
+Graphical interface should be user friendly and intuitive enough for all demographics to use.
 It should also be mobile friendly as well as desktop friendly.
 The application should work on smartphones, tablets, and desktop devices to be available to as many devices as possible.
 The application should be developed and fully functional before the end of the COVID-19 crisis.
