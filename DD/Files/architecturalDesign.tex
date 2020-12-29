@@ -68,10 +68,10 @@ This component is divided into following components to decrease cohesion between
 \end{itemize}
 
 \begin{figure}[H]
-\centering
-\includegraphics[height=0.4\textwidth]{Images/ComponentDiagrams/UserManager.png}
-\caption{Component Diagram for the UserManager}
-\label{fig:CDUserManager}
+    \centering
+    \includegraphics[height=0.4\textwidth]{Images/ComponentDiagrams/UserManager.png}
+    \caption{Component Diagram for the UserManager}
+    \label{fig:CDUserManager}
 \end{figure}
 \nameref{fig:CDUserManager} provides a detailed view of the sub-components related to requests that can be performed on users.
 This component not only acts as a user registry, but also provides the authentication interfaces required, since its logic encompasses handling user data and authentication is done via user's email address, which relates these functions.
@@ -92,7 +92,7 @@ To seperate responsibility on different actions to be performed on the system, t
 The following diagram illustrates the physical architecture and the
 deployment of the system.
 Each node represents a piece of hardware which harbours one or more software units.
-Each piece of hardware could be replicated multiple times to improve performances as  specified in later in this document.
+Each piece of hardware could be replicated multiple times to improve performances as specified in later in this document.
 
 \begin{figure}[H]
     \centering
@@ -225,7 +225,20 @@ Once the manager sets the new location, the service returns the new location sel
 After all the necessary changes are made, the manager submits the form which makes the CLup Application perform a request to the StoreDetailsRepository.
 The StoreDetailsRepository, after processing the data, calls the DBMS to update the database entry for the store.
 Once the updated message is retrieved from the DBMS, the message propagates through the calls and a success screen is shown to the manager.
-\subsubsection{Monitor Customers} %TODO: Ozan check use case diagrams for this
+\subsubsection{Monitor Customers}
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.4\textwidth]{Images/SequenceDiagrams/MonitorState.png}
+    \caption{Sequence Diagram for Monitor State}
+    \label{fig:SDMonitorState}
+\end{figure}
+\nameref{fig:SDMonitorState} displays the interactions between the components of the system required to enable general monitoring of the amount of customers in the store by the manager.
+When the manager wants to see the monitoring results for the store, the client application shows the store monitoring tab to the manager.
+Meanwhile, the client application requests the related monitoring statistics from the server continuously, for which the request is handled by the StoreDetailsRepository.
+The repository queries the database through the monitor interval function, passing the interval requested by the client application.
+The database then returns the view for the monitoring result given the specific time interval, which in turn is passed to the client app.
+As the client app retrieves the data, it updates the monitoring tab that the manager sees with new information, and continues with the loop.
+
 % Clerk
 \subsubsection{Grant Access} %TODO: Hrvoje
 \subsubsection{Generate Guest Ticket} % TODO: Hrvoje
@@ -236,9 +249,124 @@ Once the updated message is retrieved from the DBMS, the message propagates thro
 
 \subsection{Component interfaces}
 % TODO: Ozan for 2 week
+In the following UML Class Diagram, the main interactions between components have been shown.
+The diagram's scope is mainly the application server and the peripheral services that the server communicates to function correctly.
+The front-end interfaces are not included as they only act as a mean of communicating the server functions to the end user, thus they do not include any specific functionality implemented.
+This diagram presents many details regarding the interactions between the system components, however this diagram does not provide a skeleton for the actual implementation, since its sole purpose is to demonstrate the significant integrations between components.
+Thus, it shall only be seen as a guide to implement the actual system.
+In this diagram, all user facing interfaces' (LineNumberManager, StoreManager and UserManager) functions are assumed to retrieve the user calling as an implicit argument, thus authorization aspect is not reflected in this diagram for simplification.
+In this diagram, many entities in function inputs are represented as they are (like Store, User, TimeSlot, etc \ldots), however for optimization purposes the actual implementation may use the specific IDs of each entity instead of passing the whole object.
+The DateTime used in this diagram is a general name for any implementation for a structure to store a specific time conforming to the standard \cite{}.
+In the diagram, representations for errors that might be returned from the operations are omitted (such as access right problems, network errors), for simplification purposes, along with specific errors (such as conflicts).
+% Diagram here
+
+Details regarding the interfaces in () are:
+\begin{itemize}
+    \item \textbf{JPA}: \\
+    This component represents the functionalities that are implemented in the JPA code that is used to communicate with the database.
+    It should be noted that these operations represent the first abstraction layer of the underlying database towards the data model, thus they consist of the most primitive building blocks to realize the actions to be performed on the domain.
+    The underlying realization of the SQL queries while executing these operations are also considered, and one-to-one mapping between the operations and queries are implemented in order to compensate for the atomicity of the calls made to this interface.
+    The \textit{getDetails} methods are implemented to provide an interface to resolve the lazy entities of \textit{LineNumber}s and \textit{Store}s, such as \textit{productCategories} or \textit{partnerStores}.
+
+    \item \textbf{EmailDispatcher}: \\
+    This component represents the interface with the E-mail Client to send emails through SMTP.
+    Since it has only one functionality regarding the scope of our system (sending emails to customers), the sole function of it is represented in this diagram.
+    \item \textbf{OccupancyForecaster}: \\
+    This component updates the OccupancyForecasts of each store whenever is necessary.
+    In order to decrease the overhead of constantly updating the forecasts, this component is to work asynchronously when the transactions on the system are minimal.
+    The only operation exposed by this interface allows the stores to be registered for updates.
+    \item \textbf{UserManager}: \\
+    This component is responsible for handling all transactions regarding the system's users, including authentication.
+    The object LoginCredentials is implemented in order to provide an abstraction over the authentication method to allow flexibility to swap the method for different markets and times.
+    The method \textit{login} returns an AuthenticationToken, which is also unspecified to allow flexibility for different methods, such as Bearer tokens or JWTs.
+    While the customers are created using the \textit{register} operation, managers and clerks of the system are created using the \textit{createStaffMember} operation, while the first manager of a store is created along with the store, in the \textit{initializeStore} function of the StoreManager.
+    None of the users can delete themselves, only managers can delete staff from the store that they manage, and all the staff users are linked to a specific store.
+    These decisions are made to ensure that all stores have at least one manager at all times, including their creation, and simplified management of roles (as all users will have at most one role in the system).
+    \item \textbf{LineNumberManager}: \\
+    This component is responsible for handling all the transactions made with the line numbers on the system.
+    The operations for creating line numbers (\textit{generateLineNumber}, \textit{getInmediateLineNumber} and \textit{bookLineNumber}) may not be able to generate line numbers, due to system being stopped, maximum capacity is reached or set reservation limits are reached.
+    The operation \textit{check} is called by the Clerks to allow customers in and out of the system, having its first argument indicate the direction.
+    The actual realization of this argument could be a boolean value, an enum or a custom typing instead of a string with two values.
+    \item \textbf{StoreManager}: \\
+    This component is responsible for handling any update or query regarding a store, including creation, forecasting and monitoring.
+    The \textit{updateStore} operation is modeled as it retrieves all the changes to the store, however the operation can also be receiving partial updates of the store data instead of the whole store data, so that the network load for the request can be reduced.
+    The operations to update the related data (\textit{updateTimeSlots} and \textit{updatePartnerStores}) feature \textit{operation} arguments of type CUDOperation (CUD stands for Create, Update, Delete), which indicate that the request may not only be about updating a field or a specific instance of the given entity, but also to create new ones and remove existing ones.
+    Some operations may cause an invalidation of customer's tickets, leading to a potential loss of customers.
+    In order to prevent this from happening, the operations that might lead to this (\textit{updateTimeSlots} and \textit{systemStop}) feature a \textit{force} argument.
+    The call would produce an error if the force argument is not given, and there are customers who have booked any line numbers in an affected time slot.
+    The operation \textit{monitor} features an optional argument of 2 \textit{DateTime}s.
+    If these are not provided, the operation is to return the live monitoring result (the flow of customers in realtime).
+\end{itemize}
 % Class diagram with only methods demonstrating how components interact with each other.
 % Also an ER or Class diagram to indicate data.
+
+The UML Class Diagram below describes the model of the system.
+In order to be consistent with the diagram in the RASD, and to demonstrate views and enumerations, the Class Diagram was preffered over an Entity-Relationship Diagram.
+For the sake of simplicity, the unique \textit{id}s of entities are not shown.
+These \textit{id}s don't have any special requirements, thus can be auto-generated using built-in generation mechanisms existing in SQL database implementations.
+The diagram is similar to the one in RASD, however features more implementation details.
+
+% Diagram here
+
+The \textbf{LineNumberStatus} indicates the current \textbf{LineNumber}'s status.
+When the line number is generated, it should be initialized with the status \textit{AWAITING} which indicates that the customer didn't yet enter the store.
+After the entrance of the customer, the line number enters to the state \textit{VISITING} to indicate that the customer has successfully arrived at the store and currently shopping.
+When the customer leaves, the ticket becomes \textit{VISITED} to indicate a successful exit from the store.
+If, for any case, the customers' ticket becomes invalid (due to time slot changes, system stop or ticket timeout), the ticket is marked as \textit{EXPIRED}.
+The \textit{entryTime} and \textit{exitTime} are used to store the time interval that the customer has entered to the store and exited, to allow better monitoring.
+The features to time out the tickets after some time, reservation limiting, and product category selection to increase granularity of visit can be enabled or disabled by the manager.
+Thus, on the class \textbf{Store} attributes related to these features (\textit{reservationLimit}, \textit{timeoutMinutes} and \textit{productCategories}) have to multiplicity of $0..1$ to demonstrate this ability.
+The representation of the location on the diagram is given as the Latitude and Longitude on the Earth, according to ISO 6709.
+% TODO: Reference
+The latitude and longitude are limited with 4 decimal points, since this provides a precision of at least 12 meters on the Earth, which is in the range provided by $D_{5}$.
+% Source: https://en.wikipedia.org/wiki/Decimal_degrees
+The \textbf{OccupancyForecast} is implemented as an estimated indication of amount of customers per time slot.
+Since the main purpose of this component is to provide an idea to the customers about how crowded the store is in a certain time slot, the granular implementation is the part of the \textit{MonitorResult} view instead.
+The \textit{MonitorResult} view provides the amount of customers that has visited the store from and to a specific time, which may or may not correspond to a \textbf{TimeSlot}.
+This view is used to implement a basic monitoring view for the \textbf{Manager}.
+The \textbf{ProductCategory} class features an \textit{locatedAt} property in order to help customers know where to find a specific category.
+The \textbf{InStoreLocation} class provides a name for the location in the shop and a description of how to reach there.
+It may also feature an image of a sketch, diagram or a map indicating the location, considering many large chains already has such a facility.
+Some store may feature these in an interactive format in their websites or in any other format, however considering that the category location is static, such dynamism is not required.
+In order to facilitate, a screenshot may be provided in the system of such interactive representation.
+
 \subsection{Selected architectural styles and patterns} % Do as we proceed
+
+\subsubsection{Thick-Server}
+Many transaction that occur on the system requires checks to be performed on data, thus these transactions needs to be handled on the server.
+Although basic data validation (such as verifying e-mail addresses conform to RFC 822) is possible and better yielded to the client, consistency checks (such as preventing customer overflow) requires a thick-server model.
+% TODO Reference: RFC822: https://tools.ietf.org/html/rfc822
+% All transactions occur in server side
+\subsubsection{Logical Sharding}
+Since the data on the system is either strictly location dependant (stores and any subsidiaries exist in a specific province or country) or changes location rarely (Customers don't switch countries or provinces often), the data plane can be logically sharded based on location if necessary.
+With logical sharding, the system can scale without hitting any bottleneck regarding database application limits.
+Furthermore, the data tier can be provisioned on locations closer to the sharded target location, thus reducing the network latency.
+
+% Due to the definite split based on location for our data, we can implement logical sharding to split our databases based on zones, which will decrease the latency to retrieve information
+\subsubsection{Lazy Loading}
+Store, the largest entity contains foreign fields that needs multiple accesses to fully retrieve, which would decrease the overall performance of the system, as PartnerStore, TimeSlot, Categories .
+Thus, this problem necesitates the implementation of lazy loading for such entities on the ORM level.
+
+\subsubsection{Service-Oriented Architecture}
+
+% Our server architecture's components are split into different services, accessible to outside world and each other through procedure calls and HTTP requests.
+
+Many services and options that our system provides can be split into different services, sharing the same database.
+However, since there is no scalability concern, due to the ability to perform logical sharding, or version compatibility problems, since all system components are planned to exist on same machine, there is no need to implement microservices.
+Thus, the system is implemented with Service-Oriented Architecture, which allows the developers to split the implementation of functionalities belonging to different domains, while not requiring to implement containerization or provisioning of multiple databases and data brokers.
+The services are exposed to each other through dependency injection and exposed to outside world via HTTP.
+
 % Please explain which styles/patterns you used, why, and how
 \subsection{Other design decisions} % Do as we proceed.
+\subsubsection{ORM}
+
+To facilitate the development of the system, instead of hand crafting database queries, an ORM shall be used to further improve development speed and security, as many ORM implementations support the prevention of SQL related attacks.
+
+\subsubsection{ACID}
+
+The database operation is based on the ACID principles, since the core system doesn't require asynchronous data synchronization with any other external components.
+Furthermore, as the system will implement Logical Sharding, there wouldn't be a need for increasing the partitions of the database, thus the system will not suffer from the limits of the CAP theorem.
+% \subsubsection{Single Sign-On}
+
+% In order to decrease the security risks and decrease the cost, the system is to implement SSO
 
