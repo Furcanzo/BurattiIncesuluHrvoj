@@ -3342,7 +3342,7 @@
 											"top": 197,
 											"width": 191.1279296875,
 											"height": 13,
-											"text": "+Connector: JPA",
+											"text": "+Connector: ORM",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3592,7 +3592,7 @@
 											"top": 21,
 											"width": 191.1279296875,
 											"height": 13,
-											"text": "+Connector: JPA",
+											"text": "+Connector: ORM",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3825,7 +3825,7 @@
 											"top": -195,
 											"width": 191.1279296875,
 											"height": 13,
-											"text": "+Connector: JPA",
+											"text": "+Connector: ORM",
 											"horizontalAlignment": 0
 										},
 										{
@@ -4496,7 +4496,7 @@
 											"top": 406,
 											"width": 61.419921875,
 											"height": 13,
-											"text": "JPA"
+											"text": "ORM"
 										},
 										{
 											"_type": "LabelView",
@@ -6595,7 +6595,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "JPA",
+					"name": "ORM",
 					"ownedElements": [
 						{
 							"_type": "UMLInterfaceRealization",
@@ -6766,7 +6766,7 @@
 											"top": 5,
 											"width": 199.8115234375,
 											"height": 13,
-											"text": "+Connector: JPA",
+											"text": "+Connector: ORM",
 											"horizontalAlignment": 0
 										},
 										{
@@ -6891,13 +6891,13 @@
 										"$ref": "AAAAAAF2PumCTz2nUTg="
 									},
 									"font": "Arial;13;0",
-									"left": 894.960205078125,
+									"left": 891.234130859375,
 									"top": 263.5,
-									"width": 90.07958984375,
+									"width": 97.53173828125,
 									"height": 13,
 									"alpha": 0.013157133741753717,
 									"distance": 76.00657866263946,
-									"text": "Connector: JPA"
+									"text": "Connector: ORM"
 								},
 								{
 									"_type": "NodeLabelView",
@@ -11614,7 +11614,7 @@
 											"top": 5,
 											"width": 200.50341796875,
 											"height": 13,
-											"text": "+Connector: JPA",
+											"text": "+Connector: ORM",
 											"horizontalAlignment": 0
 										},
 										{
@@ -12479,13 +12479,13 @@
 										"$ref": "AAAAAAF2PwZS2UIMQys="
 									},
 									"font": "Arial;13;0",
-									"left": 1094.960205078125,
+									"left": 1091.234130859375,
 									"top": 159.5,
-									"width": 90.07958984375,
+									"width": 97.53173828125,
 									"height": 13,
 									"alpha": 0.013157133741753717,
 									"distance": 76.00657866263946,
-									"text": "Connector: JPA"
+									"text": "Connector: ORM"
 								},
 								{
 									"_type": "NodeLabelView",
@@ -16165,7 +16165,7 @@
 											"top": 5,
 											"width": 191.1279296875,
 											"height": 13,
-											"text": "+Connector: JPA",
+											"text": "+Connector: ORM",
 											"horizontalAlignment": 0
 										},
 										{
@@ -16411,13 +16411,13 @@
 										"$ref": "AAAAAAF2PzuQ6EYt39E="
 									},
 									"font": "Arial;13;0",
-									"left": 942.960205078125,
+									"left": 939.234130859375,
 									"top": 297.5,
-									"width": 90.07958984375,
+									"width": 97.53173828125,
 									"height": 13,
 									"alpha": -0.026309713792715034,
 									"distance": 76.02631123499285,
-									"text": "Connector: JPA"
+									"text": "Connector: ORM"
 								},
 								{
 									"_type": "NodeLabelView",
@@ -28600,7 +28600,7 @@
 															"top": 47,
 															"width": 62.736328125,
 															"height": 13,
-															"text": "JPA"
+															"text": "DBMS"
 														},
 														{
 															"_type": "LabelView",
@@ -29706,7 +29706,7 @@
 									"_parent": {
 										"$ref": "AAAAAAF2rj3lck2tdoY="
 									},
-									"name": "JPA",
+									"name": "DBMS",
 									"represent": {
 										"$ref": "AAAAAAF2rkFV8k5VsD8="
 									},
@@ -29833,7 +29833,7 @@
 											"top": 276,
 											"width": 783.630859375,
 											"height": 13,
-											"text": "JPA"
+											"text": "ORM"
 										},
 										{
 											"_type": "LabelView",
@@ -29937,7 +29937,7 @@
 											"top": 324,
 											"width": 783.630859375,
 											"height": 13,
-											"text": "+saveLineNumber(store: Store, for[0..1], on: TimeSlot, visiting: Category[0..*])",
+											"text": "+saveLineNumber(store: Store, on: TimeSlot, visiting: Category[0..*])",
 											"horizontalAlignment": 0
 										},
 										{
@@ -29971,7 +29971,7 @@
 											"top": 354,
 											"width": 783.630859375,
 											"height": 13,
-											"text": "+listLineNumbersOf(customer): LineNumber[0..*]",
+											"text": "+listLineNumbersOf(customer: Customer): LineNumber[0..*]",
 											"horizontalAlignment": 0
 										},
 										{
@@ -30422,7 +30422,7 @@
 											"top": 485,
 											"width": 230.8515625,
 											"height": 13,
-											"text": "+sendMail(to, content: string)",
+											"text": "+sendMail(to: Customer, content: string)",
 											"horizontalAlignment": 0
 										}
 									],
@@ -30965,7 +30965,7 @@
 											"top": 896,
 											"width": 563.95751953125,
 											"height": 13,
-											"text": "+getStores(result: Store[0..*])",
+											"text": "+getStores(): Store[0..*]",
 											"horizontalAlignment": 0
 										},
 										{
@@ -31575,25 +31575,12 @@
 						},
 						{
 							"_type": "UMLNoteView",
-							"_id": "AAAAAAF2noxbGtAZQCM=",
-							"_parent": {
-								"$ref": "AAAAAAF2i+kEWackXVQ="
-							},
-							"font": "Arial;13;0",
-							"left": 72,
-							"top": 232,
-							"width": 100.95166015625,
-							"height": 116,
-							"text": "TODO: Discuss, maybe we have authentication manager external component?"
-						},
-						{
-							"_type": "UMLNoteView",
 							"_id": "AAAAAAF2qde1fm8Of28=",
 							"_parent": {
 								"$ref": "AAAAAAF2i+kEWackXVQ="
 							},
 							"font": "Arial;13;0",
-							"left": 216,
+							"left": 224,
 							"top": 168,
 							"width": 99.50439453125,
 							"height": 103,
@@ -32162,19 +32149,6 @@
 							"propertyLabel": {
 								"$ref": "AAAAAAF2rdfnik1y/wU="
 							}
-						},
-						{
-							"_type": "UMLNoteView",
-							"_id": "AAAAAAF2re9gKk2ouWY=",
-							"_parent": {
-								"$ref": "AAAAAAF2i+kEWackXVQ="
-							},
-							"font": "Arial;13;0",
-							"left": 448,
-							"top": 112,
-							"width": 70,
-							"height": 51,
-							"text": "Change JPA to ORM?"
 						}
 					]
 				},
@@ -32184,7 +32158,7 @@
 					"_parent": {
 						"$ref": "AAAAAAF2i+hWDqcfR4Q="
 					},
-					"name": "JPA",
+					"name": "ORM",
 					"stereotype": "interface",
 					"operations": [
 						{
@@ -32222,7 +32196,9 @@
 										"$ref": "AAAAAAF2jz5vsKf3R90="
 									},
 									"name": "store",
-									"type": "Store"
+									"type": {
+										"$ref": "AAAAAAF2msKbrJC6EHw="
+									}
 								},
 								{
 									"_type": "UMLParameter",
@@ -32230,22 +32206,14 @@
 									"_parent": {
 										"$ref": "AAAAAAF2jz5vsKf3R90="
 									},
-									"name": "for",
-									"type": "",
-									"multiplicity": "0..1"
+									"name": "on",
+									"type": {
+										"$ref": "AAAAAAF2msKbrJDX2q8="
+									}
 								},
 								{
 									"_type": "UMLParameter",
 									"_id": "AAAAAAF2j0J9EagRJWU=",
-									"_parent": {
-										"$ref": "AAAAAAF2jz5vsKf3R90="
-									},
-									"name": "on",
-									"type": "TimeSlot"
-								},
-								{
-									"_type": "UMLParameter",
-									"_id": "AAAAAAF2j0LN6agWhoI=",
 									"_parent": {
 										"$ref": "AAAAAAF2jz5vsKf3R90="
 									},
@@ -32309,7 +32277,9 @@
 										"$ref": "AAAAAAF2j2DM/6oxOBU="
 									},
 									"name": "customer",
-									"type": ""
+									"type": {
+										"$ref": "AAAAAAF2msKbq5CPyKc="
+									}
 								},
 								{
 									"_type": "UMLParameter",
@@ -32869,7 +32839,9 @@
 										"$ref": "AAAAAAF2mb0FxIAetsU="
 									},
 									"name": "to",
-									"type": ""
+									"type": {
+										"$ref": "AAAAAAF2msKbq5CPyKc="
+									}
 								},
 								{
 									"_type": "UMLParameter",
@@ -33294,7 +33266,8 @@
 									},
 									"name": "result",
 									"type": "Store",
-									"multiplicity": "0..*"
+									"multiplicity": "0..*",
+									"direction": "return"
 								}
 							]
 						},
@@ -41189,19 +41162,6 @@
 							"headQualifiersCompartment": {
 								"$ref": "AAAAAAF2npiZ/Pv87a4="
 							}
-						},
-						{
-							"_type": "UMLNoteView",
-							"_id": "AAAAAAF2nqHJhxXg05w=",
-							"_parent": {
-								"$ref": "AAAAAAF2msKbqY7q38w="
-							},
-							"font": "Arial;13;0",
-							"left": 768,
-							"top": 96,
-							"width": 104,
-							"height": 48,
-							"text": "Change clerk to validator?"
 						},
 						{
 							"_type": "UMLEnumerationView",
