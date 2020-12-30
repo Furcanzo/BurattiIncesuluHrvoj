@@ -19,8 +19,8 @@ The \nameref{fig:ClassDiagram} provided above illustrates the system's core high
 
 
 The system is designed to be used by different types of users, the \textbf{Customer}s whom visit or plan to visit the \textbf{Store}, the \textbf{Manager}s who are responsible for handling management related tasks like providing store details, handling system stops, and the \textbf{Clerk}s who are on active duty for monitoring the entrance and exit of customers.
-All users on the system are identified with their \textit{e-mail}s and require their \textit{password}s to authenticate.
-The \textbf{Customer}s need to register to the system with their \textit{name}, \textit{surname} and \textit{phoneNumber}, in addition to the information required for authentication.
+All users on the system are identified with their \textit{e-mail}s and require SSO to authenticate, which is handled by the external SSO provider.
+The \textbf{Customer}s need to register to the system with their \textit{name}, \textit{surname}, \textit{email} and \textit{phoneNumber}, in addition to the information provided for the SSO.
 All \textbf{Line Number}s feature a unique \textit{id} and an actual \textit{number} that indicate their order in line.
 Customers can have many \textbf{Booked Line Number}s, limited by the \textit{reservationLimit}, from various stores, which provide many \textbf{Time Slot}s that the customers can select from under \textit{availableTimeSlots}, which then becomes the time slot the booking is \textit{on}.
 The line number is to be invalidated after \textit{timeoutMinutes} from its target time interval.
@@ -241,7 +241,7 @@ The manager is in charge of managing a particular store through the CLup applica
 \subsubsection{Domain Assumptions}
 
 \begin{itemize}
-    \item \textbf{$D_1$} \%80 of the customers and all clerks and managers have basic ICT skills, has an e-mail address that they are willing to use to authenticate to the system, and has a smartphone or equivalent device that can connect to the Internet, have a browser that supports UTF-8, display QR codes and has a mapping application.
+    \item \textbf{$D_1$} \%80 of the customers and all clerks and managers have basic ICT skills, has a user created on the SSO provider platform, and has a smartphone or equivalent device that can connect to the Internet, have a browser that supports UTF-8, display QR codes and has a mapping application.
     \item \textbf{$D_2$} Clerks' mobile devices are equipped with at least one camera that the system can use.
     \item \textbf{$D_3$} All users have a basic understanding of how the line numbering system works and respects the system's ordering.
     \item \textbf{$D_4$} Managers have an estimate for the number of reservations that their location can at most have.
@@ -260,6 +260,7 @@ The manager is in charge of managing a particular store through the CLup applica
 
 The application will be running on a server provided by the hosting provider.
 The application will be dependant on Maps API, of which the details will be determined later in the Design Document.
+The application will be dependant on an SSO provider, which will be detailed in the Design Document.
 
 \subsubsection{Constraints}
 % Maps API failure
