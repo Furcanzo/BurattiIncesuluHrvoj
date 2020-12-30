@@ -1,0 +1,173 @@
+\subsection{Purpose}
+% here we include the goals of the project
+
+\subsubsection{Description of the Proposed System}
+The project \" CLup - Customer Line up\" is a line spot reservation system that is planned to be used by managers, clerks and customers of many local vendors and chains.
+The system aims to come up with a handy solution for the ongoing issue of proper social distancing management particularly in the matter of grocery shopping, by providing assistance to cope with the customer load for managers and helping customers access to products in a safe and controlled manner.
+
+In particular, users will be able to see the locations, get a line number and book in advance for the grocery stores they would like to visit.
+Once assigned a line number, the customer will be able to track the estimated time of arrival of the line as well as will wait for the notification that informs about his or her line's forthcoming arrival, hence waiting time in the line in the crowd is minimum.
+Also, \"CLup\" provides uniquely generated QR codes per the line number, which can be utilized by the store managers as a proper monitoring tool in the entrances and exits of the locations.
+All in all, the general purpose of the product is to keep the congestion levels in lines of the locations at minimum via providing useful features for all the users.
+
+\subsubsection{Goals}
+
+\begin{itemize}
+    \item \textbf{$G_{1}$} Customers can issue a line number for a location.
+    \item \textbf{$G_{2}$} Customers can issue line numbers for their future visits.
+    \item \textbf{$G_{3}$} Customers can detail their visits by category and/or product.
+    \item \textbf{$G_{4}$} Customers can plan their visit to the store. % Provide ETA, location and how much people are in the store.
+    \item \textbf{$G_{5}$} Customers may prefer to use alternative time slots or partner stores for their visit.
+    \item \textbf{$G_{6}$} Managers can prevent customers from issuing line numbers. % System stop, schedule system stop
+    \item \textbf{$G_{7}$} Managers can customize the system to allow optimizations for increased granularity, flow control and time slot forecasting. % Settings, timeout
+    \item \textbf{$G_{8}$} Clerks and Managers can monitor the customers through their entrance and exits.
+    \item \textbf{$G_{9}$} Customers can obtain printed line number tickets.
+\end{itemize}
+% Manager:
+% Set the estimated customer number to be in the location (based on govt. regulations, space availability etc.)
+% Set the opening and closing hours of the store per day.
+% Set the in-shop location & categories of products in the location
+% Set the limit of reservation per customer per month, per day, per week
+% Set the location of the store
+% Add other chain members or partner stores
+% Observe the current amount of customers in the location.
+% Stop the system from issuing more tickets for a given day in case of an overflow or emergency
+% Schedule a system stop.
+% Set the timeout
+
+% Clerk:
+% Monitor the entrance and exit of customers with line numbers, by scanning their QR codes.
+% Print line numbers with QR code on them for the physically arriving customers who doesn't have a virtual ticket.
+
+% Customer:
+% Retrieve a direct line number for a location
+% Generate a QR code for entry
+% See an ETA, like 30 mins are left for your line number
+% View the location of the store to plan their trip
+% Book a future line number for a day
+% See the occupancy of the location for different time and day.
+% View the alternative slot suggestions for the visit planned
+% View the alternative slots available in near chain or partner stores
+% Set the categories, products of interest before visit for finer granularity.
+% Set the estimated time for visit.
+% See the amount of people currently in the store
+% Set user details, name, surname
+% View forecasted occupancy for time slots.
+
+% System:
+% Forecast the occupancy of store per time slot
+% Timeouts the line numbers when not registered for given timeout by manager.
+
+\subsection{Scope}
+
+\subsubsection{Targeted Users}
+
+CLup aims to resolve the problem of Customers queueing up in front of a location, without any control over the availability of place in the location and further contact tracing by the managers.
+\\[0.5cm]
+\textbf{Customer:} \\
+
+Customers will be able to obtain specific line numbers for various locations using CLup, which they can track the estimated time available with and also view the location on a map application to plan their visit.
+Customers can further obtain line numbers for future visits, based on the info provided by the system about the availability of free spots on the specific time intervals.
+They may prefer to visit a different branch of the same chain.
+Furthermore, they can provide specific products they intend to purchase or set an estimated time for their visit to allow finer granularity.
+Some customers may also prefer to obtain a line number upon visiting the store physically.
+To plan their visit in a time slot where the location will be less crowded, the users can see the occupancy of the location based on already taken line numbers and forecasts provided by the system.
+\\[0.5cm]
+\textbf{Clerk:} \\
+The clerk ( which can be a shopping assistant or a security detail) can monitor the flow of customers and manually intervene in case of missing line numbers via performing manual checkout for a specific customer, or by printing line numbers physically for some customers.
+\\[0.5cm]
+\textbf{Manager:} \\
+
+The location manager (which could be an actual manager, or someone responsible for handling customer management) can provide details regarding the availability of products and the location in general, by setting the opening hours, maximum allowed customers in shop, in-shop location of different products and categories, maximum amount of reservations that can be made per customer, line number timeout and the location.
+Also, for chains and relevant stores, the manager can add chain members for the location.
+
+\subsubsection{Relevant Phenomena}
+
+\begin{table}[H]
+    \begin{tabular}{|p{4cm}|p{4cm}|p{4cm}|}
+        \hline
+        \textbf{Phenomenon}    & \textbf{World / Machine}       & \textbf{Shared } \\ \hline
+        Line Number & Machine & Yes \\ \hline
+        Line Number Ticket & World & No \\ \hline
+        Product & World & No \\ \hline
+        Product Category & World & No \\ \hline
+        In-store Location & World & Yes \\ \hline
+        Occupancy Forecast & Machine & No \\ \hline
+        Store & World & Yes \\ \hline
+        Time Slot & Machine & Yes \\ \hline
+        Ticket Printer & World & Yes \\ \hline
+        Line Number Timer & Machine & No \\ \hline
+        Customer Scheduling Algorithm & Machine & No \\ \hline
+        % Line template:
+        %          &               &  \\ \hline
+    \end{tabular}
+    \caption{Relevant Phenomena of CLup}
+\end{table}
+
+% here we include an analysis of the world and of the shared phenomena
+
+
+\subsection{Definitions, Acronyms, Abbreviations}
+\subsubsection{Definitions}
+\begin{itemize}
+    \item \textit{Location}: the physical location of the business that operates the line reservation system
+    \item \textit{Manager}: the user in charge of executive action within the location
+    \item \textit{Customer}: the user with the goal of making a visit to the location
+    \item \textit{Clerk}: the user in charge of handling the entrance and exit of customers
+    \item \textit{Hard-coded Super User}: a single user that is used to create managers of locations administered by the software vendor
+    \item \textit{Visit Time}: the time interval in which a customer performs a visit to the location
+    \item \textit{Line Number}: A number that indicates the ordering of a specific customer in the line
+    \item \textit{Line Number Ticket}: A physical ticket printed that features the line number and the QR code.
+    \item \textit{Time Slot}: Specific intervals of time that are determined by the opening hours and average visit time per customer.
+    \item \textit{Partner Store}: A different location that is included in the same beneficiary chain of command (such as another member of the franchise or store chain) or in a mutual agreement with the specific location
+    \item \textit{Product}: Any item, items, service or services demanded by the customer, and provided by the location to the customer.
+    \item \textit{In-store Location}: A location of a specific product or a product category inside the location.
+    \item \textit{Working hours}: The time intervals that the store is open during each day.
+    \item \textit{Maps API}: A third-party mapping service implementation used for location tracking
+\end{itemize}
+\subsubsection{Acronyms}
+\begin{itemize}
+    \item \textbf{RASD}: Requirement Analysis and Specification Document
+    \item \textbf{QR Code}: Quick Response Code
+    \item \textbf{API}: Application Programming Interface
+    \item \textbf{SMTP}: Simple Mail Transfer Protocol % TODO: Find the reference for this and link in references.
+    \item \textbf{HTTP}: Hyper-Text Transfer Protocol
+    \item \textbf{REST}: REpresentational State Transfer
+    \item \textbf{JPA}: Java Persistance API
+    \item \textbf{JDBC}: Java DataBase Connectivity
+    \item \textbf{DBMS}: DataBase Management System
+    \item \textbf{JWT}: JSON Web Token
+    \item \textbf{ACID}: Atomicity, Consistency, Isolation, Durability
+    \item \textbf{ORM}: Object-Relational Mapping
+\end{itemize}
+\subsubsection{Abbreviations}
+\begin{itemize}
+    \item \textbf{$G_n$}: $n^{th}$ goal
+    \item \textbf{$D_n$}: $n^{th}$ domain assumption
+    % TODO: Do we need the one below?
+    \item \textbf{$R_n$}: $n^{th}$ functional requirement
+\end{itemize}
+\subsection{Revision history}
+
+
+\subsection{Reference Documents}
+\begin{itemize}
+    \item \href{https://beep.metid.polimi.it/documents/121843524/23d1869d-ab17-4e36-979e-f1ccbc59be24}{Specification Document: R\&DD Assignment AY 2020-2021}
+\end{itemize}
+
+
+\subsection{Document Structure}
+This document is composed of six sections, each with the purpose described below: \\
+\begin{itemize}
+    \item \textbf{Introduction}: This section provides an introduction of the problem, the scope of the project with details regarding the goals, target users and phenomena.
+        The goals of the project are formulated in accordance with the description of actions and actors in the Design Document.
+        Within the project's scope, properties and duties of different users and user groups are described in Target Users section.
+        Furthermore, under the scope of the project, the relevant phenomena of the project is presented through their relevance to the world and the machine.
+    \item \textbf{Architectural Design}:
+    \item \textbf{User Interface Design}:
+
+    \item \textbf{Requirements Traceability}:
+    \item \textbf{Implementation, Integration and Test Plan}:
+    \item \textbf{Effort Spent}: This section features the effort table, in which all team members provide a rough estimation on the time spent on creation of the various sections of the document.
+    \item \textbf{References}: This section features different reference materials referred inside this document.
+\end{itemize}
