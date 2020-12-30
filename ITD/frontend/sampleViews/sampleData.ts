@@ -30,11 +30,11 @@ export const bakery: Shop = {
     name: "Bakery",
     reservationLimit: {limit: 3, interval: TimeInterval.ONE_DAY},
     timeout: 30,
-    products: [
-        {name: "Bread", location: null, id: 1},
-        {name: "Sweets", location: null, id: 2},
-        {name: "Sandwiches", location: null, id: 3},
-        {name: "Coffee & Tea", location: null, id: 4}
+    productCategories: [
+        {name: "Breads", location: null, id: 1},
+        {name: "Pasteries", location: null, id: 2},
+        {name: "Snacks", location: null, id: 3},
+        {name: "Drinks", location: null, id: 4}
     ]
 }
 
@@ -45,11 +45,11 @@ export const restaurant: Shop = {
     name: "Restaurant",
     reservationLimit: {limit: 2, interval: TimeInterval.ONE_DAY},
     timeout: 45,
-    products: [],
+    productCategories: [],
 }
 export const lineNumberRequest: LineNumberRequest = {
     location: bakery,
-    products: [bakery.products[1], bakery.products[2]],
+    productCategories: [bakery.productCategories[1], bakery.productCategories[2]],
     time: timeSlots[0],
     estimatedTimeOfVisit: {hour: 0, minute: 15},
 }

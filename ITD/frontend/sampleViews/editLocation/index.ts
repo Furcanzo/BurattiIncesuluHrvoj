@@ -21,7 +21,7 @@ const layout = (state = undefined) => {
         centered(card(titleText("Edit Location", "2"), [
             row(formField(bakery.name, "Name", Nothing, "text")),
             row(formField(bakery.timeout.toString(), "Customer Ticket Timeout (minutes)", Nothing, "number")),
-            row(centered(card(titleText("Products"), largeColumn([...bakery.products.map(product => {
+            row(centered(card(titleText("Product Categories"), largeColumn([...bakery.productCategories.map(product => {
                 return inlineForm(row([
                     formField(product.name, "", (state, ev) => UpdateProduct(state, {...product, name: (ev.target as HTMLInputElement).value})),
                     button("Update", "success", Nothing),

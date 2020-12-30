@@ -46,7 +46,7 @@ export class Shop {
     timeout: number;
     maxCustomerCapacity: number;
     reservationLimit: ReservationLimit;
-    products: Product[];
+    productCategories: Product[];
 
 }
 
@@ -72,7 +72,7 @@ export class LineNumber {
 }
 
 export class LineNumberRequest {
-    products?: Product[];
+    productCategories?: Product[];
     location: Shop;
     time: TimeSlot;
     estimatedTimeOfVisit: Time;
