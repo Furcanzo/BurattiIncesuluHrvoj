@@ -240,3 +240,8 @@ export const fillWidth = (content: any) => {
 export const inlineForm = (content: any) => {
     return addClass(content, ["form-inline"]);
 }
+
+
+export const googleLoginButton = () => {
+    return html`<div class="g-signin2" data-onsuccess="onSignIn"></div>`; // TODO: onsuccess callback as a subscription
+}
