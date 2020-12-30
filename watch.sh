@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
+DOC=DD
+VERSION=1
 while :
 do
     clear
-    (cd RASD; pdflatex -halt-on-error main.tex)
+    (cd ${DOC}; pdflatex -halt-on-error main.tex; bibtex main; pdflatex -halt-on-error main.tex;pdflatex -halt-on-error main.tex)
     if [ $? -eq 0 ]
     then
-        mv RASD/main.pdf DeliveryFolder/RASD1.pdf
-        echo $(cd RASD; zip cache Files/* 1>/dev/null; md5 cache.zip) > date.iml;
-        rm ./RASD/cache.zip;
+        mv ${DOC}/main.pdf DeliveryFolder/${DOC}${VERSION}.pdf
     fi
     sleep 5
 done
