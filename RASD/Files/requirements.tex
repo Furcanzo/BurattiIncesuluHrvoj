@@ -188,14 +188,17 @@ Since the application will be browser based, the device should have an active in
         \textit{Actors} & Customer \\ \hline
         \textit{Entry conditions} & The customer opened the application, and they are not registered yet, and they want to register. \\ \hline
         \textit{Event flows}      & \tabitem The customer clicks on the "Sign Up" button. \\
-        & \tabitem The customer inserts their credentials. \\
+        & \tabitem The customer provides their authentication info to the SSO Provider. \\
+        & \tabitem The SSO Provider returns an ID Token to the user, if the user authentication was successful \\
+        & \tabitem The application sends the ID Token to the server, which in turn returns the Sign Up form. \\
         & \tabitem The application sends the information to the server. \\
         & \tabitem The server stores the data related to the user. \\
-        & \tabitem The server returns an acknowledgment to the app. \\
+        & \tabitem The server returns the created user to the app. \\
         \hline
         \textit{Exit conditions} & The customer is now registered and can use all the functionalities of the app. \\ \hline
         \textit{Exceptions} & \tabitem The e-mail provided in the registration form is already used by another user. \\
-        & \tabitem The credentials provided in the registration form are ill-formatted.\\
+        & \tabitem The SSO provider fails to authenticate the user. \\
+        & \tabitem Information provided in the registration form by the user is ill-formatted.\\
         \hline
     \end{tabular}
     \caption{Use Case: Sign up}
@@ -212,11 +215,13 @@ Since the application will be browser based, the device should have an active in
         \textit{Actors} & User \\ \hline
         \textit{Entry conditions} & The user has already signed up and wants to login to use CLup functionalities \\ \hline
         \textit{Event flows}     & \tabitem The customer clicks on the "Login" button\\
-        & \tabitem The user provides their login credentials. \\
-        & \tabitem The system authenticates the user \\
+        & \tabitem The user logs in to the external SSO provider. \\
+        & \tabitem Upon success, the SSO provider returns the user an ID Token. \\
+        & \tabitem The client forwards the ID Token to the server, which verifies the user through the SSO provider \\
+        & \tabitem The system finds and authenticates the user after the login is complete. \\
         \hline
-        \textit{Exit conditions} & The user is logged in and can now use all the CLup functionalities \\ \hline
-        \textit{Exceptions} & \tabitem The credentials are wrong \\
+        \textit{Exit conditions} & The user is logged in and can now use all the CLup functionalities. \\ \hline
+        \textit{Exceptions} & \tabitem The SSO Provider fails to authenticate the user.\\
         \hline
     \end{tabular}
     \caption{Use Case: Login}
@@ -491,8 +496,8 @@ Since the application will be browser based, the device should have an active in
 
 \subsubsection{Requirements}
 \begin{itemize}
-    \item \textbf{$R_{1}$} The system must allow users to authenticate using their e-mail address and password.
-    \item \textbf{$R_{2}$} The system must allow customers to register using their e-mail address, their name, surname, phone number, and a new password.
+    \item \textbf{$R_{1}$} The system must allow users to authenticate using an external SSO provider.
+    \item \textbf{$R_{2}$} The system must allow customers to register using their e-mail address, name, surname, and phone number after authenticating through SSO.
     \item \textbf{$R_{3}$} Managers must be able to add additional managers and clerks as users.
     \item \textbf{$R_{4}$} Managers must be able to set and update location-specific information, that is, the maximum number of customers in the location at any given time, opening and closing hours of the store per each day, line number timeout, the limit of reservation per customer on a predetermined time interval that is one of the month, week or day, and location of the place % One form
     \item \textbf{$R_{5}$} Managers can add any other location as a partner store.
@@ -509,7 +514,7 @@ Since the application will be browser based, the device should have an active in
     \item \textbf{$R_{16}$} Customers must be able to obtain line numbers for different time slots in the future.
     \item \textbf{$R_{17}$} Customers can not obtain line numbers for time intervals that the system is stopped by a manager.
     \item \textbf{$R_{18}$} Customers must be able to see the estimated time available for their line number.
-    \item \textbf{$R_{19}$} Customers must be able to set or update their phone number, password, name, and surname.
+    \item \textbf{$R_{19}$} Customers must be able to set or update their phone number, name, and surname.
     \item \textbf{$R_{20}$} Customers can select a specific product categories they plan to visit in the location while obtaining a line number.
     \item \textbf{$R_{21}$} Customers can set an estimated time for their visit while obtaining a line number.
     \item \textbf{$R_{22}$} Customers must be able to view the shop location
@@ -665,7 +670,7 @@ In case of upgrade or maintenance, the maintenance window will be out of busines
 
 System integrity or security should be sufficient to prevent unauthorized access to application functions, preventing information loss, ensure that the application is protected from virus infection, and protecting the privacy of data entered into the system.
 All user data must be encrypted before being stored.
-Furthermore, all passwords must be hashed.
+The user id must be verified between the server and SSO provider, before giving a user authorization.
 
 \subsubsection{Maintainability}
 % Testing practices on all levels
