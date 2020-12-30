@@ -26,7 +26,7 @@ Customers can have many \textbf{Booked Line Number}s, limited by the \textit{res
 The line number is to be invalidated after \textit{timeoutMinutes} from its target time interval.
 The \textbf{Store}'s \textbf{Location} is set by the \textbf{Manager} and observed by customers through a \textbf{Maps API}.
 The \textbf{Reservation Limit} imposes a customer can book a line number at most for some \textit{times} \ \textit{per} a specific \textbf{Reservation Limit Interval} (one of \textit{PER\_MONTH}, \textit{PER\_WEEK} or \textit{PER\_DAY}).
-Customers' visits can also feature different \textbf{Product}s or \textbf{Product Category}ies that they might want to visit under their line number's \textit{productsToVisit} and \textit{productCategoriesToVisit}, each having a \textit{name} and \textit{locatedAt} their own \textbf{In-store Location}.
+Customers' visits can also feature different \textbf{Product Category}ies that they might want to visit under their line number's \textit{productCategoriesToVisit}, each having a \textit{name} and \textit{locatedAt} their own \textbf{In-store Location}.
 \textbf{Clerks} can generate \textbf{Physical Line Numbers} for customers that do not have the app available for them.
 
 Below some scenarios, statecharts and their brief description are enumerated for the system's core and critical functionalities.
@@ -60,7 +60,7 @@ Using the app, he can plan his route and schedule to the location beforehand and
 
 The \nameref{fig:SDBookLine} represents the execution flow of one of the core use cases, namely booking a line number for the future.
 The customer books the line number by first listing what locations are available for them to book.
-Then, when a customer selects a location, they view the location's details, where they can add products or product categories to their target visit.
+Then, when a customer selects a location, they view the location's details, where they can add product categories to their target visit.
 The customer can then view the time slots that the system will generate specifically filtered for their visit based on the location's provided data and availability.
 When the customer selects a specific time slot, the system tries to book that specific location.
 If the system successfully allocates the desired time slot, it displays the success message and the customer's ticket.
@@ -193,7 +193,7 @@ Stores now have a restriction on the number of people they could let in.
 The CLup application helps people and the community prevent its users from waiting in long lines on the streets during pandemic conditions.
 It allows customers to schedule a visit to the store in their desired time slot if available.
 Each customer can register through the CLup application and then reserve his visit to the store.
-Furthermore, a customer can choose which products or products section he will buy and how long his shopping will approximately last.
+Furthermore, a customer can choose which product categories he will visit and how long his shopping will approximately last.
 After a customer has successfully scheduled his visit time, he will receive a line number, which he is obligated to show to enter the store.
 
 \subsubsection {Line number ticket entry}
@@ -205,7 +205,8 @@ To sum up, a customer with a scheduled store visit can visit the store at a sche
 \subsubsection {Store managment}
 Through the CLup application, the manager can edit all the store information such as location-specific information, the maximum number of customers in the store at any given time, opening and closing hours of the store per each day, line number timeout, and much more.
 Customers can see working hours and in-store occupancy, and therefore, they can visit the store at the desired time if available.
-The manager can also select which product categories or products are available at the store. By doing so, customers can know precisely in which store to go based on the products available.
+The manager can also select which product categories are available at the store.
+By doing so, customers can know precisely in which store to go based on the availability.
 
 \subsection{User characteristics}
 % User roles: Manager & User & Clerk (& maybe unregistered user?)
