@@ -21,11 +21,6 @@ const layout = (state = undefined) => {
     return wrapper(menu, [
         titleText("Register", "2"),
         centered(card(titleText("Please provide your details below", "4"), [
-            row(formField(newUser.email, "E-mail", Nothing, "email")),
-            row([
-                formField(newUser.password, "Password", Nothing, "password"),
-                formField(newUser.password, "Re-enter your password", Nothing, "password")
-            ]),
             row([
                 formField(newUser.name, "Your Name", Nothing, "text"),
                 formField(newUser.surname, "Your Surname", Nothing, "text"),
