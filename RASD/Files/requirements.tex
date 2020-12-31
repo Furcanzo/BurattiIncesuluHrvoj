@@ -494,6 +494,30 @@ Since the application will be browser based, the device should have an active in
     \caption{Sequence Diagram for Use Case: Add Manager}
 \end{figure}
 
+\subsubsection{Super User}
+\begin{table}[H]
+    \begin{tabular}{|p{8cm}|p{8cm}|}
+        \hline
+        \textit{Name}    & \textbf{Add User} \\ \hline
+        \textit{Actors} & Super User \\ \hline
+        \textit{Entry conditions} & The super user wants to add a new store and its manager to the system \\ \hline
+        \textit{Event flows}     & \tabitem The super user opens the "Add Store" tab\\
+        & \tabitem The system asks for the related data regarding the new store and its first manager.\\
+        & \tabitem The super user inserts the data and press "Submit" \\
+        \hline
+        \textit{Exit conditions} & The new store, along with its manager, is added to the system. \\ \hline
+        \textit{Exceptions} & \tabitem The data of the store or the manager are incomplete or incorrect \\
+        \hline
+    \end{tabular}
+    \caption{Use Case: Add Store}
+\end{table}
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.5\textwidth]{Images/SequenceDiagrams/SuperUserAddStore.png}
+    \caption{Sequence Diagram for Use Case: Add Store}
+\end{figure}
+
+
 \subsubsection{Requirements}
 \begin{itemize}
     \item \textbf{$R_{1}$} The system must allow users to authenticate using an external SSO provider.
@@ -522,6 +546,7 @@ Since the application will be browser based, the device should have an active in
     \item \textbf{$R_{24}$} Customers can see the alternative suggestions for time slots while obtaining a line number for the future.
     \item \textbf{$R_{25}$} Customers can view the partner stores occupancies' if the preferred time slot is not available while obtaining a line number.
     \item \textbf{$R_{26}$} The system must be able to provide a forecast for each location's occupancy for any given time based on past visits.
+    \item \textbf{$R_{27}$} The system must allow its supervisors to create stores and managers through super users.
 \end{itemize}
 
 
@@ -533,7 +558,7 @@ Since the application will be browser based, the device should have an active in
     \begin{tabular}{|p{1cm}|p{7cm}|p{7cm}|}
         \hline
         \textbf{Goal} & \textbf{Requirements} & \textbf{Domain Assumptions} \\ \hline
-        $G_{1}$ & $R_{1}$, $R_{2}$, $R_{3}$, $R_{4}$, $R_{5}$, $R_{8}$, $R_{10}$, $R_{11}$, $R_{13}$, $R_{14}$, $R_{15}$, $R_{16}$, $R_{17}$, $R_{19}$, $R_{20}$, $R_{21}$, $R_{24}$, $R_{25}$ & $D_{1}$, $D_{3}$, $D_{4}$, $D_{5}$, $D_{8}$, $D_{9}$ \\ \hline
+        $G_{1}$ & $R_{1}$, $R_{2}$, $R_{3}$, $R_{4}$, $R_{5}$, $R_{8}$, $R_{10}$, $R_{11}$, $R_{13}$, $R_{14}$, $R_{15}$, $R_{16}$, $R_{17}$, $R_{19}$, $R_{20}$, $R_{21}$, $R_{24}$, $R_{25}$, $R_{27}$ & $D_{1}$, $D_{3}$, $D_{4}$, $D_{5}$, $D_{8}$, $D_{9}$ \\ \hline
         $G_{2}$ & $R_{6}$, $R_{7}$, $R_{9}$, $R_{12}$, $R_{15}$, $R_{16}$, $R_{18}$, $R_{22}$, $R_{23}$, $R_{26}$ & $D_{2}$, $D_{3}$, $D_{6}$, $D_{7}$ \\ \hline
     \end{tabular}
     \caption{Summary Table}
@@ -563,6 +588,9 @@ Schedule a stop
 Stop for Emengency
 Add clerk
 Add manager
+
+Super User:
+Add store
 \fi
 \subsubsection{Tracability Matrix}
 \begin{table}[H]
@@ -600,6 +628,7 @@ Add manager
         $R_{24}$ & Book Future Line Number\\ \hline
         $R_{25}$ & Book Future Line Number\\ \hline
         $R_{26}$ & See Number of Customers in the Store\\ \hline
+        $R_{27}$ & Add Store \\ \hline
     \end{tabular}
     \caption{Tracability Matrix}
 \end{table}
