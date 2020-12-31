@@ -5,10 +5,10 @@
 The project "CLup - Customer Line up" is a line spot reservation system planned to be used by managers, clerks, and customers of many local vendors and chains.
 The system proposes a handy solution for the ongoing issue of proper social distancing management, particularly in grocery shopping, by providing assistance to cope with the customer load for managers and helping customers access stores in a safe and controlled manner.
 
-In particular, users will be able to see the locations, get a line number, and book in advance for the grocery stores they would like to visit.
+In particular, users will be able to see the stores, get a line number, and book in advance for the grocery stores they would like to visit.
 Once assigned a line number, the customer will track the estimated time of arrival of the line and wait for the notification that informs about his or her line's forthcoming arrival; hence waiting time in the line in the crowd is minimum.
 Also, "CLup" provides uniquely generated QR codes per the line number, which can be utilized by the store managers as a proper monitoring tool in the entrances and exits of the locations.
-The product's general purpose is to keep the congestion levels in line with the locations at a minimum via providing useful features for all the users.
+The product's general purpose is to keep the congestion levels in line with the stores at a minimum via providing useful features for all the users.
 
 
 
@@ -87,7 +87,7 @@ To implement the location-specific features of the system, due to the complexity
 
 The system is going to provide the following functions:
 \begin{itemize}
-    \item \textbf{$F_{1}$} Customers can issue a line number for a location.
+    \item \textbf{$F_{1}$} Customers can issue a line number for a store.
     \item \textbf{$F_{2}$} Customers can issue line numbers for their future visits.
     \item \textbf{$F_{3}$} Customers can detail their visits by category.
     \item \textbf{$F_{4}$} Customers can plan their visit to the store.
@@ -99,23 +99,23 @@ The system is going to provide the following functions:
 \end{itemize}
 
 \subsubsection{Targeted Users}
-"CLup" aims to resolve the problem of Customers queueing up in front of a location, without control of availability of place in the location and future contact tracing by managers.
+"CLup" aims to resolve the problem of Customers queueing up in front of a store, without control of availability of place in the store and future contact tracing by managers.
 \\[0.5cm]
 
 \textbf{Customer:} \\
-Customers will be able to obtain specific line numbers for various locations using CLup, which they can track the estimated time available with and also view the location on a map application to plan their visit.
+Customers will be able to obtain specific line numbers for various stores using CLup, which they can track the estimated time available with and also view the location on a map application to plan their visit.
 Customers can further obtain line numbers for future visits, based on the system's info about the availability of free spots on the specific time intervals.
 They may prefer to visit a different branch of the same chain.
 Furthermore, they can provide specific product categories they intend to purchase or set an estimated time for their visit to allow finer granularity.
 Some customers may also prefer to obtain a line number upon visiting the store physically.
-To plan their visit in a time slot where the location will be less crowded, the users can see the location's occupancy based on already taken line numbers and forecasts provided by the system.
+To plan their visit in a time slot where the store will be less crowded, the users can see the store's occupancy based on already taken line numbers and forecasts provided by the system.
 \\[0.5cm]
 \textbf{Clerk:} \\
 The clerk (which can be a shopping assistant or a security detail) can monitor customers' flow and manually intervene in case of missing line numbers via performing manual checkout for a specific customer or by printing line numbers physically for some customers.
 \\[0.5cm]
 \textbf{Manager:} \\
-The location manager (which could be an actual manager or someone responsible for handling customer management) can provide details regarding the availability of products and the location in general, by setting the opening hours, maximum allowed customers in the shop, in-shop location of different product categories, the maximum amount of reservations that can be made per customer, line number timeout and the location.
-Also, for chains and relevant stores, the manager can add chain members for the location.
+The store manager (which could be an actual manager or someone responsible for handling customer management) can provide details regarding the availability of products and the store in general, by setting the opening hours, maximum allowed customers in the shop, in-shop location of different product categories, the maximum amount of reservations that can be made per customer, line number timeout and the location.
+Also, for chains and relevant stores, the manager can add chain members for the store.
 \textbf{Super User:} \\
 In order to use the CLup application, store or business owners should contact CLup Super User who will give them permission to use the application and create a Manager account for them.
 
@@ -155,16 +155,16 @@ Since the entities that solely exist in the world and solely in the system won't
 \subsection{Definitions, Acronyms, Abbreviations}
 \subsubsection{Definitions}
 \begin{itemize}
-    \item \textit{Location}: The physical location of the business that uses the line reservation system
-    \item \textit{Manager}: A person in charge of executive action within the location
-    \item \textit{Customer}: A person to visit the location
+    \item \textit{Store}: The physical location of the business that uses the line reservation system
+    \item \textit{Manager}: A person in charge of executive action within the store
+    \item \textit{Customer}: A person to visit the store
     \item \textit{Clerk}: A person in charge of handling the entrance and exit of customers. This user can be replaced by a QR code totem or a similar device for customers to directly interact with instead.
-    \item \textit{Visit Time}: The time interval in which a customer performs a visit to the location
+    \item \textit{Visit Time}: The time interval in which a customer performs a visit to the store
     \item \textit{Super User}: A user assigned by the company hosting the system to grant manager access to certain users.
     \item \textit{Line Number}: A number that indicates the ordering of a specific customer in the line % Rephrase
     \item \textit{Line Number Ticket}: A physical ticket printed that features the line number and the QR code.
     \item \textit{Time Slot}: Specific intervals of time in which a customer can schedule their visits determined by the opening hours.
-    \item \textit{Partner Store}: A different location included in the same beneficiary chain of command (such as another member of the franchise or store chain) or a mutual agreement with the specific location
+    \item \textit{Partner Store}: A different store included in the same beneficiary chain of command (such as another member of the franchise or store chain) or a mutual agreement with the specific store
     \item \textit{Product}: Any item, items, service or services demanded by the customer, and provided by the store to the customer.
     \item \textit{In-store Location}: A location of a specific product category inside the store.
     \item \textit{Working hours}: The time intervals that the store is open during each day.
