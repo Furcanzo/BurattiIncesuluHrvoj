@@ -40,10 +40,9 @@ offered by the backend are completely defined.\\
     \label{fig:Backend}
 \end{figure}
 \nameref{fig:Backend} shows how the subcomponents of the Backend component are dependent on each other. \\
-In particular we can see that the first component to implement is the JPA that is needed to map the entities of the database in Objects
-using ORM. This is fundamental because as said before all the services rely on the data in the database and the JPA is
+In particular we can see that the first component to implement is the ORM component that is needed to map the entities of the database in Objects. This is fundamental because as said before all the services rely on the data in the database and the ORM is
 the way used by our system to connect the database to the backend.\\
-The routing component defines the functionalities of the services that are showed to the user and acts as a bridge from the backend
+The REST endpoints define the functionalities of the services that are showed to the user and acts as a bridge from the backend
 to the frontend.
 This can be implemented independently of the actual services, but it's easier to implement this component before the services because
 it can show immediately the functions that need to be implemented.\\
@@ -72,10 +71,10 @@ The OccupancyForecaster and the MailClient are completely independent from the o
 \nameref{fig:Summary} is a summary of the graphs showed before and represent all the dependencies within component in the system.
 
 \subsection{Test plan}
-% add something else?
 In this section is described how the system will be tested. \\
 For which concerns unit testing, the system will be developed using test driven development, so the tests will be written before writing the code.
 This is relatively easy for the frontend logic, while requires the implementation of stubs and drivers for the backend modules.
 Integration tests are needed only when a new component with a strong dependency, according to the definition of strong dependency
 given in the previous section, is added to the system.
-Then there will be end to end testing using browser emulators conform to standards.
+Then there will be end to end testing to validate that the components can work together and finally a system test will be performed
+using browser emulators conform to standards.
