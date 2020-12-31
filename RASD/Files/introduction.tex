@@ -76,6 +76,7 @@ The system is expected to implement the following features, which are detailed i
     They can administer the time slots for their customers by setting the opening and closing hours, with possible breaks in between.
     They can administer the partner stores of their stores if they exist, for their customers to select instead.
     They can enable the reservation limit to prevent any customer from abusing the system by setting the limit for how many tickets a customer can generate per a given time interval of a month, a week, or a day.
+    The stores are to be created by the Super User, while granting access to the first manager.
 \end{itemize}
 
 The system is expected to be delivered in two parts, a client application, and a server.
@@ -116,7 +117,7 @@ The clerk (which can be a shopping assistant or a security detail) can monitor c
 The location manager (which could be an actual manager or someone responsible for handling customer management) can provide details regarding the availability of products and the location in general, by setting the opening hours, maximum allowed customers in the shop, in-shop location of different product categories, the maximum amount of reservations that can be made per customer, line number timeout and the location.
 Also, for chains and relevant stores, the manager can add chain members for the location.
 \textbf{Super User:} \\
-In order to use the CLup application, store or buisness owners should contact CLup Super User who will give them permission to use the application and create a Manager account for them.
+In order to use the CLup application, store or business owners should contact CLup Super User who will give them permission to use the application and create a Manager account for them.
 
 \subsubsection{Relevant Phenomena}
 
@@ -159,6 +160,7 @@ Since the entities that solely exist in the world and solely in the system won't
     \item \textit{Customer}: A person to visit the location
     \item \textit{Clerk}: A person in charge of handling the entrance and exit of customers. This user can be replaced by a QR code totem or a similar device for customers to directly interact with instead.
     \item \textit{Visit Time}: The time interval in which a customer performs a visit to the location
+    \item \textit{Super User}: A user assigned by the company hosting the system to grant manager access to certain users.
     \item \textit{Line Number}: A number that indicates the ordering of a specific customer in the line % Rephrase
     \item \textit{Line Number Ticket}: A physical ticket printed that features the line number and the QR code.
     \item \textit{Time Slot}: Specific intervals of time in which a customer can schedule their visits determined by the opening hours.
