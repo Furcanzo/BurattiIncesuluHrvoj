@@ -14,12 +14,8 @@
 
 % Unit tests (TDD), End2End, Browser Emulators conform to standards,
 
-\subsection{Overview}
-
-\subsection{Implementation}
-
-\subsection{Integration}
-In this section is presented the implementation plan of the entire system, especially the order in which the components are implemented based on their dependencies.\\
+\subsection{Implementation and Integration}
+In this section is presented the implementation and integration plan of the entire system, especially the order in which the components are implemented based on their dependencies.\\
 The dependencies are shown at three different level of abstraction: entire System, Backend, Services. \\
 In the following graphs are shown two types of dependencies: strong dependency and weak dependency.\\
 A strong dependency is represented with a continue arrow and represent the fact that the followed component needs the previous one to work.\\
@@ -27,7 +23,7 @@ A weak dependency instead is represented with a dashed arrow and indicates that 
 \\
 \begin{figure}[H]
     \centering
-    \includegraphics[height=0.4\textwidth]{Images/IntegrationAndTestingPlan/System.png}
+    \includegraphics{Images/IntegrationAndTestingPlan/System.png}
     \caption{Entire System}
     \label{fig:System}
 \end{figure}
@@ -39,7 +35,7 @@ offered by the backend are completely defined.\\
 \\
 \begin{figure}[H]
     \centering
-    \includegraphics[height=0.4\textwidth]{Images/IntegrationAndTestingPlan/Backend.png}
+    \includegraphics{Images/IntegrationAndTestingPlan/Backend.png}
     \caption{Backend}
     \label{fig:Backend}
 \end{figure}
@@ -75,6 +71,11 @@ The OccupancyForecaster and the MailClient are completely independent from the o
 \end{figure}
 \nameref{fig:Summary} is a summary of the graphs showed before and represent all the dependencies within component in the system.
 
-
-
-
+\subsection{Test plan}
+% add something else?
+In this section is described how the system will be tested. \\
+For which concerns unit testing, the system will be developed using test driven development, so the tests will be written before writing the code.
+This is relatively easy for the frontend logic, while requires the implementation of stubs and drivers for the backend modules.
+Integration tests are needed only when a new component with a strong dependency, according to the definition of strong dependency
+given in the previous section, is added to the system.
+Then there will be end to end testing using browser emulators conform to standards.
