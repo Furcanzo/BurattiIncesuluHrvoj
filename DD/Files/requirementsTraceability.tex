@@ -1,4 +1,51 @@
 \subsection{Functional Requirements}
-% For each R_x indicate which component(s) resolve problems
+In this subsection each requirement specified in the RASD document is matched with the appropriate component's role on satisfying the requirement.
+% Some requirements may involve integrations with external components, so those components are also included in the list.
+The choice of the design elements has been made in order to guarantee the satisfaction of all the requirements, and, consequently the fulfillment of all the goals.
+The components of the client application are not included in this list, as the client application acts as a view layer on top of the application logic in the server, and doesn't contain any significant application logic within itself.
+
+\begin{table}[h]
+    \begin{tabular}{|p{2cm}|p{10cm}|p{4cm}|}
+        \hline
+        & Requirement & Components \\ \hline
+        % Line template:
+        %          &               &                   &                  &                                                    \\ \hline
+        $R_{1}$ & The system must allow users to authenticate using an external SSO provider. &  \textbf{UserManager} \\ \hline
+        $R_{2}$ & The system must allow customers to register using their e-mail address, name, surname, and phone number after authenticating through SSO. & \textbf{UserManager} \\ \hline
+        $R_{3}$ & Managers must be able to add additional managers and clerks as users. & \textbf{UserManager} \\ \hline
+        $R_{4}$ & Managers must be able to set and update location-specific information, that is, the maximum number of customers in the location at any given time, opening and closing hours of the store per each day, line number timeout, the limit of reservation per customer on a predetermined time interval that is one of the month, week or day, and location of the place & \textbf{StoreManager} \\ \hline
+        $R_{5}$ & Managers can add any other location as a partner store. & \textbf{StoreManager} \\ \hline
+        $R_{6}$ & Managers can stop the system from issuing any more tickets for a given day & \textbf{StoreManager}, \textbf{LineNumberManager} \\ \hline
+        $R_{7}$ & Managers can schedule the system stop for a future time. & \textbf{StoreManager}, \textbf{LineNumberManager} \\ \hline
+        $R_{8}$ & Managers can set in-shop locations for different product categories. & \textbf{StoreManager} \\ \hline
+        $R_{9}$ & In case of a system stop, no other line numbers can be issued for the given time slots. & \textbf{LineNumberManager} \\ \hline
+        $R_{10}$ & In case of a system stop, all line numbers in the stop time slots have to be canceled. &  \textbf{StoreManager}, \textbf{LineNumberManager} \\ \hline
+        $R_{11}$ & The system must cancel those line numbers that the customer did not arrive at the store for more than the set timeout interval. & \textbf{LineNumberManager} \\ \hline
+        $R_{12}$ & In case of ticket cancellation, the customer must be notified with an e-mail notification. & \textbf{LineNumberManager}, \textbf{UserManager}, \textbf{Email Server} \\ \hline
+        $R_{13}$ & Clerks must register the customers' entrance and exit via scanning the QR code for their line number. & \textbf{LineNumberManager} \\ \hline
+        $R_{14}$ & Clerks must be able to generate line number tickets in a compatible printer format. &  \textbf{LineNumberManager} \\ \hline
+
+    \end{tabular}
+\end{table}
+\begin{table}[H]
+    \begin{tabular}{|p{2cm}|p{10cm}|p{4cm}|}
+        \hline
+        & Requirement & Components \\ \hline
+
+        $R_{15}$ & Customers must be able to obtain a line number, except when the system is stopped or the store is full. & \textbf{LineNumberManager} \\ \hline
+        $R_{16}$ & Customers must be able to obtain line numbers for different time slots in the future. &  \textbf{LineNumberManager} \\ \hline
+        $R_{17}$ & Customers can not obtain line numbers for time intervals that the system is stopped by a manager. & \textbf{LineNumberManager} \\ \hline
+        $R_{18}$ & Customers must be able to see the estimated time available for their line number. & \textbf{LineNumberManager} \\ \hline
+        $R_{19}$ & Customers must be able to set or update their phone number, name, and surname. & \textbf{UserManager} \\ \hline
+        $R_{20}$ & Customers can select a specific product categories they plan to visit in the location while obtaining a line number. & \textbf{LineNumberManager}, \textbf{StoreManager} \\ \hline
+        $R_{21}$ & Customers can set an estimated time for their visit while obtaining a line number. & \textbf{LineNumberManager} \\ \hline
+        $R_{22}$ & Customers must be able to view the shop location & \textbf{StoreManager} \\ \hline
+        $R_{23}$ & Customers can view the occupation forecasts for the location at different time slots. & \textbf{StoreManager}, \textbf{OccupancyForecaster} \\ \hline
+        $R_{24}$ & Customers can see the alternative suggestions for time slots while obtaining a line number for the future. & \textbf{StoreManager}, \textbf{OccupancyForecaster} \\ \hline
+        $R_{25}$ & Customers can view the partner stores occupancies' if the preferred time slot is not available while obtaining a line number. & \textbf{StoreManager} \\ \hline
+        $R_{26}$ & The system must be able to provide a forecast for each location's occupancy for any given time based on past visits. & \textbf{OccupancyForecaster} \\ \hline
+        $R_{27}$ & The system must allow its supervisors to create stores and managers through super users. & \textbf{StoreManager}, \textbf{UserManager} \\ \hline
+    \end{tabular}
+\end{table}
 \subsection{Non-functional Requirements}
-% Write text about how each non-functional requirement is satisfied.
+
