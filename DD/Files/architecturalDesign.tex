@@ -23,7 +23,7 @@ Therefore, it is provided as one component that is unnecessary to split into sub
 The components separate the functionality into three domains, namely Line Numbers, Users and Stores.
 All other entities that exist in the system are included into one of these domains based on their relevance.
 All the user facing functionalities of the system are exposed through the REST endpoint, which uses a router interface to route each request to the domain component it belongs to.
-All domain components use JPA to persist their domain data structures, and components that require to send e-mails use the SMTP endpoint to do so.
+All domain components use the ORM to persist their domain data structures, and components that require to send e-mails use the SMTP endpoint to do so.
 The OccupancyForecaster is a component that features only one function: periodically reading the database for entry and exit records of customers and updating the store accordingly.
 Therefore, it is not split further into components.
 \begin{figure}[H]
@@ -38,7 +38,7 @@ This component is further divided into following sub-components to increase the 
 \begin{itemize}
     \item \textbf{PhysicalLineNumberGenerator}: This component exists to provide an interface for clerks to generate line numbers, it's interface handles the incoming request by generating and persisting a new ticket for the to-be-printed line number.
     \item \textbf{LineNumberScheduler}: This component exists to allow the users of the system to book a line number from their home.
-    It realizes its functionality through connecting to the same interface of the persistence provider, however it is capable of handling more complex requests, including custom product or category selection and time slot allocation.
+    It realizes its functionality through connecting to the same interface of the persistence provider, however it is capable of handling more complex requests, including custom product category selection and time slot allocation.
     Furthermore, it registers the ticket to the LineNumberInvalidator to be invalidated after the set timeout minutes have passed from the time slot.
     \item \textbf{LineNumberInvalidator}: This component acts as a helper component to LineNumberScheduler.
     It schedules the invalidation of the scheduled tickets, so that the invalidation can occur asynchronously.
@@ -246,6 +246,19 @@ As the client app retrieves the data, it updates the monitoring tab that the man
 % You can use sequence diagrams to describe the way components interact to accomplish specific tasks typically related to your use cases
 
 % Main use cases with sequence diagrams indicating relations of each diagram to one another.
+\subsubsection{Create Store}
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.4\textwidth]{Images/SequenceDiagrams/CreateStore.png}
+    \caption{Sequence Diagram for Create Store}
+    \label{fig:SDCreateStore}
+\end{figure}
+\nameref{fig:SDCreateStore} displays the interactions needed to create a new store and its manager by the super user.
+When the super user requests the create store tab, the application returns the tab with the appropriate form for the information regarding the store and the manager of the store.
+After the submit, the client application calls the appropriate method in StoreDetailsRepository, which in turn yields the manager information to the method call in the UserRepository.
+The event flow from there is the same as \nameref{fig:SDAddStaffMember}.
+When the user is created, the StoreDetailsRepository creates the new store, given the newly created manager and the info provided by the super user.
+Finally, when the store is created, the update is propagated to the Client Application, which displays a success message to the user.
 
 \subsection{Component interfaces}
 % TODO: Ozan for 2 week
@@ -259,11 +272,16 @@ In this diagram, many entities in function inputs are represented as they are (l
 The DateTime used in this diagram is a general name for any implementation for a structure to store a specific time conforming to the standard \cite{}.
 In the diagram, representations for errors that might be returned from the operations are omitted (such as access right problems, network errors), for simplification purposes, along with specific errors (such as conflicts).
 % Diagram here
-
-Details regarding the interfaces in () are:
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.4\textwidth]{Images/ComponentInterfacesDiagram.png}
+    \caption{Component Interfaces Diagram}
+    \label{fig:ComponentInterfaces}
+\end{figure}
+Details regarding the interfaces in \nameref{fig:ComponentInterfaces} are:
 \begin{itemize}
-    \item \textbf{JPA}: \\
-    This component represents the functionalities that are implemented in the JPA code that is used to communicate with the database.
+    \item \textbf{ORM}: \\
+    This component represents the functionalities that are implemented in the ORM code that is used to communicate with the database.
     It should be noted that these operations represent the first abstraction layer of the underlying database towards the data model, thus they consist of the most primitive building blocks to realize the actions to be performed on the domain.
     The underlying realization of the SQL queries while executing these operations are also considered, and one-to-one mapping between the operations and queries are implemented in order to compensate for the atomicity of the calls made to this interface.
     The \textit{getDetails} methods are implemented to provide an interface to resolve the lazy entities of \textit{LineNumber}s and \textit{Store}s, such as \textit{productCategories} or \textit{partnerStores}.
@@ -306,6 +324,12 @@ For the sake of simplicity, the unique \textit{id}s of entities are not shown.
 These \textit{id}s don't have any special requirements, thus can be auto-generated using built-in generation mechanisms existing in SQL database implementations.
 The diagram is similar to the one in RASD, however features more implementation details.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.4\textwidth]{Images/ClassDiagram.png}
+    \caption{Class Diagram}
+    \label{fig:ClassDiagram}
+\end{figure}
 % Diagram here
 
 The \textbf{LineNumberStatus} indicates the current \textbf{LineNumber}'s status.
