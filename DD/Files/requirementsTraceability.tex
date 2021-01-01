@@ -49,3 +49,15 @@ The components of the client application are not included in this list, as the c
 \end{table}
 \subsection{Non-functional Requirements}
 
+This subsection describes the correspondence between the non-functional requirements stated in the RASD document and the design choices given in this document, such as design constraints and software system attributes.
+
+The application is to be built using the client-server architecture with the aim of providing a Thick-Server, considering that the requirements document targets the application to run on a wide range of devices and browsers, decreasing the amount of logic would decrease the cost of adapting the client application for different environments.
+The application's UserManager handles all the requests regarding system users and it doesn't allow direct access to raw customer data through outside of the application server, enabling compatibility with the regulations regarding how the user data should be collected and processed.
+The split between the services and the freedom to implement backend and frontend services separately allows flexibility for the development schedule, which in turn allows the system to be built faster, decreasing the development time to be able to target the time frame for development, namely before the end of COVID-19 crisis, aforementioned in the RASD.
+The system tests executed on browser emulators shall further provide confidence for not having problems on different target devices that the system should run on.
+To prevent many SQL-related attacks, the database transactions are to be handled by an ORM, instead of providing custom SQL code implementations, to improve system security.
+To allow the system to be available, the database is defined to follow the ACID principles.
+Furthermore, in order to scale the system seamlessly and provide location based fault-tolerance, logical sharding pattern is to be implemented, which allows the system to be partially available in different regions even if a problem in one of the regions were to take down the system for that region, thus inceasing the availability of the system.
+
+
+
