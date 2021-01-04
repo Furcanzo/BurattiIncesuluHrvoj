@@ -1,5 +1,4 @@
 \subsection{Overview}
-%TODO @Hrvoje
 % High-level components and their interaction% High-level components and their interaction
 The application is divided in three logical layers:
 \subsubsection{Presentation layer}
@@ -440,8 +439,7 @@ If, for any case, the customers' ticket becomes invalid (due to time slot change
 The \textit{entryTime} and \textit{exitTime} are used to store the time interval that the customer has entered to the store and exited, to allow better monitoring.
 The features to time out the tickets after some time, reservation limiting, and product category selection to increase granularity of visit can be enabled or disabled by the manager.
 Thus, on the class \textbf{Store} attributes related to these features (\textit{reservationLimit}, \textit{timeoutMinutes} and \textit{productCategories}) have to multiplicity of $0..1$ to demonstrate this ability.
-The representation of the location on the diagram is given as the Latitude and Longitude on the Earth, according to ISO 6709.
-% TODO: Reference
+The representation of the location on the diagram is given as the Latitude and Longitude on the Earth, according to ISO 6709 \cite{isogeo}.
 The latitude and longitude are limited with 4 decimal points, since this provides a precision of at least 12 meters on the Earth, which is in the range provided by $D_{5}$.
 % Source: https://en.wikipedia.org/wiki/Decimal_degrees
 The \textbf{OccupancyForecast} is implemented as an estimated indication of amount of customers per time slot.
@@ -458,8 +456,7 @@ In order to facilitate, a screenshot may be provided in the system of such inter
 
 \subsubsection{Thick-Server}
 Many transaction that occur on the system requires checks to be performed on data, thus these transactions needs to be handled on the server.
-Although basic data validation (such as verifying e-mail addresses conform to RFC 822) is possible and better yielded to the client, consistency checks (such as preventing customer overflow) requires a thick-server model.
-% TODO Reference: RFC822: https://tools.ietf.org/html/rfc822
+Although basic data validation (such as verifying e-mail addresses conform to RFC 3696 \cite{ietfmailformat}) is possible and better yielded to the client, consistency checks (such as preventing customer overflow) requires a thick-server model.
 % All transactions occur in server side
 \subsubsection{Logical Sharding}
 Since the data on the system is either strictly location dependant (stores and any subsidiaries exist in a specific province or country) or changes location rarely (Customers don't switch countries or provinces often), the data plane can be logically sharded based on location if necessary.
@@ -490,6 +487,11 @@ To facilitate the development of the system, instead of hand crafting database q
 
 The database operation is based on the ACID principles, since the core system doesn't require asynchronous data synchronization with any other external components.
 Furthermore, as the system will implement Logical Sharding, there wouldn't be a need for increasing the partitions of the database, thus the system will not suffer from the limits of the CAP theorem.
+
+\subsubsection{SMTP}
+The server needs to dispatch emails that doesn't need to be responded to, thus creating mailboxes to collect user emails via protocols such as POP3 or IMAP is not required for the proposed system to function.
+Thus, as the mailer protocol SMTP\cite{ietfsmtp} is used for it's wide adoption as an internet standard and simplicity.
+
 % \subsubsection{Single Sign-On}
 
 % In order to decrease the security risks and decrease the cost, the system is to implement SSO
