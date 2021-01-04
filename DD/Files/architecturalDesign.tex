@@ -55,7 +55,7 @@ Therefore, it is provided as one component that is unnecessary to split into sub
 The components separate the functionality into three domains, namely Line Numbers, Users and Stores.
 All other entities that exist in the system are included into one of these domains based on their relevance.
 All the user facing functionalities of the system are exposed through the REST endpoint, which uses a router interface to route each request to the domain component it belongs to.
-All domain components use JPA to persist their domain data structures, and components that require to send e-mails use the SMTP endpoint to do so.
+All domain components use the ORM to persist their domain data structures, and components that require to send e-mails use the SMTP endpoint to do so.
 The OccupancyForecaster is a component that features only one function: periodically reading the database for entry and exit records of customers and updating the store accordingly.
 Therefore, it is not split further into components.
 \begin{figure}[H]
@@ -70,7 +70,7 @@ This component is further divided into following sub-components to increase the 
 \begin{itemize}
     \item \textbf{PhysicalLineNumberGenerator}: This component exists to provide an interface for clerks to generate line numbers, it's interface handles the incoming request by generating and persisting a new ticket for the to-be-printed line number.
     \item \textbf{LineNumberScheduler}: This component exists to allow the users of the system to book a line number from their home.
-    It realizes its functionality through connecting to the same interface of the persistence provider, however it is capable of handling more complex requests, including custom product or category selection and time slot allocation.
+    It realizes its functionality through connecting to the same interface of the persistence provider, however it is capable of handling more complex requests, including custom product category selection and time slot allocation.
     Furthermore, it registers the ticket to the LineNumberInvalidator to be invalidated after the set timeout minutes have passed from the time slot.
     \item \textbf{LineNumberInvalidator}: This component acts as a helper component to LineNumberScheduler.
     It schedules the invalidation of the scheduled tickets, so that the invalidation can occur asynchronously.
@@ -117,6 +117,8 @@ To seperate responsibility on different actions to be performed on the system, t
     The component is responsible for calling the shared UserFactory to create a customer user and send the customer a welcome email.
     \item \textbf{UserFactory}: This component acts as a common interface and as a factory to create users.
     It is used by the components mentioned above to introduce new users to the system.
+    \item \textbf{CustomerRepository}: This component handles all updates and information requests for the Customers.
+    The Customers' creation is split to a different component because it requires custom implementations for emailing and interfacing with UserFactory.
 \end{itemize}
 % Component diagram combining all components and each component having it's subcomponents in a different diagram with explanations
 \subsection{Deployment view}
@@ -158,6 +160,10 @@ Relational constraints can improve the quality and
 integrity of the content of the database.
 
 \subsection{Runtime view}
+In the following diagrams, the interactions between components for different functionalities of the system is demonstrated.
+UML Sequence Diagrams are used to indicate specific message, data flow and ordering of the specified messages between components.
+Error flows for already existing entries (such as creating a user while the user exists) are omitted for simplification purposes.
+Also, components regarding routing and authorization (unless explicity stated) are omitted for simplication.
 
 \subsubsection{Sign Up}
 \begin{figure}[H]
@@ -204,7 +210,6 @@ After successfully editing his information and submitting them the Client Applic
 After that, a Customer will be logged in to the CLup application and can use all its functionalities.
 
 
-
 % Customer
 \subsubsection{Book Future Line Number}
 \begin{figure}[H]
@@ -248,7 +253,6 @@ The customer request to the client application the information of a store, inclu
 The client application forwards the request to the StoreManager that retrieve the information from the database and returns it to the application.
 The client application before returning the information to the customer contacts Google Map to calculate the route to the store.
 
-% Manager TODO: Ozan
 \subsubsection{Add Staff Member}
 
 \begin{figure}[H]
@@ -292,7 +296,7 @@ When the response from DBMS is retrieved the SystemStopCoordinator starts sendin
     \label{fig:SDUpdateStoreInformation}
 \end{figure}
 \nameref{fig:SDUpdateStoreInformation} shows the interactions between the components of the related parts of the system to update store information by the manager.
-When the manager requests to see the information for the store, the client application displays the related information with an update button.
+When the manager requests to see the information for the store, the client application displays the related information with an update button, the information which it needs to pull from the server through StoreDetailsRepository.
 Upon trigger of the button, the CLup Application shows the editing form for the general information about the store, with the current values already pre-filled.
 Optionally, from this moment, if the manager wants to update the store's location, they can do so by pressing the update location button, which in turn, triggers the Google Maps component to show the location selector.
 Once the manager sets the new location, the service returns the new location selected by the manager, to be updated on the form.
@@ -344,9 +348,21 @@ If there are no available time slots for the day the Customer may not be able to
 
 
 % Main use cases with sequence diagrams indicating relations of each diagram to one another.
+\subsubsection{Create Store}
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.4\textwidth]{Images/SequenceDiagrams/CreateStore.png}
+    \caption{Sequence Diagram for Create Store}
+    \label{fig:SDCreateStore}
+\end{figure}
+\nameref{fig:SDCreateStore} displays the interactions needed to create a new store and its manager by the super user.
+When the super user requests the create store tab, the application returns the tab with the appropriate form for the information regarding the store and the manager of the store.
+After the submit, the client application calls the appropriate method in StoreDetailsRepository, which in turn yields the manager information to the method call in the UserRepository.
+The event flow from there is the same as \nameref{fig:SDAddStaffMember}.
+When the user is created, the StoreDetailsRepository creates the new store, given the newly created manager and the info provided by the super user.
+Finally, when the store is created, the update is propagated to the Client Application, which displays a success message to the user.
 
 \subsection{Component interfaces}
-% TODO: Ozan for 2 week
 In the following UML Class Diagram, the main interactions between components have been shown.
 The diagram's scope is mainly the application server and the peripheral services that the server communicates to function correctly.
 The front-end interfaces are not included as they only act as a mean of communicating the server functions to the end user, thus they do not include any specific functionality implemented.
@@ -357,11 +373,16 @@ In this diagram, many entities in function inputs are represented as they are (l
 The DateTime used in this diagram is a general name for any implementation for a structure to store a specific time conforming to the standard \cite{}.
 In the diagram, representations for errors that might be returned from the operations are omitted (such as access right problems, network errors), for simplification purposes, along with specific errors (such as conflicts).
 % Diagram here
-
-Details regarding the interfaces in () are:
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.4\textwidth]{Images/ComponentInterfacesDiagram.png}
+    \caption{Component Interfaces Diagram}
+    \label{fig:ComponentInterfaces}
+\end{figure}
+Details regarding the interfaces in \nameref{fig:ComponentInterfaces} are:
 \begin{itemize}
-    \item \textbf{JPA}: \\
-    This component represents the functionalities that are implemented in the JPA code that is used to communicate with the database.
+    \item \textbf{ORM}: \\
+    This component represents the functionalities that are implemented in the ORM code that is used to communicate with the database.
     It should be noted that these operations represent the first abstraction layer of the underlying database towards the data model, thus they consist of the most primitive building blocks to realize the actions to be performed on the domain.
     The underlying realization of the SQL queries while executing these operations are also considered, and one-to-one mapping between the operations and queries are implemented in order to compensate for the atomicity of the calls made to this interface.
     The \textit{getDetails} methods are implemented to provide an interface to resolve the lazy entities of \textit{LineNumber}s and \textit{Store}s, such as \textit{productCategories} or \textit{partnerStores}.
@@ -376,7 +397,7 @@ Details regarding the interfaces in () are:
     \item \textbf{UserManager}: \\
     This component is responsible for handling all transactions regarding the system's users, including authentication.
     The object LoginCredentials is implemented in order to provide an abstraction over the authentication method to allow flexibility to swap the method for different markets and times.
-    The method \textit{login} returns an AuthenticationToken, which is also unspecified to allow flexibility for different methods, such as Bearer tokens or JWTs.
+    The method \textit{login} returns an AuthenticationToken, which is also unspecified to allow flexibility for the SSO provider.
     While the customers are created using the \textit{register} operation, managers and clerks of the system are created using the \textit{createStaffMember} operation, while the first manager of a store is created along with the store, in the \textit{initializeStore} function of the StoreManager.
     None of the users can delete themselves, only managers can delete staff from the store that they manage, and all the staff users are linked to a specific store.
     These decisions are made to ensure that all stores have at least one manager at all times, including their creation, and simplified management of roles (as all users will have at most one role in the system).
@@ -404,7 +425,12 @@ For the sake of simplicity, the unique \textit{id}s of entities are not shown.
 These \textit{id}s don't have any special requirements, thus can be auto-generated using built-in generation mechanisms existing in SQL database implementations.
 The diagram is similar to the one in RASD, however features more implementation details.
 
-% Diagram here
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.4\textwidth]{Images/ClassDiagram.png}
+    \caption{Class Diagram}
+    \label{fig:ClassDiagram}
+\end{figure}
 
 The \textbf{LineNumberStatus} indicates the current \textbf{LineNumber}'s status.
 When the line number is generated, it should be initialized with the status \textit{AWAITING} which indicates that the customer didn't yet enter the store.
