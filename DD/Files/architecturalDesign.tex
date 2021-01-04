@@ -85,6 +85,8 @@ To seperate responsibility on different actions to be performed on the system, t
     The component is responsible for calling the shared UserFactory to create a customer user and send the customer a welcome email.
     \item \textbf{UserFactory}: This component acts as a common interface and as a factory to create users.
     It is used by the components mentioned above to introduce new users to the system.
+    \item \textbf{CustomerRepository}: This component handles all updates and information requests for the Customers.
+    The Customers' creation is split to a different component because it requires custom implementations for emailing and interfacing with UserFactory.
 \end{itemize}
 % Component diagram combining all components and each component having it's subcomponents in a different diagram with explanations
 \subsection{Deployment view}
@@ -126,10 +128,14 @@ Relational constraints can improve the quality and
 integrity of the content of the database.
 
 \subsection{Runtime view}
+In the following diagrams, the interactions between components for different functionalities of the system is demonstrated.
+UML Sequence Diagrams are used to indicate specific message, data flow and ordering of the specified messages between components.
+Error flows for already existing entries (such as creating a user while the user exists) are omitted for simplification purposes.
+Also, components regarding routing and authorization (unless explicity stated) are omitted for simplication.
 
 \subsubsection{Register} % TODO: Text
 \subsubsection{Login}% TODO: Text
-\subsubsection{Update User Information} % TODO: Graph + Text
+\subsubsection{Update Customer Information} % TODO: Graph + Text
 
 % Customer
 \subsubsection{Book Future Line Number}
@@ -174,7 +180,6 @@ The customer request to the client application the information of a store, inclu
 The client application forwards the request to the StoreManager that retrieve the information from the database and returns it to the application.
 The client application before returning the information to the customer contacts Google Map to calculate the route to the store.
 
-% Manager TODO: Ozan
 \subsubsection{Add Staff Member}
 
 \begin{figure}[H]
@@ -218,7 +223,7 @@ When the response from DBMS is retrieved the SystemStopCoordinator starts sendin
     \label{fig:SDUpdateStoreInformation}
 \end{figure}
 \nameref{fig:SDUpdateStoreInformation} shows the interactions between the components of the related parts of the system to update store information by the manager.
-When the manager requests to see the information for the store, the client application displays the related information with an update button.
+When the manager requests to see the information for the store, the client application displays the related information with an update button, the information which it needs to pull from the server through StoreDetailsRepository.
 Upon trigger of the button, the CLup Application shows the editing form for the general information about the store, with the current values already pre-filled.
 Optionally, from this moment, if the manager wants to update the store's location, they can do so by pressing the update location button, which in turn, triggers the Google Maps component to show the location selector.
 Once the manager sets the new location, the service returns the new location selected by the manager, to be updated on the form.
@@ -261,7 +266,6 @@ When the user is created, the StoreDetailsRepository creates the new store, give
 Finally, when the store is created, the update is propagated to the Client Application, which displays a success message to the user.
 
 \subsection{Component interfaces}
-% TODO: Ozan for 2 week
 In the following UML Class Diagram, the main interactions between components have been shown.
 The diagram's scope is mainly the application server and the peripheral services that the server communicates to function correctly.
 The front-end interfaces are not included as they only act as a mean of communicating the server functions to the end user, thus they do not include any specific functionality implemented.
@@ -296,7 +300,7 @@ Details regarding the interfaces in \nameref{fig:ComponentInterfaces} are:
     \item \textbf{UserManager}: \\
     This component is responsible for handling all transactions regarding the system's users, including authentication.
     The object LoginCredentials is implemented in order to provide an abstraction over the authentication method to allow flexibility to swap the method for different markets and times.
-    The method \textit{login} returns an AuthenticationToken, which is also unspecified to allow flexibility for different methods, such as Bearer tokens or JWTs.
+    The method \textit{login} returns an AuthenticationToken, which is also unspecified to allow flexibility for the SSO provider.
     While the customers are created using the \textit{register} operation, managers and clerks of the system are created using the \textit{createStaffMember} operation, while the first manager of a store is created along with the store, in the \textit{initializeStore} function of the StoreManager.
     None of the users can delete themselves, only managers can delete staff from the store that they manage, and all the staff users are linked to a specific store.
     These decisions are made to ensure that all stores have at least one manager at all times, including their creation, and simplified management of roles (as all users will have at most one role in the system).
