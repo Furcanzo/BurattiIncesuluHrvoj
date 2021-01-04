@@ -1,6 +1,38 @@
 \subsection{Overview}
-% High-level components and their interaction
-% TODO: @Hrvoje
+%TODO @Hrvoje
+% High-level components and their interaction% High-level components and their interaction
+The application is divided in three logical layers:
+\subsubsection{Presentation layer}
+The presentation layer occupies the top level and displays information related to the services available on the CLup application in the form of an intuitive graphical user interface.
+It constitutes the front-end layer of the application and the interface with which end-users will interact through a web-based application.
+For example: if a user wants to schedule a visit to the store they can do so by selecting the schedule button on the main page, which is a part of the presentation layer.
+The logic behind opening a new graphical interface for the user to select the exact store, date, day, and other preferences is a part of the application layer.
+\subsubsection{Application layer}
+The application layer coordinates the application, processes user requests, makes logical and business decisions, and performs calculations.
+This layer is in charge of the workflows by which the data and requests travel, starting from the input received from the presentation layer
+to the data layer alongside the business logic on the data collected.
+In this project, the application layer resides on the server-side, meaning that all the computing is done outside the user scope.
+For example: if a user wants to enter the store they can do so by showing the clerk a QR code that contains information about their visit time.
+The clerk then proceeds to scan the user QR code and after successfully scanning it, the application layer residing on the server-side processes
+the clerk request and responds to the clerk, furthermore to the presentation layer with a message whether or not a user is permitted to enter the store.
+\subsubsection{Data layer}
+The data layer is a centralized location that receives all data calls and provides access to the persistent storage of an application.
+The data layer is closely connected to the business layer, so the logic knows which database to talk to and the data retrieving process is more optimized.
+%Is the data layer divided somehow?
+For example: when a user requests to schedule a visit time for a certain store, all available time slots are calculated from the data stored in the database.
+That data is then processed using the application layer to the presentation layer and shown to the user.
+
+Described architecture is a thick client architecture, in which the client handles most of the business logic, which includes the validations, view components and occasionally, temporary data.
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.7\textwidth]{Images/Overview.png}
+    \caption{High level component architecture}
+\end{figure}
+
+A thick client is appropriate for the CLup application because in that way an ordinary device connected to the internet carries out all application functions within a web browser instead of on a remote server.
+Data processing is done on the client machine, but software and data are retrieved from the network.
+
+
 \subsection{Component view}
 In the following section, components used to implement different functionalities of the system is described, aided with component diagrams demonstrating their separation and interactions within each other and with other external interfaces.
 \begin{figure}[H]
@@ -133,9 +165,50 @@ UML Sequence Diagrams are used to indicate specific message, data flow and order
 Error flows for already existing entries (such as creating a user while the user exists) are omitted for simplification purposes.
 Also, components regarding routing and authorization (unless explicity stated) are omitted for simplication.
 
-\subsubsection{Register} % TODO: Text
-\subsubsection{Login}% TODO: Text
-\subsubsection{Update Customer Information} % TODO: Graph + Text
+\subsubsection{Sign Up}
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.4\textwidth]{Images/SequenceDiagrams/SignUp.png}
+    \caption{Sequence Diagram for registering new customers}
+    \label{fig:SDSignUp}
+\end{figure}
+\nameref{fig:SDSignUp} represent the flow of events needed to register new customer to the CLup application.
+When a customer clicks on the "Register" button the Client Application contacts the external SSO Provider who then requests the customer to provide authentication details.
+After a customer gives all the necessary details to the SSO Provider, if the SSO Provider succeeds to authenticate the user, a token is generated and returned.
+This token may then be passed to the Client Application and used by the authentication provider.
+As the token is signed and stored, it cannot be modified in any way by the client. After sending the token alongside customer information, CustomerRegistrat uses a component called UserFactory to send the user data to the DBMS.
+First, it is checked whether a customer email is uniqe and if it is then the information is saved to the DBMS, and the Customer Registrat sends a Welcome email to the customer.
+If the customer's email matches the email already stored in the DBMS, a customer is redirected to the non-success screen. This section of the sequence diagram isn't shown because of its simplicity.
+An SSO provider can also fail to authenticate the customer and in that case, a customer is redirected to the non-success screen as well.
+
+\subsubsection{Login}
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.4\textwidth]{Images/SequenceDiagrams/Login.png}
+    \caption{Sequence Diagram for the customer log in}
+    \label{fig:SDLogin}
+\end{figure}
+\nameref{fig:SDLogin} represent the flow of events needed to log in customers to the CLup application.
+When a customer clicks on the "Log in" button the Client Application contacts the external SSO Provider who then requests the customer to provide authentication details.
+This part can be skipped if there is already an authentication token saved in the cookies on the Client Application because in that case, users are already logged-in the application and therefore they can be immediately redirected back with the necessary authentication token.
+Whenever users go to a domain that requires authentication, they are redirected to the authentication domain, moreover to the SSO Provider.
+If the customer has entered the correct authentication details, he will receive an authentication token. That authentication token is then sent to the AuthenticationGateway who then validates the token.
+Once a token is verified and the customer is confirmed, AuthenticationGateway can contact the DBMS and retrieve customer details.
+If the user has entered incorrect authentication details he will be redirected to the non-success screen.
+
+\subsubsection{Update Customer Information}
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.4\textwidth]{Images/SequenceDiagrams/UpdateCustomerInformation.png}
+    \caption{Sequence Diagram for updating user information}
+    \label{fig:SDUpdateCustomerInformation}
+\end{figure}
+\nameref{fig:SDUpdateCustomerInformation} represent the flow of events needed to update customer information in the CLup application.
+When a customer first opens the information tab, a Client Application retrieves the Customer information from the DBMS and serves it to the customer.
+The Customer may now update his information by clicking on the update button. He will be presented with the update form in which all entered information can be edited.
+After successfully editing his information and submitting them the Client Application sends new customer information to the CustomerRepostiory which then proceeds to update the Customer information in the DBMS.
+After that, a Customer will be logged in to the CLup application and can use all its functionalities.
+
 
 % Customer
 \subsubsection{Book Future Line Number}
@@ -245,10 +318,34 @@ The database then returns the view for the monitoring result given the specific 
 As the client app retrieves the data, it updates the monitoring tab that the manager sees with new information, and continues with the loop.
 
 % Clerk
-\subsubsection{Grant Access} %TODO: Hrvoje
-\subsubsection{Generate Guest Ticket} % TODO: Hrvoje
+\subsubsection{Grant Access}
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.4\textwidth]{Images/SequenceDiagrams/GrantAccess.png}
+    \caption{Sequence Diagram for granting customers access to the store}
+    \label{fig:SDGrantAccess}
+\end{figure}
+\nameref{fig:SDGrantAccess} represent the flow of events needed to grant customer access to the store.
+After the Clerk scans the QR code from the Customer, the scanned code is then sent to the Client Application.
+Client Application then proceeds to read the line number from the given QR code and sends the line number to the LineNumberVerifier to check if the Customer containing that line number may enter the store.
+LineNumberVerifier will then check with the DBMS if the line number received is valid. If a line number is valid DBMS will respond to the LineNumberVerifier who will then propagate that line number is valid to the Client Application.
+The Clerk will receive a confirmation message on his screen and afterward, he can let the Customer into the store.
+If a line number is not valid, a message that the line number is invalid will be sent from the LineNumberVerifier to the Client Application and the Clerk will be notified with a deny message and thus shouldn't let the Costumer into the store.
 
-% You can use sequence diagrams to describe the way components interact to accomplish specific tasks typically related to your use cases
+\subsubsection{Print Guest Ticket}
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=0.4\textwidth]{Images/SequenceDiagrams/PrintGuestTicket.png}
+    \caption{Sequence Diagram for printing Guest Tickets}
+    \label{fig:SDPrintGuestTicket}
+\end{figure}
+\nameref{fig:SDPrintGuestTicket} represent the flow of events needed to print a guest ticket to the customer without his own.
+When a Customer comes to the store without a valid line number, he may not be able to enter the store unless he gets one.
+He may ask a Clerk to provide him with one to be able to enter the shop. The Clerk sends the request for acquiring the guest ticket through the Client Application.
+The request is then sent to the LineNumberManager. LineNumberManager retrieves the data from the DBMS and tries to find the first empty time slot for the day.
+If there is one, LineNumberManager stores it with the help of DBMS and then sends it to the Client Application. Client Application then proceeds to print a guest ticket which the Clerk gives to the Customer.
+If there are no available time slots for the day the Customer may not be able to enter the store. The Clerk can retry the request since there is a possibility that some time slot became available.
+
 
 % Main use cases with sequence diagrams indicating relations of each diagram to one another.
 \subsubsection{Create Store}
