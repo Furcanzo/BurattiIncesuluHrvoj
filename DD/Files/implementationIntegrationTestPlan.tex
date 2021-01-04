@@ -75,6 +75,7 @@ In this section is described how the system will be tested. \\
 For which concerns unit testing, the system will be developed using test driven development, so the tests will be written before writing the code.
 This is relatively easy for the frontend logic, while requires the implementation of stubs and drivers for the backend modules.
 Integration tests are needed only when a new component with a strong dependency, according to the definition of strong dependency
-given in the previous section, is added to the system.
+given in the previous section, is added to the system. \\
+Integration tests will be performed also to test the integration with external components such as the Maps API. \\
 Then there will be end to end testing to validate that the components can work together and finally a system test will be performed
-using browser emulators conform to standards.
+using browser emulators to check that the system is conform to the specifications and works as expected on all the browser supported.
