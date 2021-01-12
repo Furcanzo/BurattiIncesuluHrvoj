@@ -19,16 +19,16 @@ The \nameref{fig:ClassDiagram} provided above illustrates the system's core high
 
 
 The system is designed to be used by different types of users, the \textbf{Customer}s whom visit or plan to visit the \textbf{Store}, the \textbf{Manager}s who are responsible for handling management related tasks like providing store details, handling system stops, and the \textbf{Clerk}s who are on active duty for monitoring the entrance and exit of customers.
-All users on the system are identified with their \textit{e-mail}s and require their \textit{password}s to authenticate.
-The \textbf{Customer}s need to register to the system with their \textit{name}, \textit{surname} and \textit{phoneNumber}, in addition to the information required for authentication.
+All users on the system are identified with their \textit{e-mail}s and require SSO to authenticate, which is handled by the external SSO provider.
+The \textbf{Customer}s need to register to the system with their \textit{name}, \textit{surname}, \textit{email} and \textit{phoneNumber}, in addition to the information provided for the SSO.
 All \textbf{Line Number}s feature a unique \textit{id} and an actual \textit{number} that indicate their order in line.
 Customers can have many \textbf{Booked Line Number}s, limited by the \textit{reservationLimit}, from various stores, which provide many \textbf{Time Slot}s that the customers can select from under \textit{availableTimeSlots}, which then becomes the time slot the booking is \textit{on}.
 The line number is to be invalidated after \textit{timeoutMinutes} from its target time interval.
 The \textbf{Store}'s \textbf{Location} is set by the \textbf{Manager} and observed by customers through a \textbf{Maps API}.
 The \textbf{Reservation Limit} imposes a customer can book a line number at most for some \textit{times} \ \textit{per} a specific \textbf{Reservation Limit Interval} (one of \textit{PER\_MONTH}, \textit{PER\_WEEK} or \textit{PER\_DAY}).
-Customers' visits can also feature different \textbf{Product}s or \textbf{Product Category}ies that they might want to visit under their line number's \textit{productsToVisit} and \textit{productCategoriesToVisit}, each having a \textit{name} and \textit{locatedAt} their own \textbf{In-store Location}.
+Customers' visits can also feature different \textbf{Product Category}ies that they might want to visit under their line number's \textit{productCategoriesToVisit}, each having a \textit{name} and \textit{locatedAt} their own \textbf{In-store Location}.
 \textbf{Clerks} can generate \textbf{Physical Line Numbers} for customers that do not have the app available for them.
-
+The \textbf{Super User} is not shown in this diagram, as it acts as a mechanism to initialize stores and manager, thus doesn't directly contribute to the functionality of the system.
 Below some scenarios, statecharts and their brief description are enumerated for the system's core and critical functionalities.
 It is important to note that the app is targeted at users of all age ranges; thus, the scenarios feature different users of different ages.
 The statecharts apply to many other scenarios that might occur out of interaction with various types of users.
@@ -60,7 +60,7 @@ Using the app, he can plan his route and schedule to the location beforehand and
 
 The \nameref{fig:SDBookLine} represents the execution flow of one of the core use cases, namely booking a line number for the future.
 The customer books the line number by first listing what locations are available for them to book.
-Then, when a customer selects a location, they view the location's details, where they can add products or product categories to their target visit.
+Then, when a customer selects a location, they view the location's details, where they can add product categories to their target visit.
 The customer can then view the time slots that the system will generate specifically filtered for their visit based on the location's provided data and availability.
 When the customer selects a specific time slot, the system tries to book that specific location.
 If the system successfully allocates the desired time slot, it displays the success message and the customer's ticket.
@@ -193,7 +193,7 @@ Stores now have a restriction on the number of people they could let in.
 The CLup application helps people and the community prevent its users from waiting in long lines on the streets during pandemic conditions.
 It allows customers to schedule a visit to the store in their desired time slot if available.
 Each customer can register through the CLup application and then reserve his visit to the store.
-Furthermore, a customer can choose which products or products section he will buy and how long his shopping will approximately last.
+Furthermore, a customer can choose which product categories he will visit and how long his shopping will approximately last.
 After a customer has successfully scheduled his visit time, he will receive a line number, which he is obligated to show to enter the store.
 
 \subsubsection {Line number ticket entry}
@@ -205,7 +205,8 @@ To sum up, a customer with a scheduled store visit can visit the store at a sche
 \subsubsection {Store managment}
 Through the CLup application, the manager can edit all the store information such as location-specific information, the maximum number of customers in the store at any given time, opening and closing hours of the store per each day, line number timeout, and much more.
 Customers can see working hours and in-store occupancy, and therefore, they can visit the store at the desired time if available.
-The manager can also select which product categories or products are available at the store. By doing so, customers can know precisely in which store to go based on the products available.
+The manager can also select which product categories are available at the store.
+By doing so, customers can know precisely in which store to go based on the availability.
 
 \subsection{User characteristics}
 % User roles: Manager & User & Clerk (& maybe unregistered user?)
@@ -223,12 +224,17 @@ The only skill needed by a user is the ability to use the application.
 
 
 \subsubsection {Clerk}
-An employee of the store with basic knowledge about the application.
-The clerk must be able to use its functionalities so he could handle all physical visits of customers.
+An employee of the store with basic knowledge about the application or a device similar to a QR code totem that the users can interact with.
+The clerk must be able to use the application's functionalities so he could handle all physical visits of customers in case the clerk is a person.
+Otherwise, the device representing the clerk must be accessible on all customer entrances and exits for the customer to interact with.
 
 \subsubsection {Manager}
 A particular employee of the store with basic knowledge about the application.
 The manager is in charge of managing a particular store through the CLup application; they don't need to be a real store manager.
+
+\subsubsection{Super User}
+A particular person or people determined by the organization that is hosting the CLup application.
+They need to be able to indirectly contact the Managers of the system, so that they can assign the first Manager of the system correctly.
 
 \subsection{Assumptions,dependencies and constraints}
 
@@ -240,7 +246,7 @@ The manager is in charge of managing a particular store through the CLup applica
 \subsubsection{Domain Assumptions}
 
 \begin{itemize}
-    \item \textbf{$D_1$} \%80 of the customers and all clerks and managers have basic ICT skills, has an e-mail address that they are willing to use to authenticate to the system, and has a smartphone or equivalent device that can connect to the Internet, have a browser that supports UTF-8, display QR codes and has a mapping application.
+    \item \textbf{$D_1$} \%80 of the customers and all clerks and managers have basic ICT skills, has a user created on the SSO provider platform, and has a smartphone or equivalent device that can connect to the Internet, have a browser that supports UTF-8, display QR codes and has a mapping application.
     \item \textbf{$D_2$} Clerks' mobile devices are equipped with at least one camera that the system can use.
     \item \textbf{$D_3$} All users have a basic understanding of how the line numbering system works and respects the system's ordering.
     \item \textbf{$D_4$} Managers have an estimate for the number of reservations that their location can at most have.
@@ -259,6 +265,7 @@ The manager is in charge of managing a particular store through the CLup applica
 
 The application will be running on a server provided by the hosting provider.
 The application will be dependant on Maps API, of which the details will be determined later in the Design Document.
+The application will be dependant on an SSO provider, which will be detailed in the Design Document.
 
 \subsubsection{Constraints}
 % Maps API failure
