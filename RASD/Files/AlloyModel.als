@@ -12,11 +12,9 @@ sig Section {
 
 sig Email {}
 
-sig Password {}
 
 abstract sig User {
-	email : one Email,
-	password : one Password
+	email : one Email
 }
 
 sig Customer extends User {}
@@ -91,9 +89,7 @@ sig BookedLineNumber extends LineNumber{}
 
 fact credentialInUsers {
 	all mail : Email | mail in User.email
-	all pw : Password | pw in User.password
 	no mail : Email, disj user1, user2 : User | mail in user1.email && mail in user2.email
-	no pw : Password, disj user1, user2 : User | pw in user1.password && pw in user2.password
 }
 
 fact everySectionInAStore {
