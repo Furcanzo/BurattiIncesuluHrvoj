@@ -73,11 +73,11 @@ The system is expected to implement the following features, which are detailed i
     They can administer the time slots for their customers by setting the opening and closing hours, with possible breaks in between.
     They can administer the partner stores of their stores if they exist, for their customers to select instead.
     They can enable the reservation limit to prevent any customer from abusing the system by setting the limit for how many tickets a customer can generate per a given time interval of a month, a week, or a day.
-    The stores are to be created by the Operator, while granting access to the first manager.
+    The stores are to be created by the Back Office User, while granting access to the first manager.
 \end{itemize}
 
 The system is expected to be delivered in two parts, a client application, and a server.
-Given its functionality is depending on the current ongoing pandemic, the app is expected to be implemented before the COVID-19 crisis ends, by the end of July.
+Given its functionality is depending on the current ongoing pandemic, the app is expected to be implemented before the COVID-19 crisis ends, which is estimated as the date general public receives vaccination as the end of July 2021.
 For this, the client application is expected to be implemented as an app running on a browser, increasing the range of devices being able to run the app, without increasing the development costs, which can then be ported to a mobile application if needed.
 The server is expected to serve the client application to its users and handle any transaction incoming.
 To implement the location-specific features of the system, due to the complexity of those, namely location finding, addressing, and route planning tasks, an external Maps API is used.
@@ -97,6 +97,7 @@ The system is going to provide the following functions:
 
 \subsubsection{Targeted Users}
 "CLup" aims to resolve the problem of Customers queueing up in front of a store.
+It aims to provide this by automating the availability for visits and improve contact tracing by the managers.
 It is aimed towards users of all demographics.
 \\[0.5cm]
 
@@ -114,8 +115,8 @@ The clerk (which can be a shopping assistant or a security detail) can monitor c
 \textbf{Manager:} \\
 The store manager (which could be an actual manager or someone responsible for handling customer management) can provide details regarding the availability of products and the store in general, by setting the opening hours, maximum allowed customers in the shop, in-shop location of different product categories, the maximum amount of reservations that can be made per customer, line number timeout and the location.
 Also, for chains and relevant stores, the manager can add chain members for the store.
-\textbf{The Operator:} \\
-In order to use the CLup application, store or business owners should contact CLup Operator who will give them permission to use the application and create a Manager account for them.
+\textbf{Back Office User:} \\
+In order to use the CLup application, store or business owners should contact CLup Back Office User who will give them permission to use the application and create a Manager account for them.
 
 
 \subsection{Definitions, Acronyms, Abbreviations}
@@ -126,7 +127,7 @@ In order to use the CLup application, store or business owners should contact CL
     \item \textit{Customer}: A person to visit the store
     \item \textit{Clerk}: A person in charge of handling the entrance and exit of customers. This user can be replaced by a QR code totem or a similar device for customers to directly interact with instead.
     \item \textit{Visit Time}: The time interval in which a customer performs a visit to the store
-    \item \textit{The Operator}: A user assigned by the company hosting the system to grant manager access to certain users.
+    \item \textit{Back Office User}: A user assigned by the company hosting the system to grant manager access to certain users.
     \item \textit{Line Number}: A number that indicates the ordering of a specific customer in the line % Rephrase
     \item \textit{Line Number Ticket}: A physical ticket printed that features the line number and the QR code.
     \item \textit{Time Slot}: Specific intervals of time in which a customer can schedule their visits determined by the opening hours.
