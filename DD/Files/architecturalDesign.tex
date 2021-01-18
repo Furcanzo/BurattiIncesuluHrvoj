@@ -2,7 +2,7 @@
 % High-level components and their interaction% High-level components and their interaction
 The application is divided in three logical layers:
 \subsubsection{Presentation layer}
-The presentation layer occupies the top level and displays information related to the services available on the CLup application in the form of an intuitive graphical user interface.
+The presentation layer occupies the top level of all layers the application consists and displays information related to the services available on the CLup application in the form of an intuitive graphical user interface.
 It constitutes the front-end layer of the application and the interface with which end-users will interact through a web-based application.
 For example: if a user wants to schedule a visit to the store they can do so by selecting the schedule button on the main page, which is a part of the presentation layer.
 The logic behind opening a new graphical interface for the user to select the exact store, date, day, and other preferences is a part of the application layer.
@@ -28,8 +28,9 @@ Described architecture is a thick client architecture, in which the client handl
     \caption{High level component architecture}
 \end{figure}
 
-A thick client is appropriate for the CLup application because in that way an ordinary device connected to the internet carries out all application functions within a web browser instead of on a remote server.
-Data processing is done on the client machine, but software and data are retrieved from the network.
+A thin client is appropriate for the CLup application because in that way the device itself only handles a few key elements like displaying the interface and sending instructions.
+It works fine with slow phones because the speed of the server is what matters the most.
+By doing so we ensure that the application will be multi-platform compatible since the application itslef will be based as a browser application.
 
 
 \subsection{Component view}
@@ -89,7 +90,7 @@ This component is further divided into following sub-components to increase the 
 \nameref{fig:CDStoreManager} provides a detailed view of the domain component for handling requests related to the store.
 The wrapping component allows querying all relevant information about the store by all and harbors the logic for the manager users to update different aspects related to the store, such as basic information, time slots, configuration, and system stop scheduling.
 This component, apart from having mailing, routing, and database interfaces, exposes an interface to the OccupancyProvider to retrieve updated information about the occupancy forecast. % TODO move to subcomponent
-This component is divided into the following components to decrease cohesion between tasks to be performed:
+This component is divided into the following components to decrease coupling between tasks to be performed:
 \begin{itemize}
     \item \textbf{StoreDetailsRepository}: This component is responsible for carrying out any direct query to the store data and all of the included classes, which are products, categories, and time slots.
     There are two exported interfaces available to be used via HTTP.
@@ -135,27 +136,26 @@ Each piece of hardware could be replicated multiple times to improve performance
 
 As shown by the diagram, this system is deployed in a three-tier
 architecture, where the three tiers consist of: \\
-- Presentation tier is the highest-level tier and harbors the presentation logic.
+
+- Presentation tier is the highest-level tier in a sense that it relies on all other tiers and harbors the presentation logic.
 The application is thought to be a web app, so it's accessible from every device with a browser, but it's probable that
 a smartphone should be the most used device to access the application so there will be android and ios applications to access
 the web app.
 The smartphone application will be more similar to a browser than to a real application, therefore the diagram is represented as the browser.
 In this tier there will not be application logic, so the architecture should be thin-client.\\
+
 - Application tier is the core level from the standpoint of logical management of the application services.
 This tier contains all the application logic, from the scheduling of the line numbers to the management of the store.
 This tier is connected to the presentation tier through APIs.
 An API is used for each action of the user, and the APIs are divided based on the role of the user.
-Each user needs to authenticate using an API and receiving a jwt that needs to be attached to every subsequent request from the same user.
-The jwt attached to the request is used to determine which API is exposed to that user.
+Each user needs to authenticate using an API and receiving a JWT that needs to be attached to every subsequent request from the same user.
+The JWT attached to the request is used to determine which API is exposed to that user.
 This tier contains also a mail Server to notify the users in case their line number is canceled. \\
 
-- Data tier ( tier 1 in the diagram) is the lowest-level tier as it contains all the information required to fuel the
-application services, most prominently the query manager. The
-databases are thought to be managed through an RDBMS
-(Relational Database Management System), in particular MySQL. Relational databases
-have the advantage of having near-maximum information density.
-Relational constraints can improve the quality and
-the integrity of the content of the database.
+- Data tier ( tier 1 in the diagram) is the lowest-level tier on which other tiers are build upon as it contains all the information required to fuel the application services, most prominently the query manager. The databases are thought to be managed through an RDBMS
+(Relational Database Management System).
+Relational databases have the advantage of having near-maximum information density.
+Relational constraints can improve the quality and the integrity of the content of the database.
 
 \subsection{Runtime view}
 
@@ -364,8 +364,7 @@ When the user is created, the StoreDetailsRepository creates the new store, give
 Finally, when the store is created, the update is propagated to the Client Application, which displays a success message to the user.
 
 \subsection{Component interfaces}
-In the following UML Class Diagram, the main interactions between components have been shown.
-The diagram's scope is mainly the application server and the peripheral services that the server communicates to function correctly.
+The following UML Class Diagram shows the main interactions between components have been shown.
 The front-end interfaces are not included as they only act as a mean of communicating the server functions to the end-user, thus they do not include any specific functionality implemented.
 This diagram presents many details regarding the interactions between the system components, however, this diagram does not provide a skeleton for the actual implementation, since its sole purpose is to demonstrate the significant integrations between components.
 Thus, it shall only be seen as a guide to implement the actual system.
