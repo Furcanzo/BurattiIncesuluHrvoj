@@ -2,7 +2,7 @@
 % High-level components and their interaction% High-level components and their interaction
 The application is divided in three logical layers:
 \subsubsection{Presentation layer}
-The presentation layer occupies the top level of all layers the application consists and displays information related to the services available on the CLup application in the form of an intuitive graphical user interface.
+The presentation layer occupies the top level of all layers when ordered by dependency and it displays information related to the services available on the CLup application in the form of an intuitive graphical user interface.
 It constitutes the front-end layer of the application and the interface with which end-users will interact through a web-based application.
 For example: if a user wants to schedule a visit to the store they can do so by selecting the schedule button on the main page, which is a part of the presentation layer.
 The logic behind opening a new graphical interface for the user to select the exact store, date, day, and other preferences is a part of the application layer.
@@ -28,9 +28,9 @@ Described architecture is a thick client architecture, in which the client handl
     \caption{High level component architecture}
 \end{figure}
 
-A thin client is appropriate for the CLup application because in that way the device itself only handles a few key elements like displaying the interface and sending instructions.
-It works fine with slow phones because the speed of the server is what matters the most.
-By doing so we ensure that the application will be multi-platform compatible since the application itslef will be based as a browser application.
+A thin client is appropriate for the CLup application because in that way the device itself only handles displaying the interface and issuing requests to the server.
+As a thin client it is expected to perform well not powerful devices such as mobile phones.
+This ensures that the CLup app is multi-platform compatible since the application will run on browsers.
 
 
 \subsection{Component view}
@@ -139,10 +139,10 @@ architecture, where the three tiers consist of: \\
 
 - Presentation tier is the highest-level tier in a sense that it relies on all other tiers and harbors the presentation logic.
 The application is thought to be a web app, so it's accessible from every device with a browser, but it's probable that
-a smartphone should be the most used device to access the application so there will be android and ios applications to access
+a smartphone should be the most used device to access the application so there will be Android and iOS applications to access
 the web app.
-The smartphone application will be more similar to a browser than to a real application, therefore the diagram is represented as the browser.
-In this tier there will not be application logic, so the architecture should be thin-client.\\
+The smartphone application will be more similar to a browser application than to a real application, therefore in the diagram it is represented as the browser.
+In this tier there will not be any application logic, as the architecture is thin-client.\\
 
 - Application tier is the core level from the standpoint of logical management of the application services.
 This tier contains all the application logic, from the scheduling of the line numbers to the management of the store.
@@ -150,12 +150,12 @@ This tier is connected to the presentation tier through APIs.
 An API is used for each action of the user, and the APIs are divided based on the role of the user.
 Each user needs to authenticate using an API and receiving a JWT that needs to be attached to every subsequent request from the same user.
 The JWT attached to the request is used to determine which API is exposed to that user.
-This tier contains also a mail Server to notify the users in case their line number is canceled. \\
+This tier contains also a Mail Server to notify the users in case their line number is canceled. \\
 
-- Data tier ( tier 1 in the diagram) is the lowest-level tier on which other tiers are build upon as it contains all the information required to fuel the application services, most prominently the query manager. The databases are thought to be managed through an RDBMS
+- Data tier (tier 1 in the diagram) is the lowest-level tier on which other tiers are build upon as it contains all the information required to fuel the application services, most prominently the query manager. The databases are thought to be managed through an RDBMS
 (Relational Database Management System).
 Relational databases have the advantage of having near-maximum information density.
-Relational constraints can improve the quality and the integrity of the content of the database.
+Relational constraints can improve the integrity of the content of the database as the ACID pattern used guarantees the atomicity of the executed instructions and integrity constraints on foreign keys shall prevent any detached tuples in the database.
 
 \subsection{Runtime view}
 
@@ -167,7 +167,7 @@ Also, components regarding routing and authorization (unless explicitly stated) 
 \subsubsection{Sign Up}
 \begin{figure}[H]
     \centering
-    \includegraphics[height=0.4\textwidth]{Images/SequenceDiagrams/SignUp.png}
+    \includegraphics[height=0.6\textwidth]{Images/SequenceDiagrams/SignUp.png}
     \caption{Sequence Diagram for registering new customers}
     \label{fig:SDSignUp}
 \end{figure}
@@ -176,14 +176,14 @@ When a customer clicks on the "Register" button the Client Application contacts 
 After a customer gives all the necessary details to the SSO Provider, if the SSO Provider succeeds to authenticate the user, a token is generated and returned.
 This token may then be passed to the Client Application and used by the authentication provider.
 As the token is signed and stored, it cannot be modified in any way by the client. After sending the token alongside customer information, CustomerRegistrat uses a component called UserFactory to send the user data to the DBMS.
-First, it is checked whether a customer email is unique and if it is then the information is saved to the DBMS, and the Customer Registrat sends a Welcome email to the customer.
+First, it is checked whether a customer email is unique and if it is then the information is saved to the DBMS, and the Customer Registrar sends a Welcome email to the customer.
 If the customer's email matches the email already stored in the DBMS, a customer is redirected to the non-success screen. This section of the sequence diagram isn't shown because of its simplicity.
 An SSO provider can also fail to authenticate the customer and in that case, a customer is redirected to the non-success screen as well.
 
 \subsubsection{Login}
 \begin{figure}[H]
     \centering
-    \includegraphics[height=0.4\textwidth]{Images/SequenceDiagrams/Login.png}
+    \includegraphics[height=0.6\textwidth]{Images/SequenceDiagrams/Login.png}
     \caption{Sequence Diagram for the customer log in}
     \label{fig:SDLogin}
 \end{figure}
@@ -194,11 +194,11 @@ Whenever users go to a domain that requires authentication, they are redirected 
 If the customer has entered the correct authentication details, he will receive an authentication token. That authentication token is then sent to the AuthenticationGateway who then validates the token.
 Once a token is verified and the customer is confirmed, AuthenticationGateway can contact the DBMS and retrieve customer details.
 If the user has entered incorrect authentication details he will be redirected to the non-success screen.
-
+The session provided by the SSO provider lasts as long as the SSO provider validates the session.
 \subsubsection{Update Customer Information}
 \begin{figure}[H]
     \centering
-    \includegraphics[height=0.4\textwidth]{Images/SequenceDiagrams/UpdateCustomerInformation.png}
+    \includegraphics[width=0.8\textwidth]{Images/SequenceDiagrams/UpdateCustomerInformation.png}
     \caption{Sequence Diagram for updating user information}
     \label{fig:SDUpdateCustomerInformation}
 \end{figure}
@@ -213,7 +213,7 @@ After that, a Customer will be logged in to the CLup application and can use all
 \subsubsection{Book Future Line Number}
 \begin{figure}[H]
     \centering
-    \includegraphics[height=0.4\textwidth]{Images/CustomerSequenceDiagrams/BookLineNumberSequenceDiagram.png}
+    \includegraphics[height=0.6\textwidth]{Images/CustomerSequenceDiagrams/BookLineNumberSequenceDiagram.png}
     \caption{Sequence Diagram for Book Future Line Number}
     \label{fig:SDBookLineNumber}
 \end{figure}
@@ -227,7 +227,7 @@ If that store has no timeslots available for those product categories, then a li
 \subsubsection{Retrieve Line Number}
 \begin{figure}[H]
     \centering
-    \includegraphics[height=0.4\textwidth]{Images/CustomerSequenceDiagrams/RetriveLineNumberSequenceDiagram.png}
+    \includegraphics[height=0.6\textwidth]{Images/CustomerSequenceDiagrams/RetriveLineNumberSequenceDiagram.png}
     \caption{Sequence Diagram for Retrieve Line Number}
     \label{fig:SDRetrieveLineNumber}
 \end{figure}
@@ -243,7 +243,7 @@ This is not a problem under the assumption that the time between the two request
 \subsubsection{View Store} % See location, amount of customers%
 \begin{figure}[H]
     \centering
-    \includegraphics[height=0.4\textwidth]{Images/CustomerSequenceDiagrams/ViewStoreSequenceDiagram.png}
+    \includegraphics[height=0.6\textwidth]{Images/CustomerSequenceDiagrams/ViewStoreSequenceDiagram.png}
     \caption{Sequence Diagram for View store}
     \label{fig:SDViewStore}
 \end{figure}
@@ -256,7 +256,7 @@ The client application before returning the information to the customer contacts
 
 \begin{figure}[H]
     \centering
-    \includegraphics[height=0.4\textwidth]{Images/SequenceDiagrams/AddStaffMember.png}
+    \includegraphics[height=0.5\textwidth]{Images/SequenceDiagrams/AddStaffMember.png}
     \caption{Sequence Diagram for Add Staff Member}
     \label{fig:SDAddStaffMember}
 \end{figure}
@@ -322,10 +322,10 @@ As the client app retrieves the data, it updates the monitoring tab that the man
 \subsubsection{Grant Access}
 \begin{figure}[H]
     \centering
-    \includegraphics[height=0.4\textwidth]{Images/SequenceDiagrams/GrantAccess.png}
+    \includegraphics[height=0.6\textwidth]{Images/SequenceDiagrams/GrantAccess.png}
     \caption{Sequence Diagram for granting customers access to the store}
     \label{fig:SDGrantAccess}
-\end{figure}\nameref{fi:SDGrantAccess} represent the flow of events needed to grant the customer access to the store.
+\end{figure}\nameref{fig:SDGrantAccess} represent the flow of events needed to grant the customer access to the store.
 
 After the Clerk scans the QR code from the Customer, the scanned code is then sent to the Client Application.
 Client Application then proceeds to read the line number from the given QR code and sends the line number to the LineNumberVerifier to check if the Customer containing that line number may enter the store.
@@ -336,7 +336,7 @@ If a line number is not valid, a message that the line number is invalid will be
 \subsubsection{Print Guest Ticket}
 \begin{figure}[H]
     \centering
-    \includegraphics[height=0.4\textwidth]{Images/SequenceDiagrams/PrintGuestTicket.png}
+    \includegraphics[height=0.6\textwidth]{Images/SequenceDiagrams/PrintGuestTicket.png}
     \caption{Sequence Diagram for printing Guest Tickets}
     \label{fig:SDPrintGuestTicket}
 \end{figure}
@@ -365,6 +365,7 @@ Finally, when the store is created, the update is propagated to the Client Appli
 
 \subsection{Component interfaces}
 The following UML Class Diagram shows the main interactions between components have been shown.
+The diagram's scope is mainly the application server and the peripheral services that the server communicates to function correctly.
 The front-end interfaces are not included as they only act as a mean of communicating the server functions to the end-user, thus they do not include any specific functionality implemented.
 This diagram presents many details regarding the interactions between the system components, however, this diagram does not provide a skeleton for the actual implementation, since its sole purpose is to demonstrate the significant integrations between components.
 Thus, it shall only be seen as a guide to implement the actual system.
@@ -372,7 +373,7 @@ In this diagram, all user-facing interfaces' (LineNumberManager, StoreManager, a
 In this diagram, many entities in function inputs are represented as they are (like Store, User, TimeSlot, etc \ldots), however for optimization purposes the actual implementation may use the specific IDs of each entity instead of passing the whole object.
 The DateTime used in this diagram is a general name for any implementation for a structure to store a specific time conforming to the standard \cite{}.
 In the diagram, representations for errors that might be returned from the operations are omitted (such as access right problems, network errors), for simplification purposes, along with specific errors (such as conflicts).
-% Diagram here
+ORM Interfaces are reflected as different components, even if the actual ORM implementation may need all interfaces generated by it to exist in the same component, in order to demonstrate the separation and dependencies between different ORM entities.
 \begin{figure}[H]
     \centering
     \includegraphics[height=0.4\textwidth]{Images/ComponentInterfacesDiagram.png}
@@ -381,8 +382,8 @@ In the diagram, representations for errors that might be returned from the opera
 \end{figure}
 Details regarding the interfaces in \nameref{fig:ComponentInterfaces} are:
 \begin{itemize}
-    \item \textbf{ORM}: \\
-    This component represents the functionalities that are implemented in the ORM code that is used to communicate with the database.
+    \item \textbf{ORMInterfaces}: \\
+    These components represent the functionalities that are implemented in the ORM code that is used to communicate with the database.
     It should be noted that these operations represent the first abstraction layer of the underlying database towards the data model, thus they consist of the most primitive building blocks to realize the actions to be performed on the domain.
     The underlying realization of the SQL queries while executing these operations are also considered, and one-to-one mapping between the operations and queries are implemented in order to compensate for the atomicity of the calls made to this interface.
     The \textit{getDetails} methods are implemented to provide an interface to resolve the lazy entities of \textit{LineNumber}s and \textit{Store}s, such as \textit{productCategories} or \textit{partnerStores}.
@@ -426,7 +427,7 @@ The diagram is similar to the one in RASD, however features more implementation 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[height=0.4\textwidth]{Images/ClassDiagram.png}
+    \includegraphics[height=0.5\textwidth]{Images/ClassDiagram.png}
     \caption{Class Diagram}
     \label{fig:ClassDiagram}
 \end{figure}
@@ -484,7 +485,10 @@ To facilitate the development of the system, instead of handcrafting database qu
 
 \subsubsection{ACID}
 
-The database operation is based on the ACID principles since the core system doesn't require asynchronous data synchronization with any other external components.
+ACID properties for the underlying database allow the application to maintain the data integrity through atomic transactions conducted through the application server initiated from the presentation layer.
+These properties are preferred for many existing applications, however, those applications may need to take a different paradigm of database properties, such as BASE, in order to prevent some constraints imposed on databases due to ACID properties.
+
+For this system, database operations can be based on the ACID principles since the core system doesn't require asynchronous data synchronization with any other external components.
 Furthermore, as the system will implement Logical Sharding, there wouldn't be a need for increasing the partitions of the database, thus the system will not suffer from the limits of the CAP theorem.
 
 \subsubsection{SMTP}
