@@ -1,8 +1,6 @@
+import {State as ClerkState} from "./clerk/models";
 export class User {
     email: string;
-    name: string;
-    surname: string;
-    tel: string;
 }
 
 export class Manager extends User {
@@ -14,6 +12,9 @@ export class Clerk extends User {
 }
 
 export class Customer extends User {
+    name: string;
+    surname: string;
+    tel: string;
     lineNumbers: LineNumber[];
 }
 
@@ -76,4 +77,10 @@ export class LineNumberRequest {
     location: Shop;
     time: TimeSlot;
     estimatedTimeOfVisit: Time;
+}
+
+export class State {
+    currentUser: User;
+    loading: boolean;
+    userState: ClerkState;
 }
