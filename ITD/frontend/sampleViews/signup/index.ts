@@ -17,9 +17,10 @@ import {Nothing} from "../../src/actions";
 import {newUser} from "../sampleData";
 
 const layout = (state = undefined) => {
+
     const menu = navbar([], Nothing);
     return wrapper(menu, [
-        titleText("Register", "2"),
+        titleText("Register ", "2"),
         centered(card(titleText("Please provide your details below", "4"), [
             row([
                 formField(newUser.name, "Your Name", Nothing, "text"),
