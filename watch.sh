@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 DOC=DD
-VERSION=1
+VERSION=2
 while :
 do
     clear
