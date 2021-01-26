@@ -1,4 +1,3 @@
-import {State as ClerkState} from "./clerk/models";
 export class User {
     email: string;
 }
@@ -79,8 +78,10 @@ export class LineNumberRequest {
     estimatedTimeOfVisit: Time;
 }
 
-export class State {
+export abstract class State {
     currentUser: User;
     loading: boolean;
-    userState: ClerkState;
+}
+export class Component<ComponentState extends State> {
+    constructor(readonly view: (SubAppState) => any, readonly initAction: (State) => ComponentState) {}
 }
