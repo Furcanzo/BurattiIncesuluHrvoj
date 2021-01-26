@@ -1,8 +1,21 @@
-import {Customer, LineNumber} from "../models";
 import {qrCodeReader, row, text} from "../widgets";
-import {QR_CODE_READ} from "./actions";
+import {isLineNumber, QR_CODE_READ} from "./actions";
+import {ClerkAppState} from "./models";
 
-const qrCodeReadPane = (scanResult?: LineNumber | string) => {
-    /*If last scan was successful, it is line number, if string then error, if undefined no last scan*/
-    return row(text("Who knows"), qrCodeReader(QR_CODE_READ))
+export const qrCodeReadPane = (state: ClerkAppState) => {
+    const lastRead = state.lastServerResult ? [
+        isLineNumber(state.lastServerResult)
+            ? text(`Line Number: ${state.lastServerResult.number}`)
+            : text(`Scanned QR code is invalid`)
+    ]: [];
+
+    const scanner = [
+        text("Scan code here:"),
+        qrCodeReader(QR_CODE_READ)
+    ];
+    return row([
+        ...lastRead,
+        ...scanner,
+    ]);
 }
+

@@ -1,5 +1,5 @@
 import {BASE_URL} from "./const";
-import {Loading} from "./actions";
+import {Loaded, Loading} from "./actions";
 
 export interface IHTTPOptions<State, Request, Response> {
     path: string;
@@ -16,6 +16,7 @@ export const http = <State, Request, Response>(props: IHTTPOptions<State, Reques
             method: props.method,
         };
         dispatch(Loading);
+        /*TODO: Do we want to remove the previous request if a new one is issued whole screen will be loading so we won't have that case*/
         try {
 
             const rawResponse = await fetch(url, requestProps);
@@ -25,4 +26,5 @@ export const http = <State, Request, Response>(props: IHTTPOptions<State, Reques
             console.error(e);
             dispatch(props.errorAction);
         }
+        dispatch(Loaded);
     }, props];
