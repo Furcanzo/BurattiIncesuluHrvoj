@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.google.gson.Gson;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
@@ -20,6 +21,7 @@ import java.util.Properties;
 @EnableJpaRepositories
 @EnableTransactionManagement
 public class ApplicationConfiguration {
+    private Dotenv env = Dotenv.load();
 
     @Bean
     public Gson gson(){
@@ -31,9 +33,13 @@ public class ApplicationConfiguration {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUsername("root");
-        dataSource.setPassword("Furcanzo");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/test?serverTimezone=Europe/Rome");
+
+        dataSource.setUsername(this.env.get("CLUP_DB_USER"));
+        dataSource.setPassword(this.env.get("CLUP_DB_PASSWORD"));
+        String dbAddress = this.env.get("CLUP_DB_HOST");
+        String dbPort = this.env.get("CLUP_DB_PORT");
+        String dbName = this.env.get("CLUP_DB_NAME");
+        dataSource.setUrl("jdbc:mysql://" + dbAddress + ":" + dbPort + "/" + dbName + "?serverTimezone=Europe/Rome");
         return dataSource;
     }
 
