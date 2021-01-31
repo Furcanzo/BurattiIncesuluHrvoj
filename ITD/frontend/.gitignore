@@ -314,4 +314,4 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/node,webstorm+all,windows,macos,linux,vscode,sublimetext
 ./instascan
-./node
+node/*
