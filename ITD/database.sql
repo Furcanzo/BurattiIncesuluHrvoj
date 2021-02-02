@@ -1,47 +1,50 @@
 CREATE TABLE Customer
 (
-  name VARCHAR NOT NULL,
-  surname VARCHAR NOT NULL,
-  phoneNumber INT NOT NULL,
-  email VARCHAR NOT NULL,
-  customerID INT NOT NULL,
+  name VARCHAR(50) NOT NULL,
+  surname VARCHAR(50) NOT NULL,
+  phoneNumber VARCHAR(50) NOT NULL,
+  email VARCHAR(50) NOT NULL,
+  customerID INT NOT NULL UNIQUE AUTO_INCREMENT,
   PRIMARY KEY (customerID)
-);
-
-CREATE TABLE PartnerStore
-(
-  partnerID INT NOT NULL,
-  storeID INT NOT NULL,
-  PRIMARY KEY (partnerID)
 );
 
 CREATE TABLE Store
 (
-  storeID INT NOT NULL,
-  name VARCHAR NOT NULL,
-  description VARCHAR NOT NULL,
+  storeID INT NOT NULL UNIQUE AUTO_INCREMENT,
+  name VARCHAR(50) NOT NULL,
+  description VARCHAR(500) NOT NULL,
   longitude FLOAT NOT NULL,
   latitude FLOAT NOT NULL,
   maxCustomers INT NOT NULL,
   timeOut INT NOT NULL,
-  partnerID INT,
-  PRIMARY KEY (storeID),
-  FOREIGN KEY (partnerID) REFERENCES PartnerStore(partnerID)
+  PRIMARY KEY (storeID)
+);
+
+CREATE TABLE PartnerStore
+(
+  partnerID INT NOT NULL UNIQUE AUTO_INCREMENT,
+  primaryStoreID INT NOT NULL,
+  partnerStoreID INT NOT NULL,
+  PRIMARY KEY (partnerID),
+  FOREIGN KEY (primaryStoreID) REFERENCES Store(storeID),
+  FOREIGN KEY (partnerStoreID) REFERENCES Store(storeID)
 );
 
 CREATE TABLE WorkingHours
 (
-  from DATE NOT NULL,
-  until DATE NOT NULL,
+  workingHoursID INT NOT NULL UNIQUE AUTO_INCREMENT,
+  startTime DATETIME NOT NULL,
+  endTime DATETIME NOT NULL,
   storeID INT NOT NULL,
-  FOREIGN KEY (storeID) REFERENCES Store(storeID)
+  FOREIGN KEY (storeID) REFERENCES Store(storeID),
+  PRIMARY KEY (workingHoursID)
 );
 
 CREATE TABLE Employe
 (
-  employeID INT NOT NULL,
-  email VARCHAR NOT NULL,
-  Role VARCHAR NOT NULL,
+  employeID INT NOT NULL UNIQUE AUTO_INCREMENT,
+  email VARCHAR(50) NOT NULL,
+  Role VARCHAR(50) NOT NULL,
   storeID INT NOT NULL,
   PRIMARY KEY (employeID),
   FOREIGN KEY (storeID) REFERENCES Store(storeID)
@@ -49,11 +52,11 @@ CREATE TABLE Employe
 
 CREATE TABLE LineNumber
 (
-  from DATE NOT NULL,
-  until DATE NOT NULL,
+  startTime DATETIME NOT NULL,
+  endTime DATETIME NOT NULL,
   number INT NOT NULL,
-  status VARCHAR NOT NULL,
-  lineNumberID INT NOT NULL,
+  status VARCHAR(50) NOT NULL,
+  lineNumberID INT NOT NULL UNIQUE AUTO_INCREMENT,
   customerID INT NOT NULL,
   storeID INT NOT NULL,
   PRIMARY KEY (lineNumberID),

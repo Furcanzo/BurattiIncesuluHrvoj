@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
@@ -23,7 +24,7 @@ public class ApplicationConfiguration {
 
     @Bean
     public Gson gson(){
-        return new Gson();
+        return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     }
 
     @Bean
@@ -33,7 +34,7 @@ public class ApplicationConfiguration {
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUsername("root");
         dataSource.setPassword("Furcanzo");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/test?serverTimezone=Europe/Rome");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/clup?serverTimezone=Europe/Rome");
         return dataSource;
     }
 
@@ -51,7 +52,6 @@ public class ApplicationConfiguration {
 
         return em;
     }
-
 
     @Bean
     public PlatformTransactionManager transactionManager() {

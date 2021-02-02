@@ -1,7 +1,14 @@
 package com.example.demo.services;
 
-import com.example.demo.entities.User;
-import com.example.demo.repositories.UserRepository;
+import com.example.demo.exceptions.NoSuchEntityException;
+import com.example.demo.exceptions.NoTimeSlotsException;
+import com.example.demo.exceptions.TimeSlotFullException;
+import com.example.demo.entities.Customer;
+import com.example.demo.entities.LineNumber;
+import com.example.demo.entities.Store;
+import com.example.demo.entities.TimeSlot;
+import com.example.demo.repositories.CustomerRepository;
+import com.example.demo.repositories.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,22 +17,70 @@ import java.util.List;
 @Service
 public class CustomerService {
 
-    private final UserRepository userRepository;
+    private final CustomerRepository customerRepository;
+
+    private final StoreRepository storeRepository;
 
     @Autowired
-    public CustomerService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public CustomerService(CustomerRepository customerRepository, StoreRepository storeRepository) {
+        this.customerRepository = customerRepository;
+        this.storeRepository = storeRepository;
     }
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<Customer> findAllCustomers() {
+        return customerRepository.findAll();
     }
 
-    public List<User> findByName(String name) {
-        return userRepository.findByName(name);
+    public List<Customer> findCustomerByName(String name) {
+        return customerRepository.findByName(name);
     }
 
-    public User create(User user){
-        return userRepository.save(user);
+    public Customer createCustomer(Customer customer){
+        return customerRepository.save(customer);
+    }
+
+    public LineNumber bookFutureLineNUmber(LineNumber lineNumber) throws TimeSlotFullException, NoTimeSlotsException {
+        //todo
+        return null;
+    }
+
+    public List<Store> partnerStores(Store store) {
+        //todo
+        return null;
+    }
+
+    public List<TimeSlot> availableTimeSlots(Store store) {
+        //todo
+        return null;
+    }
+
+    public int calcETA() {
+        //todo
+        return 0;
+    }
+
+    public LineNumber retrieveLineNUmber(LineNumber lineNumber) throws NoTimeSlotsException {
+        //todo
+        return null;
+    }
+
+    public Customer findCustomerById(int id) throws NoSuchEntityException {
+        Customer customer = customerRepository.findById(id).orElse(null);
+        if (customer == null){
+            throw new NoSuchEntityException();
+        }
+        return customer;
+    }
+
+    public List<Store> getStoreList() {
+        return storeRepository.findAll();
+    }
+
+    public Store getStore(int id) throws NoSuchEntityException {
+        Store store = storeRepository.findById(id).orElse(null);
+        if (store == null){
+            throw new NoSuchEntityException();
+        }
+        return store;
     }
 }
