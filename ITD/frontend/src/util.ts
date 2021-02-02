@@ -3,7 +3,11 @@ import {Loader} from "@googlemaps/js-api-loader";
 import {MAPS_API_KEY} from "./const";
 
 export const timeSlotEq = (left: TimeSlot, right: TimeSlot) => {
-    return left.start === right.start && left.end === right.end && left.day === right.day;
+    return left.start.minute === right.start.minute
+        && left.start.hour == right.start.hour
+        && left.end.minute === right.end.minute
+        && left.end.hour == right.end.hour
+        && left.day === right.day;
 }
 
 export const randInt = () => Math.floor(Math.random() * 100000);

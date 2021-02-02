@@ -1,5 +1,5 @@
 import {ClerkAppState} from "./models";
-import {LineNumber, State} from "../models";
+import {Clerk, LineNumber, State} from "../models";
 import {http} from "../effects";
 
 export const isLineNumber = (response: any): response is LineNumber => {
@@ -7,24 +7,24 @@ export const isLineNumber = (response: any): response is LineNumber => {
 }
 
 const serverError = (response: any): string => {
-    return response?.error;
+    return response?.error; //TODO: Maybe we will send the error text in a body for 500?
 }
 
-const VERIFY_PATH = "/verify";
-export const QR_CODE_READ = (state: ClerkAppState, qrCodeContent: string) => {
+const VERIFY_PATH = "QR/verify";
+export const ReadQRCode = (state: ClerkAppState, qrCodeContent: string) => {
     return [{...state, lastScannedText: qrCodeContent}, http({
         path: VERIFY_PATH,
         method: "POST",
         body: {code: qrCodeContent},
-        resultAction: SERVER_RESPONDED,
-        errorAction: NETWORK_ERRORED,
+        resultAction: ReadServerResponded,
+        errorAction: NetworkError,
     })];
 }
 
-export const INIT = (state: State): ClerkAppState => {
-    return state;
+export const INIT = (state: State<Clerk>): ClerkAppState => {
+    return state as ClerkAppState;
 }
-export const SERVER_RESPONDED = (state: ClerkAppState, content: object): ClerkAppState => {
+export const ReadServerResponded = (state: ClerkAppState, content: object): ClerkAppState => {
     if (isLineNumber(content)) {
         return {...state, lastServerResult: content};
     } else if (serverError(content)) {
@@ -32,6 +32,27 @@ export const SERVER_RESPONDED = (state: ClerkAppState, content: object): ClerkAp
     } else {
     }
 }
-export const NETWORK_ERRORED = (state: ClerkAppState): ClerkAppState => {
+export const NetworkError = (state: ClerkAppState): ClerkAppState => {
     return {...state, lastServerResult: "Network Error!"};
+}
+
+export const OpenGenerateTab = (state: ClerkAppState): ClerkAppState => {
+    return {...state, activeTab: "generate"}
+};
+
+export const OpenScanTab = (state: ClerkAppState): ClerkAppState => {
+    return {...state, activeTab: "scan"}
+}
+
+const GENERATE_PATH = "QR/generate";
+export const GenerateQR = (state: ClerkAppState) => {
+    return [state, http({
+        path: GENERATE_PATH,
+        method: "POST",
+        resultAction: QRGenerated,
+        errorAction: NetworkError,
+    })]
+}
+export const QRGenerated = (state: ClerkAppState, ticket: LineNumber): ClerkAppState => {
+    return {...state, lastGeneratedTicket: ticket};
 }
