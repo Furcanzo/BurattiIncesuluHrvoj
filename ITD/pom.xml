@@ -109,7 +109,7 @@
                             <goal>npm</goal>
                         </goals>
                     </execution>
-                    <!--<execution>
+                    <execution>
                         <id>compile parcel</id>
                         <goals>
                             <goal>npx</goal>
@@ -118,9 +118,9 @@
                         <phase>generate-resources</phase>
 
                         <configuration>
-                            <arguments>parcel build index.html</arguments>
+                            <arguments>parcel build index.html --dist-dir ../src/main/resources/static </arguments>
                         </configuration>
-                    </execution> -->
+                    </execution>
                 </executions>
             </plugin>
         </plugins>

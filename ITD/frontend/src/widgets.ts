@@ -3,7 +3,7 @@ import {text as hyperappText} from "hyperapp";
 import {currentYear, debounce, randInt} from "./util";
 import {toCanvas} from "qrcode";
 import {confirm} from "bootbox";
-import {ShopLocation} from "./models";
+import {Store, StoreLocation} from "./models";
 import "../lib/instascan.min.js";
 
 const addStyle = (content: any, addition: { [key: string]: string }) => {
@@ -33,12 +33,14 @@ export type Color =
 export type FormType = "text" | "email" | "password" | "number" | "tel";
 export type TextSize = "1" | "2" | "3" | "4" | "5" | "6";
 export type ButtonSize = "sm" | "md" | "lg";
-export const formField = <State>(value: string, title: string, onUpdate: (state: State, inputEvent: Event) => any, type_?: FormType) => {
-
+export const formField = <State>(value: string, title: string, onUpdate: (state: State, inputValue: string) => any, type_?: FormType) => {
+    const updateWrapper = (state: State, ev: Event) => {
+        return onUpdate(state, (ev.target as HTMLInputElement).value)
+    }
     return html`
     <div class="form-group">
         <label>${title}</label>
-        <input type=${type_} oninput="${onUpdate}" value="${value}" class="form-control">
+        <input type=${type_} oninput="${updateWrapper}" value="${value}" class="form-control">
     </div>
     `;
 }
@@ -153,15 +155,27 @@ export const confirmationPrompt = <State>(question: string, onConfirm: (state: S
             <button id="${randomCancel}" onclick="${onCancel}" hidden></button>`;
 };
 
-export const markerMap = (location: ShopLocation) => {
+export const markerMap = (location: StoreLocation, onLocationSelect?: (location: StoreLocation) => void) => {
     const randomMap = `map-${randInt()}`;
     const googleMapsLocation = new google.maps.LatLng(location.lat, location.lon);
+    let marker;
     debounce(() => {
         const map = new google.maps.Map(document.getElementById(randomMap), {zoom: 4, center: googleMapsLocation});
-        const marker = new google.maps.Marker({
+        marker = new google.maps.Marker({
             position: googleMapsLocation,
             map,
         });
+        if (onLocationSelect) {
+            map.addListener("click", (ev) => {
+                const newLocation = new StoreLocation(ev.latLng.lat(), ev.latLng.lng());
+                onLocationSelect(newLocation);
+                marker.setVisible(false);
+                marker = new google.maps.Marker({
+                    position: ev.latLng,
+                    map,
+                })
+            })
+        }
         // https://developers.google.com/maps/documentation/javascript/directions
         // TODO: Use Google APIs to display transport.
     });

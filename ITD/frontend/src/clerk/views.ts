@@ -1,8 +1,8 @@
-import {qrCodeReader, row, text} from "../widgets";
-import {isLineNumber, QR_CODE_READ} from "./actions";
+import {button, qrCodeGenerator, qrCodeReader, row, text, titleText} from "../widgets";
+import {GenerateQR, isLineNumber, ReadQRCode} from "./actions";
 import {ClerkAppState} from "./models";
 
-export const qrCodeReadPane = (state: ClerkAppState) => {
+const qrCodeReadPane = (state: ClerkAppState) => {
     const lastRead = state.lastServerResult ? [
         isLineNumber(state.lastServerResult)
             ? text(`Line Number: ${state.lastServerResult.number}`)
@@ -11,7 +11,7 @@ export const qrCodeReadPane = (state: ClerkAppState) => {
 
     const scanner = [
         text("Scan code here:"),
-        qrCodeReader(QR_CODE_READ)
+        qrCodeReader(ReadQRCode)
     ];
     return row([
         ...lastRead,
@@ -19,3 +19,25 @@ export const qrCodeReadPane = (state: ClerkAppState) => {
     ]);
 }
 
+ const qrCodeGeneratePane = (state: ClerkAppState) => {
+
+    const generated = state.lastGeneratedTicket ? [
+        text("Here is the last generated ticket:"),
+        qrCodeGenerator(state.lastGeneratedTicket.id),
+        titleText(state.lastGeneratedTicket.number.toString(), "3")
+    ]: [];
+
+    const generateNew = button("Generate a new ticket", "primary", GenerateQR);
+    return row([
+        ...generated,
+        generateNew,
+    ])
+}
+
+export const view = (state: ClerkAppState) => {
+    if (state.activeTab === "scan") {
+        return qrCodeGeneratePane(state);
+    } else {
+        return qrCodeReadPane(state);
+    }
+}

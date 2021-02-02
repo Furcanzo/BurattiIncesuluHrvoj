@@ -3,7 +3,7 @@ import {
     LineNumber,
     LineNumberRequest,
     NewUser,
-    Shop,
+    Store,
     Time,
     TimeInterval,
     TimeSlot,
@@ -23,7 +23,7 @@ export const times: Time[] = [
 export const timeSlots: TimeSlot[] = [0, 1, 2, 3].map((ind) => {
     return {start: times[ind], end: times[ind + 1], day: dates[0]};
 });
-export const bakery: Shop = {
+export const bakery: Store = {
     openTimeSlots: timeSlots,
     location: {lat: 3, lon: 3},
     maxCustomerCapacity: 30,
@@ -38,7 +38,7 @@ export const bakery: Shop = {
     ]
 }
 
-export const restaurant: Shop = {
+export const restaurant: Store = {
     openTimeSlots: timeSlots,
     location: {lat: 5, lon: 3},
     maxCustomerCapacity: 50,
