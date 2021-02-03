@@ -69,18 +69,19 @@ export class ReservationLimit {
 }
 
 export class Store {
-    id: string;
+    readonly id?: string;
     location: StoreLocation;
     name: string;
-    openTimeSlots: TimeSlot[];
+    readonly openTimeSlots: TimeSlot[];
+    workingHours: {
+        start: Time;
+        end: Time;
+    };
     maxCustomerCapacity: number;
+    partners: Store[];
 
 }
 
-export class UserCredentials {
-    email: string;
-    password: string;
-}
 
 export class AnonUser extends User {
 
@@ -112,6 +113,10 @@ export abstract class State<U extends User> {
     currentUser?: U;
     loading: boolean;
     currentRoute: string;
+    error?: {
+        recoverable?: boolean;
+        text?: string;
+    };
 }
 
 export const isManagerState = (state: State<User>): state is ManagerAppState => {

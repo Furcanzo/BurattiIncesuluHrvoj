@@ -26,9 +26,12 @@ export const view = (state: State<User>) => {
         navItems = loginComponent.navigation;
     }
     if (state.loading) {
-        innerContent = text("Loading"); // TODO: Better looking
+        innerContent = [text("Loading")]; // TODO: Better looking
     }
-    return wrapper(navigation(navItems, state), innerContent);
+    if (state.error && !state.error.recoverable) {
+        innerContent = [text("Crashed, please refresh")];
+    }
+    return wrapper(navigation(navItems, state), innerContent, state.error?.recoverable ? state.error.text : undefined);
 }
 
 const navigation = (navigationItems: INavigatorItem[], state: State<User>) => {

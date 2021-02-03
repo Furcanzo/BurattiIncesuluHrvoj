@@ -1,9 +1,9 @@
 import {AnonUser, Component, INavigatorItem, State} from "../models";
 import {INIT, LoadLoginPage, LoadRegisterPage} from "./actions";
 import {row, text} from "../widgets";
+import {view} from "./view";
 
 export class LoginAppState extends State<AnonUser> {
-    error: string;
     user: {
         email: string;
         repeatEmail?: string;
@@ -23,4 +23,4 @@ const navigationItems: INavigatorItem[] = [{
     route: LoadRegisterPage
 }]
 
-export const loginComponent = new Component((state) => text("TODO"), INIT, navigationItems);
+export const loginComponent = new Component(view, INIT, navigationItems);
