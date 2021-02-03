@@ -31,7 +31,7 @@ public class Store {
     @Expose
     private double latitude;
 
-    @Column(name = "maxCustomenrs")
+    @Column(name = "maxCustomers")
     @Expose
     private int maxCustomers;
 
@@ -49,7 +49,9 @@ public class Store {
     @OneToMany(mappedBy = "store")
     private List<Employee> employees;
 
-    //TODO check
+    @OneToMany(mappedBy = "store")
+    private List<TimeSlot> timeSlots;
+
     @ManyToMany
     @JoinTable(name = "PartnerStore",
             joinColumns = @JoinColumn(name = "primaryStoreID"),
@@ -145,7 +147,21 @@ public class Store {
     }
 
     public void setEmployees(List<Employee> employees) {
+        for (Employee e : employees){
+            e.setStore(this);
+        }
         this.employees = employees;
+    }
+
+    public List<TimeSlot> getTimeSlots() {
+        return timeSlots;
+    }
+
+    public void setTimeSlots(List<TimeSlot> timeSlots) {
+        for (TimeSlot ts : timeSlots){
+            ts.setStore(this);
+        }
+        this.timeSlots = timeSlots;
     }
 
     public List<Store> getPartnerStores() {

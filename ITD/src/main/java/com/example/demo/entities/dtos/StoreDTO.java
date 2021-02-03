@@ -14,7 +14,7 @@ public class StoreDTO {
     private double latitude;
     private int maxCustomers;
     private int timeOut;
-    private List<WorkingHourDTO> workingHourDTOS;
+    private List<WorkingHourDTO> workingHourDTOs;
     private List<Integer> partnerStoreIds;
 
     public String getName() {
@@ -41,8 +41,8 @@ public class StoreDTO {
         return timeOut;
     }
 
-    public List<WorkingHourDTO> getWorkingHourDTOS() {
-        return workingHourDTOS;
+    public List<WorkingHourDTO> getWorkingHourDTOs() {
+        return workingHourDTOs;
     }
 
     public List<Integer> getPartnerStoreIds() {
@@ -57,15 +57,19 @@ public class StoreDTO {
         created.setMaxCustomers(this.getMaxCustomers());
         created.setTimeOut(this.getTimeOut());
         List<WorkingHour> workingHours = new ArrayList<>();
-        for (WorkingHourDTO whdto : this.workingHourDTOS){
-            workingHours.add(whdto.generateEntity());
+        if (this.workingHourDTOs != null) {
+            for (WorkingHourDTO whdto : this.workingHourDTOs) {
+                workingHours.add(whdto.generateEntity());
+            }
+            created.setWorkingHours(workingHours);
         }
-        created.setWorkingHours(workingHours);
         List<Store> mockPartnerStores = new ArrayList<>();
-        for (Integer id : this.getPartnerStoreIds()){
-            mockPartnerStores.add(new Store(id));
+        if (this.partnerStoreIds != null) {
+            for (Integer id : this.getPartnerStoreIds()) {
+                mockPartnerStores.add(new Store(id));
+            }
+            created.setPartnerStores(mockPartnerStores);
         }
-        created.setPartnerStores(mockPartnerStores);
         return created;
     }
 }
