@@ -83,4 +83,8 @@ public class CustomerService {
         }
         return store;
     }
+
+    public Customer findCustomerByEmail(String email) {
+        return customerRepository.findByEmail(email);
+    }
 }
