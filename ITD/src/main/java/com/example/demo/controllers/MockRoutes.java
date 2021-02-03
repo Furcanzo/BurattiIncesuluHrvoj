@@ -1,10 +1,10 @@
 package com.example.demo.controllers;
 
-import com.example.demo.entities.Credentials;
 import com.example.demo.entities.User;
 import com.example.demo.services.UserService;
 import com.google.gson.Gson;
 import org.apache.catalina.Store;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +27,9 @@ class StoreLocation {
 class StoreSummary {
     public String name;
     public StoreLocation location;
+}
+class Credentials {
+    public String email;
 }
 @RestController
 public class MockRoutes {

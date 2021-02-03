@@ -1,19 +1,20 @@
-import {BackOfficeUser, Component, INavigatorItem, State} from "../models";
+import {BackOfficeUser} from "../models";
 import {CreateStorePage, INIT} from "./actions";
 import {view} from "./view";
+import {Component, INavigatorItem, State} from "../state";
 
 export class NewStore {
     name: string;
     managerEmail: string;
 }
 export class CreateStoreAppState extends State<BackOfficeUser> {
-    error: string;
     newStore: NewStore;
 }
 
 const navigationItems: INavigatorItem[] = [{
     isDefault: true,
     title: "Create Store",
-    route: CreateStorePage,
+    route: "/createStore",
+    onEnter: CreateStorePage,
 }]
 export const createStoreComponent = new Component(view, INIT, navigationItems);

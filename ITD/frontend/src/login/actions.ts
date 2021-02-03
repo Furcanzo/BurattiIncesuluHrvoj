@@ -1,20 +1,21 @@
-import {AnonUser, State} from "../models";
+import {AnonUser} from "../models";
 import {LoginAppState} from "./models";
 import {http} from "../effects";
 import {Errored, NewUser} from "../actions";
+import {State} from "../state";
 
 export const INIT = (state: State<AnonUser>): LoginAppState => {
-    return {...state, user: {email: ""}};
+    return {...state, user: {email: ""}, currentTab: "login"};
 }
 
-export const LoadLoginPage = (state: LoginAppState) => {
+export const LoadLoginPage = (state: LoginAppState): LoginAppState => {
+    state.currentTab = "login";
     state.user = {email: ""};
-    return state;
+    return {...state, currentTab: "login", user: {email: ""}};
 }
 
 export const UpdateLoginEmail = (state: LoginAppState, content: string): LoginAppState => {
-    state.user.email = content;
-    return state;
+    return {...state, user: {...state.user, email: content}};
 }
 
 export const SubmitLogin = (state: LoginAppState) => {
@@ -27,21 +28,18 @@ export const SubmitLogin = (state: LoginAppState) => {
             resultAction: NewUser as any
         })];
     } else {
-        const newVal = Errored(state, "Please provide an email");
-        debugger;
-        return newVal;
+        return Errored(state, "Please provide an email");
     }
 }
 
-export const LoadRegisterPage = (state: LoginAppState) => {
-    state.user = {email: "", repeatEmail: "", name: "", surname: "", tel: ""};
-    return state;
+export const LoadRegisterPage = (state: LoginAppState): LoginAppState => {
+    return {...state, currentTab: "register", user: {email: "", repeatEmail: "", name: "", surname: "", tel: ""}};
 }
 export const UpdateRegisterField = (field: "email" | "repeatEmail" | "tel" | "name" | "surname") =>
     (state: LoginAppState, content: string): LoginAppState => {
-        state.error = null;
-        state.user[field] = content;
-        return state;
+        const newState = {...state};
+        newState.user[field] = content;
+        return newState;
     };
 
 export const SubmitRegister = (state: LoginAppState) => {
@@ -54,6 +52,6 @@ export const SubmitRegister = (state: LoginAppState) => {
             errorAction: Errored,
             resultAction: NewUser as any,
         })]
-    };
+    }
     return Errored(state, "Please provide all the values on the form below");
 }

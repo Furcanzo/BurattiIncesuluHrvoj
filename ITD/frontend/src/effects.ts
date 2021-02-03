@@ -1,7 +1,8 @@
-import {API_URL, BASE_URL, MAPS_LOCATION_SELECTED_EVENT_NAME} from "./const";
+import {API_URL, MAPS_LOCATION_SELECTED_EVENT_NAME} from "./const";
 import {Loaded, Loading} from "./actions";
-import {isManagerState, State, StoreLocation} from "./models";
+import {isManagerState, StoreLocation} from "./models";
 import {UpdateLocation} from "./manager/actions";
+import {State} from "./state";
 
 export interface IHTTPOptions<State, Request, Response> {
     path: string;
@@ -10,6 +11,12 @@ export interface IHTTPOptions<State, Request, Response> {
     errorAction: (state: State, text?: string) => any;
     method: "GET" | "POST" | "DELETE" | "PUT" ;// TODO: Add more if needed
     showScreenWhileLoading?: boolean;
+}
+const getErrorMessage = (e: Error) => {
+    if (e.message.includes("NetworkError")) {
+        return "Please check that you are connected to the internet";
+    }
+    return e.message;
 }
 export const http = <State, Request, Response>(props: IHTTPOptions<State, Request, Response>) => [
     async <State, Request, Response>(dispatch, props: IHTTPOptions<State, Request, Response>) => {
@@ -37,12 +44,13 @@ export const http = <State, Request, Response>(props: IHTTPOptions<State, Reques
                 rawResponse2.text().then((text) => {
                     dispatch([props.errorAction, text]);
                 }).catch((e) => {
-                    dispatch(props.errorAction);
+                    console.log(e);
+                    dispatch([props.errorAction, getErrorMessage(e)]);
                 });
             })
         }).catch((e) => {
-            console.error(e);
-            dispatch(props.errorAction);
+            console.log(e);
+            dispatch([props.errorAction, getErrorMessage(e)]);
         }).finally(() => {
             dispatch(Loaded);
         })
@@ -74,3 +82,4 @@ export const subscriptions = (state: State<any>) => {
     }
     return [];
 }
+

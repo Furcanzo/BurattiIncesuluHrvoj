@@ -1,12 +1,12 @@
-import {CustomerAppState} from "./customer/models";
-import {ManagerAppState} from "./manager/models";
-import {ClerkAppState} from "./clerk/models";
-import {LoginAppState} from "./login/models";
+import {CustomerAppState, customerComponent} from "./customer/models";
+import {ManagerAppState, managerComponent} from "./manager/models";
+import {ClerkAppState, clerkComponent} from "./clerk/models";
+import {LoginAppState, loginComponent} from "./login/models";
+import {createStoreComponent} from "./backoffice/models";
+import {NewUser} from "./actions";
+import {INavigatorItem, State, User} from "./state";
 
-export class User {
-    email: string;
-    userType: "manager" | "clerk" | "customer" | "anonymous" | "backoffice";
-}
+
 
 export class Manager extends User {
     constructor(readonly location: Store, readonly email: string) {
@@ -32,7 +32,7 @@ export class Customer extends User {
 }
 
 export class StoreLocation {
-    constructor(readonly lat: number, readonly lon:number) {
+    constructor(readonly lat: number, readonly lon: number) {
     }
 }
 
@@ -109,15 +109,7 @@ export class LineNumberRequest {
     estimatedTimeOfVisit: Time;
 }
 
-export abstract class State<U extends User> {
-    currentUser?: U;
-    loading: boolean;
-    currentRoute: string;
-    error?: {
-        recoverable?: boolean;
-        text?: string;
-    };
-}
+
 
 export const isManagerState = (state: State<User>): state is ManagerAppState => {
     return state.currentUser.userType === "manager";
@@ -134,13 +126,20 @@ export const isAnonState = (state: State<User>): state is LoginAppState => {
     return state.currentUser.userType === "anonymous";
 }
 
-export interface INavigatorItem {
-    title: string;
-    route: (state: State<User>) => any;
-    isDefault: boolean;
-}
 
-export class Component<ComponentState extends State<U>, U extends User> {
-    constructor(readonly view: (componentState: ComponentState) => any, readonly initAction: (state: State<U>) => ComponentState, readonly navigation: INavigatorItem[]) {
-    }
+const generateRoutes = (navigationItems: INavigatorItem[]) => {
+    return navigationItems.reduce((acc, item): object => {
+        acc[item.route] = {OnEnter: item.onEnter};
+        return acc;
+    }, {})
+}
+export const routes = {
+    ...generateRoutes(managerComponent.navigation),
+    ...generateRoutes(clerkComponent.navigation),
+    ...generateRoutes(loginComponent.navigation),
+    ...generateRoutes(createStoreComponent.navigation),
+    ...generateRoutes(customerComponent.navigation),
+
+    "/": (state: State<any>) => NewUser(state, state.currentUser),
+
 }

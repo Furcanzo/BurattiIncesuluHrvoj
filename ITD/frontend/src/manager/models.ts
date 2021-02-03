@@ -1,6 +1,7 @@
-import {Component, INavigatorItem, Manager, State, Store, TimeSlot, User} from "../models";
-import {INIT, LoadMonitoringTab, LoadStaffTab} from "./actions";
+import {Manager, Store} from "../models";
+import {INIT, LoadMonitoringTab, LoadStaffTab, LoadUpdateStoreTab} from "./actions";
 import {row, text} from "../widgets";
+import {Component, INavigatorItem, State, User} from "../state";
 
 export class ManagerAppState extends State<Manager> {
     activeTab: "update" | "staff" | "monitor";
@@ -16,15 +17,18 @@ export class ManagerAppState extends State<Manager> {
 const navigationItems: INavigatorItem[] = [{
     title: "Update Store",
     isDefault: false,
-    route: () => {},
+    route: "/updateStore",
+    onEnter: LoadUpdateStoreTab,
 }, {
     title: "Manage Staff",
     isDefault: false,
-    route: LoadStaffTab,
+    route: "/manageStaff",
+    onEnter: LoadStaffTab,
 }, {
     title: "Monitor",
     isDefault: true,
-    route: LoadMonitoringTab
+    route: "/monitor",
+    onEnter: LoadMonitoringTab,
 }].reverse();
 
 export const managerComponent = new Component((state) => row(text("TODO")), INIT, navigationItems);

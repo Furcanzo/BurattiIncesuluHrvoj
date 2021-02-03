@@ -1,6 +1,7 @@
 import {ClerkAppState} from "./models";
-import {Clerk, LineNumber, State} from "../models";
+import {Clerk, LineNumber} from "../models";
 import {http} from "../effects";
+import {State} from "../state";
 
 export const isLineNumber = (response: any): response is LineNumber => {
     return response.hasOwnProperty("number");
