@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface LineNumberRepository extends CrudRepository<LineNumber, Integer> {
 
-    public List<LineNumber> findAll();
+    List<LineNumber> findAll();
 }

@@ -21,10 +21,6 @@ public class ManagerService {
         this.employeeRepository = employeeRepository;
     }
 
-    public Store createStore(Store store) {
-        return storeRepository.save(store);
-    }
-
     public Store updateStore(Store store) throws NoSuchEntityException {
         Store myStore = storeRepository.findById(store.getId()).orElse(null);
         if(myStore == null){
@@ -41,5 +37,9 @@ public class ManagerService {
             throw new NoSuchEntityException();
         }
         return employee;
+    }
+
+    public Employee findEmployeeByEmail(String email) {
+        return employeeRepository.findByEmail(email);
     }
 }

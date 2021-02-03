@@ -1,9 +1,11 @@
 package com.example.demo.controllers;
 
+import com.example.demo.entities.Employee;
 import com.example.demo.entities.Store;
 import com.example.demo.exceptions.NoSuchEntityException;
 import com.example.demo.services.CustomerService;
 import com.example.demo.services.ManagerService;
+import com.example.demo.services.SecurityService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,24 +15,32 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class ManagerRoutes {
 
-    @Autowired
-    private CustomerService customerService;
+    private final CustomerService customerService;
+
+    private final ManagerService managerService;
+
+    private final Gson gson;
+
+    private final SecurityService securityService;
 
     @Autowired
-    private ManagerService managerService;
-
-    @Autowired
-    private Gson gson;
-
-    @PostMapping(path = "/store")
-    public ResponseEntity<String> createStore(@RequestBody Store store) {
-        Store created = managerService.createStore(store);
-        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(created));
+    public ManagerRoutes(CustomerService customerService, ManagerService managerService, Gson gson, SecurityService securityService) {
+        this.customerService = customerService;
+        this.managerService = managerService;
+        this.gson = gson;
+        this.securityService = securityService;
     }
+/*
+
+    }*/
 
     @PutMapping(path = "/store")
-    public ResponseEntity<String> updateStore(@RequestBody Store store) {
+    public ResponseEntity<String> updateStore(@RequestBody Store store, @RequestHeader(name = "bearer") String bearer) {
         try {
+            Employee employee = managerService.findEmployeeByEmail(bearer);
+            if (!securityService.managerCheck(employee, store)){
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("The requester is not a manager of the store");
+            }
             Store created = managerService.updateStore(store);
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(created));
         } catch (NoSuchEntityException e) {
@@ -56,4 +66,5 @@ public class ManagerRoutes {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("specify a valid type of user");
         }
     }
+
 }
