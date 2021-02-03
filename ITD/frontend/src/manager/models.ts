@@ -8,7 +8,9 @@ export class ManagerAppState extends State<Manager> {
     newMember: User;
     store: Store;
     updatingStore: Store;
-    newTimeSlot?: TimeSlot;
+    foundPartnerStore?: Store;
+    newPartnerStoreId?: string;
+    numberOfVisitors?: number;
 }
 
 const navigationItems: INavigatorItem[] = [{

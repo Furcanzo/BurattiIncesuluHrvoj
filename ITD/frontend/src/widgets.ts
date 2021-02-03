@@ -5,6 +5,7 @@ import {toCanvas} from "qrcode";
 import {confirm} from "bootbox";
 import {Store, StoreLocation} from "./models";
 import "../lib/instascan.min.js";
+import {MAPS_LOCATION_SELECTED_EVENT_NAME} from "./const";
 
 const addStyle = (content: any, addition: { [key: string]: string }) => {
 
@@ -40,20 +41,21 @@ export const formField = <State>(value: string, title: string, onUpdate: (state:
     return html`
     <div class="form-group">
         <label>${title}</label>
-        <input type=${type_} oninput="${updateWrapper}" value="${value}" class="form-control">
+        <input type=${type_} oninput=${updateWrapper} value="${value}" class="form-control">
     </div>
     `;
 }
 
 export const card = (title: any, content: any, border?: Color, onClick?: any, row: boolean = false) => {
-    return html`
-    <div class="card bg-light text-center ${border ? "border-" + border : ""}" onclick="${onClick}">
+    const element = html`
+    <div class="card bg-light text-center ${border ? "border-" + border : ""}" onclick=${onClick}>
         <div class="card-body">
             ${addClass(title, ["card-title"])}
             <div class="card-text  ${row && 'row'}"> ${content}</div>
         </div>
     </div>
     `;
+    return element;
 }
 
 export interface NavigationItem {
@@ -64,7 +66,7 @@ export interface NavigationItem {
 
 const navigationCardItem = (item: NavigationItem) => {
     return html`<li class="nav-item">
-        <a class="nav-link ${item.active ? 'active' : ""}" onclick="${item.onClick}">${item.title}</a>    
+        <a class="nav-link ${item.active ? 'active' : ""}" onclick=${item.onClick}>${item.title}</a>    
         </li>`
 }
 export const navigationCard = (navs: NavigationItem[], body: any[]) => {
@@ -107,7 +109,7 @@ export const form = (children: any[]) => {
 
 export const button = <State>(text: string, color: Color, onClick: (state: State) => any, size: ButtonSize = "md", huge: boolean = false, disabled: boolean = false) => {
     return html`
-    <button class="btn btn-${color} btn-${size} ${huge && 'btn-block'}" ${disabled && "disabled"} onclick="${onClick}">${text}</button>
+    <button type="button" class="btn btn-${color} btn-${size} ${huge && 'btn-block'}" ${disabled && "disabled"} onclick=${onClick}>${text}</button>
     `
 }
 
@@ -123,7 +125,6 @@ export const qrCodeReader = <State>(onRead: (state: State, text: string) => any)
     const randomReader = `qrRead-${randInt()}`;
     const randomInput = `${randomReader}-input`;
     debounce(async () => {
-        debugger;
         const scanner = new (window as any).Instascan.Scanner({video: document.getElementById(randomReader)});
         scanner.addListener('scan', (content) => {
             console.log(content);
@@ -151,8 +152,8 @@ export const confirmationPrompt = <State>(question: string, onConfirm: (state: S
         },
         buttons,
     });
-    return html`<button id="${randomModal}" onclick="${onConfirm}" hidden></button>
-            <button id="${randomCancel}" onclick="${onCancel}" hidden></button>`;
+    return html`<button id="${randomModal}" onclick=${onConfirm} hidden></button>
+            <button id="${randomCancel}" onclick=${onCancel} hidden></button>`;
 };
 
 export const markerMap = (location: StoreLocation, onLocationSelect?: (location: StoreLocation) => void) => {
@@ -168,7 +169,7 @@ export const markerMap = (location: StoreLocation, onLocationSelect?: (location:
         if (onLocationSelect) {
             map.addListener("click", (ev) => {
                 const newLocation = new StoreLocation(ev.latLng.lat(), ev.latLng.lng());
-                onLocationSelect(newLocation);
+                window.dispatchEvent(new CustomEvent(MAPS_LOCATION_SELECTED_EVENT_NAME, {detail: newLocation}))
                 marker.setVisible(false);
                 marker = new google.maps.Marker({
                     position: ev.latLng,
@@ -176,8 +177,6 @@ export const markerMap = (location: StoreLocation, onLocationSelect?: (location:
                 })
             })
         }
-        // https://developers.google.com/maps/documentation/javascript/directions
-        // TODO: Use Google APIs to display transport.
     });
     return html`<div id="${randomMap}"></div>`;
 }
@@ -185,12 +184,12 @@ export const markerMap = (location: StoreLocation, onLocationSelect?: (location:
 const navbarItem = (navigationItem: NavigationItem) => {
     return clickable(html`
       <li class="nav-item ${navigationItem.active ? "active" : ""}">
-        <a class="nav-link" onclick="${navigationItem.onClick}">${navigationItem.title}${navigationItem.active ? (html`<span class="sr-only">(current)</span>`) : ""}</a>
+        <a class="nav-link" onclick=${navigationItem.onClick}>${navigationItem.title}${navigationItem.active ? (html`<span class="sr-only">(current)</span>`) : ""}</a>
       </li>`);
 }
 export const navbar = (navigationItems: NavigationItem[], onHomeClick: any) => {
     return html`<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" onclick="${onHomeClick}">CLup</a>
+  <a class="navbar-brand" onclick=${onHomeClick}>CLup</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -210,11 +209,13 @@ const footer = background(html`
 </footer>
 `, "light");
 
-export const wrapper = (navbar: any, body: any[]) => {
+export const wrapper = (navbar: any, body: any[], error?: string) => {
+    const alert = error ? `<div class="alert alert-danger" role="alert">${error}</div>` : "";
     return html`
 <div>
     ${navbar}
     <main role="main">
+        ${alert}
         <div class="container pb-5">
         ${body.map(row)}
         </div>
@@ -231,7 +232,7 @@ export const titleText = (content: string, size: TextSize = "3") => {
 
 export const text = (...elements: string | any) => {
     const compiled = elements.map(element => {
-        if(typeof element === "string") {
+        if (typeof element === "string") {
             return hyperappText(element);
         }
         return element;
@@ -240,7 +241,7 @@ export const text = (...elements: string | any) => {
 }
 
 export const url = (link: string, innerContent: any, newTab: boolean = true) => {
-    const target = newTab ? {target:'_blank'} : {};
+    const target = newTab ? {target: '_blank'} : {};
     return html`<a href="${link}" ${target}>${innerContent}</a>`
 }
 export const centered = (content: any) => {

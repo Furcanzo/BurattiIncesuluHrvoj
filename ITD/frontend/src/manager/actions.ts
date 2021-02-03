@@ -1,7 +1,7 @@
-import {emptyTimeSlot, Manager, State, Store, StoreLocation, TimeSlot, User} from "../models";
+import {Manager, State, Store, StoreLocation, User} from "../models";
 import {ManagerAppState} from "./models";
-import {http} from "../effects";
-import {timeSlotEq} from "../util";
+import {http, timeout} from "../effects";
+import {Crashed, Errored} from "../actions";
 
 export const INIT = (state: State<Manager>): ManagerAppState => {
     return {
@@ -11,24 +11,32 @@ export const INIT = (state: State<Manager>): ManagerAppState => {
         store: state.currentUser.location,
         staffMembers: [],
         newMember: undefined,
-        newTimeSlot: undefined,
+        newPartnerStoreId: "",
     };
 }
 
-const MONITOR_PATH = "monitor"
-export const LoadMonitoringTab = (state: ManagerAppState) => {
-    return [{...state, activeTab: "monitor"} as ManagerAppState, http({
-        path: MONITOR_PATH,
-        method: "GET",
-        resultAction: MonitoringLoaded,
-        errorAction: INIT,
-    })]
-};
-export const MonitoringLoaded = (state: ManagerAppState, monitoringData: any) => {
-    return state; // TODO: How to load and display monitoring
+export const MonitoringLoaded = (state: ManagerAppState, {customerCount}: {customerCount: number}) => {
+    return [{...state, numberOfVisitors: customerCount} as ManagerAppState, timeout({seconds: 5, action: RefreshMonitoringData})];
 }
-const Error = (state: ManagerAppState) => {
-    return state;
+
+const MONITOR_PATH = "monitor"
+const monitorRequest = (showResults) => http({
+    path: MONITOR_PATH,
+    method: "GET",
+    resultAction: MonitoringLoaded as any,
+    errorAction: Crashed,
+    showScreenWhileLoading: showResults,
+});
+export const LoadMonitoringTab = (state: ManagerAppState) => {
+    return [{...state, activeTab: "monitor"} as ManagerAppState, monitorRequest(false)]
+};
+
+export const RefreshMonitoringData = (state: ManagerAppState) => {
+    if (state.activeTab !== "monitor") {
+        return state;
+    }
+    return [state, monitorRequest(true)];
+
 }
 const GET_STAFF_LIST = "staff/list";
 export const LoadStaffTab = (state: ManagerAppState) => {
@@ -36,7 +44,7 @@ export const LoadStaffTab = (state: ManagerAppState) => {
         path: GET_STAFF_LIST,
         method: "GET",
         resultAction: StaffListLoaded,
-        errorAction: Error,
+        errorAction: Crashed,
     })]
 }
 export const StaffListLoaded = (state: ManagerAppState, staffMembers: User[]): ManagerAppState => {
@@ -56,8 +64,8 @@ export const SubmitNewMember = (state: ManagerAppState) => {
     return [state, http({
         path: CREATE_STAFF,
         method: "POST",
-        resultAction: (state, _) => LoadStaffTab(state) as any,
-        errorAction: Error,
+        resultAction: (state: ManagerAppState, _) => LoadStaffTab(state) as any,
+        errorAction: Errored,
     })]
 }
 const CHANGE_STAFF_TYPE = "staff/toggle";
@@ -65,8 +73,8 @@ export const ChangeStaffType = (state: ManagerAppState) => {
     return [state, http({
         path: CHANGE_STAFF_TYPE,
         method: "POST",
-        resultAction: (state, _) => LoadStaffTab(state) as any,
-        errorAction: Error,
+        resultAction: (state: ManagerAppState, _) => LoadStaffTab(state) as any,
+        errorAction: Errored,
     })]
 }
 
@@ -75,8 +83,8 @@ export const DeleteStaff = (state: ManagerAppState) => {
     return [state, http({
         path: DELETE_STAFF,
         method: "POST",
-        resultAction: (state, _) => LoadStaffTab(state) as any,
-        errorAction: Error,
+        resultAction: (state:ManagerAppState, _) => LoadStaffTab(state) as any,
+        errorAction: Errored,
     })]
 };
 
@@ -90,7 +98,7 @@ export const SaveStore = (state: ManagerAppState) => {
         path: UPDATE_STORE,
         method: "POST",
         resultAction: StoreUpdated,
-        errorAction: Error,
+        errorAction: Errored,
     })]
 };
 
@@ -99,39 +107,15 @@ export const StoreUpdated = (state: ManagerAppState) => {
     return LoadUpdateStoreTab(state);
 }
 
-export const UpdateTimeSlotTime = (part: "hour" | "minute", of: "start" | "end") =>
-    (state: ManagerAppState, ev: Event) => {
-        const newVal: number = Number.parseInt((ev.target as HTMLInputElement).value);
+export const UpdateStoreOpeningHours = (part: "hour" | "minute", of: "start" | "end") =>
+    (state: ManagerAppState, content: string) => {
+        const newVal: number = Number.parseInt(content);
         if (!Number.isNaN(newVal)) {
-            state.newTimeSlot[of][part] = newVal;
+            state.updatingStore.workingHours[of][part] = newVal;
         }
         return state;
     }
 
-export const UpdateTimeSlotDate = (state: ManagerAppState, date: Date) => {
-    state.newTimeSlot.day = date;
-    return state;
-}
-
-export const AddNewTimeSlot = (state: ManagerAppState): ManagerAppState => {
-    return {
-        ...state,
-        updatingStore: {
-            ...state.updatingStore,
-            openTimeSlots: [...state.updatingStore.openTimeSlots, state.newTimeSlot]
-        },
-        newTimeSlot: emptyTimeSlot()
-    }
-}
-
-export const RemoveTimeSlot = (state: ManagerAppState, targetSlot: TimeSlot): ManagerAppState => {
-    return {
-        ...state, updatingStore: {
-            ...state.updatingStore,
-            openTimeSlots: state.updatingStore.openTimeSlots.filter(slot => !timeSlotEq(slot, targetSlot)),
-        }
-    };
-}
 export const UpdateLocation = (state: ManagerAppState, location: StoreLocation) => {
     return {
         ...state, updatingStore: {
@@ -139,10 +123,9 @@ export const UpdateLocation = (state: ManagerAppState, location: StoreLocation) 
             location,
         }
     }
-} // TODO: How to trigger this from maps.
+}
 
-export const UpdateStoreName = (state: ManagerAppState, ev: Event): ManagerAppState=> {
-    const newName = (ev.target as HTMLInputElement).value;
+export const UpdateStoreName = (state: ManagerAppState, newName: string): ManagerAppState => {
     return {
         ...state,
         updatingStore: {
@@ -152,10 +135,53 @@ export const UpdateStoreName = (state: ManagerAppState, ev: Event): ManagerAppSt
     }
 }
 
-export const UpdateStoreCapacity = (state: ManagerAppState, ev: Event): ManagerAppState => {
-    const newValue = Number.parseInt((ev.target as HTMLInputElement).value);
+export const UpdateStoreCapacity = (state: ManagerAppState, content: string): ManagerAppState => {
+    const newValue = Number.parseInt(content);
     if (!Number.isNaN(newValue)) {
         state.updatingStore.maxCustomerCapacity = newValue;
     }
     return state;
+}
+
+export const UpdatePartnerStoreId = (state: ManagerAppState, content: string): ManagerAppState => {
+    return {...state, newPartnerStoreId: content};
+}
+const GET_STORE = (id: string) => `store/${id}`
+export const FindPartnerStore = (state: ManagerAppState) => {
+    return [state, http({
+        path: GET_STORE(state.newPartnerStoreId),
+        method: "GET",
+        resultAction: PartnerStoreRetrieved,
+        errorAction: Errored,
+    })]
+}
+
+export const PartnerStoreRetrieved = (state: ManagerAppState, partnerStore: Store): ManagerAppState => {
+    return {...state, foundPartnerStore: partnerStore};
+}
+
+export const AddNewPartnerStore = (state: ManagerAppState): ManagerAppState => {
+    return {
+        ...state,
+        foundPartnerStore: undefined,
+        newPartnerStoreId: "",
+        updatingStore: {...state.updatingStore, partners: [...state.updatingStore.partners, state.foundPartnerStore]}
+    }
+};
+
+export const CancelPartnerStoreAddition = (state: ManagerAppState): ManagerAppState => {
+    return {
+        ...state,
+        foundPartnerStore: undefined,
+    };
+};
+
+export const RemovePartnerStore = (partnerStore: Store) => (state: ManagerAppState): ManagerAppState => {
+    return {
+        ...state,
+        updatingStore: {
+            ...state.updatingStore,
+            partners: state.updatingStore.partners.filter(store => store.id === partnerStore.id),
+        }
+    }
 }
