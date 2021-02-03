@@ -12,7 +12,7 @@ CREATE TABLE Store
 (
   storeID INT NOT NULL UNIQUE AUTO_INCREMENT,
   name VARCHAR(50) NOT NULL,
-  description VARCHAR(500) NOT NULL,
+  description VARCHAR(50) NOT NULL,
   longitude FLOAT NOT NULL,
   latitude FLOAT NOT NULL,
   maxCustomers INT NOT NULL,
@@ -20,46 +20,59 @@ CREATE TABLE Store
   PRIMARY KEY (storeID)
 );
 
-CREATE TABLE PartnerStore
-(
-  partnerID INT NOT NULL UNIQUE AUTO_INCREMENT,
-  primaryStoreID INT NOT NULL,
-  partnerStoreID INT NOT NULL,
-  PRIMARY KEY (partnerID),
-  FOREIGN KEY (primaryStoreID) REFERENCES Store(storeID),
-  FOREIGN KEY (partnerStoreID) REFERENCES Store(storeID)
-);
-
 CREATE TABLE WorkingHours
 (
   workingHoursID INT NOT NULL UNIQUE AUTO_INCREMENT,
-  startTime DATETIME NOT NULL,
-  endTime DATETIME NOT NULL,
+  openingTime INT NOT NULL,
+  closingTime INT NOT NULL,
   storeID INT NOT NULL,
-  FOREIGN KEY (storeID) REFERENCES Store(storeID),
-  PRIMARY KEY (workingHoursID)
+  PRIMARY KEY (workingHoursID),
+  FOREIGN KEY (storeID) REFERENCES Store(storeID)
 );
 
-CREATE TABLE Employe
+CREATE TABLE Employee
 (
-  employeID INT NOT NULL UNIQUE AUTO_INCREMENT,
+  employeeID INT NOT NULL UNIQUE AUTO_INCREMENT,
   email VARCHAR(50) NOT NULL,
   Role VARCHAR(50) NOT NULL,
   storeID INT NOT NULL,
-  PRIMARY KEY (employeID),
+  PRIMARY KEY (employeeID),
+  FOREIGN KEY (storeID) REFERENCES Store(storeID)
+);
+
+CREATE TABLE PartnerStore
+(
+  partnerID INT NOT NULL UNIQUE AUTO_INCREMENT,
+  partnerStoreID INT NOT NULL,
+  primaryStoreID INT NOT NULL,
+  storeID INT NOT NULL,
+  PRIMARY KEY (partnerID),
+  FOREIGN KEY (primaryStoreID) REFERENCES Store(storeID),
+  FOREIGN KEY (partnerStoreID) REFERENCES Store(storeID)
+   );
+
+CREATE TABLE TimeSlot
+(
+  startTime INT NOT NULL,
+  endTime INT NOT NULL,
+  timeSlotID INT NOT NULL,
+  storeID INT NOT NULL,
+  PRIMARY KEY (timeSlotID),
   FOREIGN KEY (storeID) REFERENCES Store(storeID)
 );
 
 CREATE TABLE LineNumber
 (
-  startTime DATETIME NOT NULL,
-  endTime DATETIME NOT NULL,
-  number INT NOT NULL,
+  startTime INT NOT NULL,
+  endTime INT NOT NULL,
   status VARCHAR(50) NOT NULL,
   lineNumberID INT NOT NULL UNIQUE AUTO_INCREMENT,
+  number INT NOT NULL,
   customerID INT NOT NULL,
   storeID INT NOT NULL,
+  timeSlotID INT NOT NULL,
   PRIMARY KEY (lineNumberID),
   FOREIGN KEY (customerID) REFERENCES Customer(customerID),
-  FOREIGN KEY (storeID) REFERENCES Store(storeID)
+  FOREIGN KEY (storeID) REFERENCES Store(storeID),
+  FOREIGN KEY (timeSlotID) REFERENCES TimeSlot(timeSlotID)
 );
