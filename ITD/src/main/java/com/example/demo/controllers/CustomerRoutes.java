@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.entities.Customer;
 import com.example.demo.exceptions.NoSuchEntityException;
 import com.example.demo.exceptions.NoTimeSlotsException;
 import com.example.demo.exceptions.TimeSlotFullException;
@@ -7,6 +8,7 @@ import com.example.demo.entities.LineNumber;
 import com.example.demo.entities.Store;
 import com.example.demo.entities.TimeSlot;
 import com.example.demo.services.CustomerService;
+import com.example.demo.services.SecurityService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,16 +20,26 @@ import java.util.List;
 @RestController
 public class CustomerRoutes {
 
-    @Autowired
-    private CustomerService customerService;
+    private final CustomerService customerService;
+
+    private final Gson gson;
+
+    private final SecurityService securityService;
 
     @Autowired
-    private Gson gson;
-
+    public CustomerRoutes(CustomerService customerService, Gson gson, SecurityService securityService) {
+        this.customerService = customerService;
+        this.gson = gson;
+        this.securityService = securityService;
+    }
 
     @PostMapping(path = "/book")
-    public ResponseEntity<String> bookFutureLineNumber(@RequestBody LineNumber lineNumber){
+    public ResponseEntity<String> bookFutureLineNumber(@RequestBody LineNumber lineNumber, @RequestHeader(name = "bearer") String bearer){
         try {
+            Customer customer = customerService.findCustomerByEmail(bearer);
+            if (securityService.checkLineNumberStealing(lineNumber, customer)){
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("The requester is different from the actual customer");
+            }
             LineNumber created = customerService.bookFutureLineNUmber(lineNumber);
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(created));
         } catch (NoTimeSlotsException e) {
@@ -46,8 +58,12 @@ public class CustomerRoutes {
     }
 
     @PostMapping(path = "/retrieve")
-    public ResponseEntity<String> retrieveLineNumber(@RequestBody LineNumber lineNumber){
+    public ResponseEntity<String> retrieveLineNumber(@RequestBody LineNumber lineNumber,  @RequestHeader(name = "bearer") String bearer){
         try {
+            Customer customer = customerService.findCustomerByEmail(bearer);
+            if (securityService.checkLineNumberStealing(lineNumber, customer)){
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("The requester is different from the actual customer");
+            }
             LineNumber created = customerService.retrieveLineNUmber(lineNumber);
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(created));
         } catch (NoTimeSlotsException e) {
@@ -61,7 +77,7 @@ public class CustomerRoutes {
         return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(customerService.getStoreList()));
     }
 
-    //todo manager??
+
     @GetMapping(path = "/store")
     public ResponseEntity<String> getStoreDetails(@RequestParam int id){
         try {

@@ -12,4 +12,5 @@ public class TimeSlot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     //todo
+
 }
