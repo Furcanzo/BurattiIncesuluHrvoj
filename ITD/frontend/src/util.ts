@@ -1,6 +1,6 @@
 import {TimeSlot} from "./models";
 import {Loader} from "@googlemaps/js-api-loader";
-import {MAPS_API_KEY} from "./const";
+import {BASE_URL, MAPS_API_KEY} from "./const";
 
 export const timeSlotEq = (left: TimeSlot, right: TimeSlot) => {
     return left.start.minute === right.start.minute
@@ -26,3 +26,5 @@ export const debounce = (fn: () => void): void => {
 export const currentYear = (new Date()).getFullYear();
 
 export const addZero = (target: number) => target < 10 ? "0" + target.toString() : target.toString();
+
+export const getCurrentPath = () => "/" + (window.location.href.split(BASE_URL)[1]);

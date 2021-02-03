@@ -3,7 +3,7 @@ import {text as hyperappText} from "hyperapp";
 import {currentYear, debounce, randInt} from "./util";
 import {toCanvas} from "qrcode";
 import {confirm} from "bootbox";
-import {Store, StoreLocation} from "./models";
+import {StoreLocation} from "./models";
 import "../lib/instascan.min.js";
 import {MAPS_LOCATION_SELECTED_EVENT_NAME} from "./const";
 
@@ -45,9 +45,11 @@ export const formField = <State>(value: string, title: string, onUpdate: (state:
     </div>
     `;
 }
-
+export const hiddenText = (text: string) => {
+    return html`<div class="hideit">${text}</div>`
+}
 export const card = (title: any, content: any, border?: Color, onClick?: any, row: boolean = false) => {
-    const element = html`
+    return html`
     <div class="card bg-light text-center ${border ? "border-" + border : ""}" onclick=${onClick}>
         <div class="card-body">
             ${addClass(title, ["card-title"])}
@@ -55,7 +57,6 @@ export const card = (title: any, content: any, border?: Color, onClick?: any, ro
         </div>
     </div>
     `;
-    return element;
 }
 
 export interface NavigationItem {
@@ -156,7 +157,7 @@ export const confirmationPrompt = <State>(question: string, onConfirm: (state: S
             <button id="${randomCancel}" onclick=${onCancel} hidden></button>`;
 };
 
-export const markerMap = (location: StoreLocation, onLocationSelect?: (location: StoreLocation) => void) => {
+export const markerMap = (location: StoreLocation, enableSelection: boolean) => {
     const randomMap = `map-${randInt()}`;
     const googleMapsLocation = new google.maps.LatLng(location.lat, location.lon);
     let marker;
@@ -166,7 +167,7 @@ export const markerMap = (location: StoreLocation, onLocationSelect?: (location:
             position: googleMapsLocation,
             map,
         });
-        if (onLocationSelect) {
+        if (enableSelection) {
             map.addListener("click", (ev) => {
                 const newLocation = new StoreLocation(ev.latLng.lat(), ev.latLng.lng());
                 window.dispatchEvent(new CustomEvent(MAPS_LOCATION_SELECTED_EVENT_NAME, {detail: newLocation}))
@@ -210,7 +211,7 @@ const footer = background(html`
 `, "light");
 
 export const wrapper = (navbar: any, body: any[], error?: string) => {
-    const alert = error ? `<div class="alert alert-danger" role="alert">${error}</div>` : "";
+    const alert = error ? html`<div class="alert alert-danger" role="alert">${error}</div>` : "";
     return html`
 <div>
     ${navbar}

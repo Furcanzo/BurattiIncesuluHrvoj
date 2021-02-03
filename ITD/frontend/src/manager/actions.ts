@@ -1,7 +1,8 @@
-import {Manager, State, Store, StoreLocation, User} from "../models";
+import {Manager, Store, StoreLocation} from "../models";
 import {ManagerAppState} from "./models";
 import {http, timeout} from "../effects";
 import {Crashed, Errored} from "../actions";
+import {State, User} from "../state";
 
 export const INIT = (state: State<Manager>): ManagerAppState => {
     return {

@@ -1,6 +1,7 @@
-import {Customer, LineNumber, Store, State, LineNumberRequest, TimeSlot, Time} from "../models";
+import {Customer, LineNumber, Store, LineNumberRequest, TimeSlot, Time} from "../models";
 import {CustomerAppState} from "./models";
 import {http} from "../effects";
+import {State} from "../state";
 
 export const INIT = (state: State<Customer>): CustomerAppState => {
     return {...state, newLineNumber: undefined, myLineNumbers: undefined};

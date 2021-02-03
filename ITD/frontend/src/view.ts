@@ -1,10 +1,12 @@
-import {INavigatorItem, isAnonState, isClerkState, isCustomerState, isManagerState, State, User} from "./models";
+import {isAnonState, isClerkState, isCustomerState, isManagerState} from "./models";
 import {clerkComponent} from "./clerk/models";
 import {customerComponent} from "./customer/models";
 import {managerComponent} from "./manager/models";
 import {loginComponent} from "./login/models";
 import {navbar, text, wrapper} from "./widgets";
-import {Navigate, Nothing} from "./actions";
+import {Nothing, SwitchTab} from "./actions";
+import {INavigatorItem, State, User} from "./state";
+import {getCurrentPath} from "./util";
 
 export const view = (state: State<User>) => {
     let innerContent;
@@ -36,6 +38,6 @@ export const view = (state: State<User>) => {
 
 const navigation = (navigationItems: INavigatorItem[], state: State<User>) => {
     return navbar(navigationItems.map(item => {
-        return {active: item.title === state.currentRoute, title: item.title, onClick: Navigate(state, item)};
+        return {active: item.route === getCurrentPath(), title: item.title, onClick: SwitchTab(item.route)};
     }), Nothing)
 }

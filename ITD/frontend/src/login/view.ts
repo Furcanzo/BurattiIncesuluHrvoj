@@ -1,15 +1,17 @@
-import {button, card, centered, formField, row, text, titleText, url} from "../widgets";
-import {LoginAppState} from "./models";
+import {button, card, centered, formField, hiddenText, row, text, titleText, url} from "../widgets";
+import {LoginAppState, loginComponent, ROUTE_LOGIN, ROUTE_REGISTER} from "./models";
 import {LoadRegisterPage, SubmitLogin, SubmitRegister, UpdateLoginEmail, UpdateRegisterField} from "./actions";
+import {SwitchTab} from "../actions";
 
 const loginWidget = (state: LoginAppState) => {
     return [
         titleText("Welcome to CLup System", "2"),
+        hiddenText(state.currentTab),
         centered(card(titleText("To use the system, please login first", "5"), [
             row(formField(state.user.email, "E-mail", UpdateLoginEmail, "email")),
             row([
                 button("Login", "primary", SubmitLogin),
-                button("Register instead?", "primary", LoadRegisterPage),
+                button("Register instead?", "primary", SwitchTab(ROUTE_REGISTER)),
             ].map(centered))
         ])),
     ];
@@ -19,6 +21,7 @@ const registerWidget = (state: LoginAppState) => {
     const newUser = state.user;
     return [
         titleText("Register ", "2"),
+        hiddenText(state.currentTab),
         centered(card(titleText("Please fill the form below", "4"), [
             row([
                 formField(newUser.email, "Your Email", UpdateRegisterField("email"), "text"),
@@ -47,7 +50,7 @@ const registerWidget = (state: LoginAppState) => {
 }
 
 export const view = (state: LoginAppState) => {
-    if (state.user.repeatEmail !== undefined) {
+    if (state.currentTab === "register") {
         return registerWidget(state);
     } else {
         return loginWidget(state);

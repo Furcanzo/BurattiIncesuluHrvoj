@@ -1,25 +1,21 @@
-import {AnonUser, State} from "../models";
+import {AnonUser} from "../models";
 import {CreateStoreAppState, NewStore} from "./models";
 import {http} from "../effects";
+import {Errored} from "../actions";
+import {State} from "../state";
 
 const emptyNewStore: NewStore = {name: "", managerEmail: ""}
 export const INIT = (state: State<AnonUser>): CreateStoreAppState => {
-    return {...state, error: null, newStore: emptyNewStore};
+    return {...state, newStore: emptyNewStore};
 }
 
 export const CreateStorePage = (state: CreateStoreAppState) => {
-    state.error = null;
-    state.newStore = emptyNewStore;
-    return state;
+    return {...state, newStore: emptyNewStore};
 }
 
-const Error = (text: string) => (state: CreateStoreAppState): CreateStoreAppState => {
-    return {...state, error: text};
-}
 
 export const UpdateStoreField = (field: "managerEmail" | "name") =>
     (state: CreateStoreAppState, content: string): CreateStoreAppState => {
-        state.error = null;
         state.newStore[field] = content;
         return state;
     };
@@ -34,7 +30,7 @@ export const SubmitStore = (state: CreateStoreAppState) => {
             path: "addStore",
             method: "POST",
             body: newStore,
-            errorAction: Error("Submit Failed"),
+            errorAction: Errored,
             resultAction: StoreAdded,
         })]
     }

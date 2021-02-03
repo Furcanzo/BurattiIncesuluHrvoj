@@ -1,9 +1,10 @@
-import {AnonUser, Component, INavigatorItem, State} from "../models";
+import {AnonUser} from "../models";
 import {INIT, LoadLoginPage, LoadRegisterPage} from "./actions";
-import {row, text} from "../widgets";
 import {view} from "./view";
+import {Component, INavigatorItem, State} from "../state";
 
 export class LoginAppState extends State<AnonUser> {
+    currentTab: "login" | "register";
     user: {
         email: string;
         repeatEmail?: string;
@@ -12,15 +13,18 @@ export class LoginAppState extends State<AnonUser> {
         tel?: string;
     };
 }
-
+export const ROUTE_REGISTER = "/register";
+export const ROUTE_LOGIN = "/login";
 const navigationItems: INavigatorItem[] = [{
     isDefault: true,
     title: "Login",
-    route: LoadLoginPage,
+    route: ROUTE_LOGIN,
+    onEnter: LoadLoginPage,
 }, {
     isDefault: false,
     title: "Register",
-    route: LoadRegisterPage
+    route: ROUTE_REGISTER,
+    onEnter: LoadRegisterPage,
 }]
 
 export const loginComponent = new Component(view, INIT, navigationItems);
