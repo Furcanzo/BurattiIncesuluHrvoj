@@ -45,7 +45,6 @@ CREATE TABLE PartnerStore
   partnerID INT NOT NULL UNIQUE AUTO_INCREMENT,
   partnerStoreID INT NOT NULL,
   primaryStoreID INT NOT NULL,
-  storeID INT NOT NULL,
   PRIMARY KEY (partnerID),
   FOREIGN KEY (primaryStoreID) REFERENCES Store(storeID),
   FOREIGN KEY (partnerStoreID) REFERENCES Store(storeID)

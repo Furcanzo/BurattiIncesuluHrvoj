@@ -31,6 +31,10 @@ public class LineNumber {
     private long until;
 
     @ManyToOne
+    @JoinColumn(name = "timeSlotID")
+    private TimeSlot timeSlot;
+
+    @ManyToOne
     @JoinColumn(name = "storeID")
     @Expose
     private Store store;
@@ -77,6 +81,14 @@ public class LineNumber {
 
     public void setUntil(long until) {
         this.until = until;
+    }
+
+    public TimeSlot getTimeSlot() {
+        return timeSlot;
+    }
+
+    public void setTimeSlot(TimeSlot timeSlot) {
+        this.timeSlot = timeSlot;
     }
 
     public Store getStore() {

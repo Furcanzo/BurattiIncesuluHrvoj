@@ -14,11 +14,11 @@ public class WorkingHour {
     @Expose
     private int id;
 
-    @Column(name = "startTime")
+    @Column(name = "openingTime")
     @Expose
     private long from;
 
-    @Column(name = "endTime")
+    @Column(name = "closingTime")
     @Expose
     private long until;
 
