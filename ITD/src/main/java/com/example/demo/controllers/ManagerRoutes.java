@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.entities.Employee;
 import com.example.demo.entities.Store;
+import com.example.demo.entities.dtos.StoreDTO;
 import com.example.demo.exceptions.NoSuchEntityException;
 import com.example.demo.services.CustomerService;
 import com.example.demo.services.ManagerService;
@@ -30,18 +31,15 @@ public class ManagerRoutes {
         this.gson = gson;
         this.securityService = securityService;
     }
-/*
-
-    }*/
 
     @PutMapping(path = "/store")
-    public ResponseEntity<String> updateStore(@RequestBody Store store, @RequestHeader(name = "bearer") String bearer) {
+    public ResponseEntity<String> updateStore(@RequestParam int storeId, @RequestBody StoreDTO store, @RequestHeader(name = "bearer") String bearer) {
         try {
             Employee employee = managerService.findEmployeeByEmail(bearer);
-            if (!securityService.managerCheck(employee, store)){
+            if (!securityService.managerCheck(employee, storeId)){
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("The requester is not a manager of the store");
             }
-            Store created = managerService.updateStore(store);
+            Store created = managerService.updateStore(storeId, store);
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(created));
         } catch (NoSuchEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("store not found");

@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.entities.Store;
+import com.example.demo.entities.dtos.StoreDTO;
 import com.example.demo.services.BackOfficeService;
 import com.example.demo.services.SecurityService;
 import com.google.gson.Gson;
@@ -29,7 +30,7 @@ public class BackOfficeRoutes {
     }
 
     @PostMapping(path = "/store")
-    public ResponseEntity<String> createStore(@RequestBody Store store, @RequestHeader(name = "bearer") String bearer) {
+    public ResponseEntity<String> createStore(@RequestBody StoreDTO store, @RequestHeader(name = "bearer") String bearer) {
         if (securityService.backOffice(bearer)) {
             Store created = backOfficeService.createStore(store);
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(created));
