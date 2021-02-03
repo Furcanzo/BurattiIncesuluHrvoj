@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.entities.Employee;
+import com.example.demo.entities.dtos.StoreDTO;
 import com.example.demo.exceptions.NoSuchEntityException;
 import com.example.demo.entities.Store;
 import com.example.demo.repositories.EmployeeRepository;
@@ -21,8 +22,8 @@ public class ManagerService {
         this.employeeRepository = employeeRepository;
     }
 
-    public Store updateStore(Store store) throws NoSuchEntityException {
-        Store myStore = storeRepository.findById(store.getId()).orElse(null);
+    public Store updateStore(int storeId, StoreDTO store) throws NoSuchEntityException {
+        Store myStore = storeRepository.findById(storeId).orElse(null);
         if(myStore == null){
             throw new NoSuchEntityException();
         }
