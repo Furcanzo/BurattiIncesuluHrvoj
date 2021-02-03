@@ -3,7 +3,6 @@ package com.example.demo.entities;
 import com.google.gson.annotations.Expose;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "linenumber")
@@ -25,11 +24,11 @@ public class LineNumber {
 
     @Column(name = "startTime")
     @Expose
-    private Date from;
+    private long from;
 
     @Column(name = "endTime")
     @Expose
-    private Date until;
+    private long until;
 
     @ManyToOne
     @JoinColumn(name = "storeID")
@@ -64,19 +63,19 @@ public class LineNumber {
         this.number = number;
     }
 
-    public Date getFrom() {
+    public long getFrom() {
         return from;
     }
 
-    public void setFrom(Date from) {
+    public void setFrom(long from) {
         this.from = from;
     }
 
-    public Date getUntil() {
+    public long getUntil() {
         return until;
     }
 
-    public void setUntil(Date until) {
+    public void setUntil(long until) {
         this.until = until;
     }
 

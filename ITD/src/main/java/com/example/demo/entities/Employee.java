@@ -27,7 +27,6 @@ public class Employee {
     @Expose
     private Store store;
 
-
     public int getId() {
         return id;
     }

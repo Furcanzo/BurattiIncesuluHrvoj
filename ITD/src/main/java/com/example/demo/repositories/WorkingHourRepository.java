@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface WorkingHourRepository extends CrudRepository<WorkingHour, Integer> {
 
-    public List<WorkingHour> findAll();
+    List<WorkingHour> findAll();
 }
