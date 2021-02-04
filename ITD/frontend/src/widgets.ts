@@ -6,6 +6,7 @@ import {confirm} from "bootbox";
 import {StoreLocation} from "./models";
 import "../lib/instascan.min.js";
 import {MAPS_LOCATION_SELECTED_EVENT_NAME} from "./const";
+import {State} from "./state";
 
 const addStyle = (content: any, addition: { [key: string]: string }) => {
 
@@ -257,7 +258,21 @@ export const inlineForm = (content: any) => {
     return addClass(content, ["form-inline"]);
 }
 
-
-export const googleLoginButton = () => {
-    return html`<div class="g-signin2" data-onsuccess="onSignIn"></div>`; // TODO: onsuccess callback as a subscription
+export interface IPill {
+    content: any;
+    onClick: (state: State<any>) => any;
+    disabled?: boolean;
+    active?: boolean;
 }
+
+export const pillSelection = (pills: IPill[]) => {
+    const renderedPills = pills.map(pill => {
+        return html`<li class="nav-item"><a class="nav-link ${pill.active && "active"} ${pill.disabled && "disabled"}" onclick=${pill.onClick}>${pill.content}</a> </li>`
+    })
+    html`
+    <ul class="nav nav-pills">
+        ${renderedPills}
+    </ul>
+    `
+}
+

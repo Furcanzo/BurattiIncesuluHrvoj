@@ -52,8 +52,8 @@ export const StaffListLoaded = (state: ManagerAppState, staffMembers: User[]): M
     return {...state, staffMembers};
 }
 
-export const UpdateNewMemberEmail = (state: ManagerAppState, ev: InputEvent): ManagerAppState => {
-    return {...state, newMember: {...state.newMember, email: (ev.target as HTMLInputElement).value}};
+export const UpdateNewMemberEmail = (state: ManagerAppState, content: string): ManagerAppState => {
+    return {...state, newMember: {...state.newMember, email: content}};
 }
 
 export const SetNewMemberAs = (as: "manager" | "clerk") => (state: ManagerAppState) => {
