@@ -109,9 +109,9 @@ export const form = (children: any[]) => {
     `;
 }
 
-export const button = <State>(text: string, color: Color, onClick: (state: State) => any, size: ButtonSize = "md", huge: boolean = false, disabled: boolean = false) => {
+export const button = <State>(content: string | any[], color: Color, onClick: (state: State) => any, size: ButtonSize = "md", huge: boolean = false, disabled: boolean = false) => {
     return html`
-    <button type="button" class="btn btn-${color} btn-${size} ${huge && 'btn-block'}" ${disabled && "disabled"} onclick=${onClick}>${text}</button>
+    <button type="button" class="btn btn-${color} btn-${size} ${huge && 'btn-block'}" ${disabled && "disabled"} onclick=${onClick}>${content}</button>
     `
 }
 
@@ -211,8 +211,11 @@ const footer = background(html`
 </footer>
 `, "light");
 
+export const alertBar = (content: string | any[], color: Color) => {
+    return html`<div class="alert alert-${color}" role="alert">${content}</div>`
+}
 export const wrapper = (navbar: any, body: any[], error?: string) => {
-    const alert = error ? html`<div class="alert alert-danger" role="alert">${error}</div>` : "";
+    const alert = error ? alertBar(error, "danger") : "";
     return html`
 <div>
     ${navbar}
@@ -227,7 +230,7 @@ export const wrapper = (navbar: any, body: any[], error?: string) => {
     `;
 }
 
-export const titleText = (content: string, size: TextSize = "3") => {
+export const titleText = (content: string | any[], size: TextSize = "3") => {
     const tag = "h" + size;
     return html`<${tag} class="text-center ml-auto mr-auto mt-2">${content}</${tag}>`;
 }

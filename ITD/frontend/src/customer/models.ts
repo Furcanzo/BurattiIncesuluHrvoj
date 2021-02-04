@@ -1,7 +1,7 @@
 import {Customer, LineNumber, LineNumberRequest} from "../models";
 import {BookLineNumber, GetLineNumbers, INIT} from "./actions";
-import {row, text} from "../widgets";
 import {Component, INavigatorItem, State} from "../state";
+import {view} from "./view";
 
 export class CustomerAppState extends State<Customer> {
     myLineNumbers: LineNumber[];
@@ -22,4 +22,4 @@ const customerRoutes: INavigatorItem[] = [{
     onEnter: BookLineNumber,
 }];
 
-export const customerComponent = new Component((state) => row(text("TODO")), INIT, customerRoutes);
+export const customerComponent = new Component(view, INIT, customerRoutes);

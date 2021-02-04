@@ -76,7 +76,6 @@ const subMapLocationSelected = [(dispatch) => {
     return () => window.removeEventListener(MAPS_LOCATION_SELECTED_EVENT_NAME, handler);
 }];
 export const subscriptions = (state: State<any>) => {
-    console.log(state);
     if (isManagerState(state) && state.activeTab === "update") {
         return [subMapLocationSelected];
     }
