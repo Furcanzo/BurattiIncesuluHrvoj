@@ -11,8 +11,8 @@ import com.example.demo.entities.Store;
 import com.example.demo.entities.TimeSlot;
 import com.example.demo.repositories.CustomerRepository;
 import com.example.demo.repositories.StoreRepository;
+import com.example.demo.repositories.TimeSlotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,10 +24,13 @@ public class CustomerService {
 
     private final StoreRepository storeRepository;
 
+    private final TimeSlotRepository timeSlotRepository;
+
     @Autowired
-    public CustomerService(CustomerRepository customerRepository, StoreRepository storeRepository) {
+    public CustomerService(CustomerRepository customerRepository, StoreRepository storeRepository, TimeSlotRepository timeSlotRepository) {
         this.customerRepository = customerRepository;
         this.storeRepository = storeRepository;
+        this.timeSlotRepository = timeSlotRepository;
     }
 
     public List<Customer> findAllCustomers() {

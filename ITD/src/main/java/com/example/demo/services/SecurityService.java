@@ -25,4 +25,8 @@ public class SecurityService {
         //todo
         return true;
     }
+
+    public boolean checkClerk(Employee employee, int storeId) {
+        return employee.getStore().getId() == storeId;
+    }
 }

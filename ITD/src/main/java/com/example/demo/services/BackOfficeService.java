@@ -1,8 +1,11 @@
 package com.example.demo.services;
 
+import com.example.demo.entities.Employee;
 import com.example.demo.entities.Store;
 import com.example.demo.entities.WorkingHour;
+import com.example.demo.entities.dtos.EmployeeDTO;
 import com.example.demo.entities.dtos.StoreDTO;
+import com.example.demo.exceptions.NoSuchEntityException;
 import com.example.demo.repositories.StoreRepository;
 import com.example.demo.repositories.WorkingHourRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +22,13 @@ public class BackOfficeService {
 
     private final WorkingHourRepository workingHourRepository;
 
+    private final EmployeeService employeeService;
+
     @Autowired
-    public BackOfficeService(StoreRepository storeRepository, WorkingHourRepository workingHourRepository) {
+    public BackOfficeService(StoreRepository storeRepository, WorkingHourRepository workingHourRepository, EmployeeService employeeService) {
         this.storeRepository = storeRepository;
         this.workingHourRepository = workingHourRepository;
+        this.employeeService = employeeService;
     }
 
     @Transactional
@@ -42,5 +48,9 @@ public class BackOfficeService {
             }
         }
         return saved;
+    }
+
+    public Employee addEmployee(EmployeeDTO employee) throws NoSuchEntityException {
+        return employeeService.addEmployee(employee);
     }
 }
