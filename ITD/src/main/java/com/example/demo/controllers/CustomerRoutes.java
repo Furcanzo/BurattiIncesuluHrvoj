@@ -25,6 +25,8 @@ public class CustomerRoutes {
 
     private final Gson gson;
 
+    private static final String STORE_NOT_FOUND = "store not found";
+
     @Autowired
     public CustomerRoutes(CustomerService customerService, Gson gson) {
         this.customerService = customerService;
@@ -47,7 +49,7 @@ public class CustomerRoutes {
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(available));
             }
         } catch (NoSuchEntityException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("store not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(STORE_NOT_FOUND);
         }
     }
 
@@ -70,7 +72,7 @@ public class CustomerRoutes {
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(available));
             }
         } catch (NoSuchEntityException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("store not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(STORE_NOT_FOUND);
         }
     }
 
@@ -85,7 +87,7 @@ public class CustomerRoutes {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(customerService.getStore(id)));
         } catch (NoSuchEntityException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("store not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(STORE_NOT_FOUND);
         }
     }
 
