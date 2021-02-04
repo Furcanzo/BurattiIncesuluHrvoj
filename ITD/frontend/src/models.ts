@@ -107,6 +107,7 @@ export class LineNumberRequest {
     selectedWeekSlot?: Date;
     time: TimeSlot;
     estimatedTimeOfVisit: Time;
+    previousErrored: boolean;
 }
 
 
