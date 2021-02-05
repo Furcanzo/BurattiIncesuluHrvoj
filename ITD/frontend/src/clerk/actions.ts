@@ -8,7 +8,7 @@ export const isLineNumber = (response: any): response is LineNumber => {
 }
 
 const serverError = (response: any): string => {
-    return response?.error; //TODO: Maybe we will send the error text in a body for 500?
+    return response?.error; //TODO: Error handling from server
 }
 
 const VERIFY_PATH = "QR/verify";
@@ -18,7 +18,7 @@ export const ReadQRCode = (state: ClerkAppState, qrCodeContent: string) => {
         method: "POST",
         body: {code: qrCodeContent},
         resultAction: ReadServerResponded,
-        errorAction: NetworkError,
+        errorAction: NetworkError
     })];
 }
 
@@ -56,4 +56,15 @@ export const GenerateQR = (state: ClerkAppState) => {
 }
 export const QRGenerated = (state: ClerkAppState, ticket: LineNumber): ClerkAppState => {
     return {...state, lastGeneratedTicket: ticket};
+}
+
+export const PrintQR = (state: ClerkAppState) => {
+    const canvases = document.getElementsByTagName("canvas");
+    if (canvases.length > 0) {
+        const canvas = canvases[0];
+        const printWindow = window.open("");
+        printWindow.document.write(canvas.outerHTML);
+        printWindow.print();
+    }
+    return state;
 }

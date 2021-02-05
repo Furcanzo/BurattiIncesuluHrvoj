@@ -11,6 +11,8 @@ import {LoginAppState, loginComponent} from "./login/models";
 import {INIT as LoginINIT} from "./login/actions";
 import { effects } from '@mrbarrysoftware/hyperapp-router';
 import {Component, INavigatorItem, State, User} from "./state";
+import {readUserEmail} from "./util";
+import {http} from "./effects";
 
 export const Loading = <U extends User>(state: State<U>): State<U> => {
     return {...state, loading: true};
@@ -52,14 +54,14 @@ export const Nothing = <U extends User>(state: State<U>): State<U> => {
     return state;
 }
 
-const firstState: LoginAppState = LoginINIT({
+const firstState = {
     loading: false,
     currentUser: {
         userType: "anonymous",
         email: "",
     },
     error: undefined,
-});
+};
 
 export const RemoveErrors = (state: State<User>): State<User> => {
     if (state.error?.recoverable) {
@@ -67,6 +69,18 @@ export const RemoveErrors = (state: State<User>): State<User> => {
     }
     return state;
 }
+
+const GET_ME = "me";
 export const INIT = () => {
-    return firstState;
+    const state = {...firstState};
+    state.currentUser.email = readUserEmail();
+    return [firstState, http({
+        path: GET_ME,
+        method: "GET",
+        resultAction: NewUser,
+        errorAction: Crashed,
+    })];
 }
+
+
+// TODO: Logout

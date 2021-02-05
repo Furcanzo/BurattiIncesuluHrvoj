@@ -47,36 +47,13 @@ export class TimeSlot {
     day: Date; // Timeslots are retrieved from server (future lockdowns etc...)
 }
 
-export const emptyTimeSlot = () => {
-    const slot = new TimeSlot();
-    slot.day = new Date();
-    slot.start = new Time();
-    slot.start.hour = 0;
-    slot.start.minute = 0;
-    slot.end = new Time();
-    slot.end.hour = 0;
-    slot.end.minute = 0;
-    return slot;
-}
-
-export enum TimeInterval {
-    ONE_WEEK, ONE_MONTH, ONE_DAY
-}
-
-export class ReservationLimit {
-    limit: number;
-    interval: TimeInterval;
-}
-
 export class Store {
     readonly id?: string;
     location: StoreLocation;
     name: string;
     readonly openTimeSlots: TimeSlot[];
-    workingHours: {
-        start: Time;
-        end: Time;
-    };
+    workingHours: TimeSlot; // Ignore date value
+    timeoutMinutes: number; // TODO: convert to milis for backend
     maxCustomerCapacity: number;
     partners: Store[];
 
@@ -95,7 +72,7 @@ export class BackOfficeUser extends User {
 export class LineNumber {
     id: string;
     number: number;
-    location: Store;
+    store: Store;
     time: TimeSlot;
 }
 
@@ -110,7 +87,10 @@ export class LineNumberRequest {
     previousErrored: boolean;
 }
 
-
+export interface IServerTimeSlot {
+    start: number;
+    end: number;
+}
 
 export const isManagerState = (state: State<User>): state is ManagerAppState => {
     return state.currentUser.userType === "manager";
@@ -144,3 +124,5 @@ export const routes = {
     "/": (state: State<any>) => NewUser(state, state.currentUser),
 
 }
+
+

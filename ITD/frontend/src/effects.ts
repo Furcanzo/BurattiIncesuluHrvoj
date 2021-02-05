@@ -3,6 +3,7 @@ import {Loaded, Loading} from "./actions";
 import {isManagerState, StoreLocation} from "./models";
 import {UpdateLocation} from "./manager/actions";
 import {State} from "./state";
+import {readUserEmail, writeUserEmail} from "./util";
 
 export interface IHTTPOptions<State, Request, Response> {
     path: string;
@@ -25,7 +26,7 @@ export const http = <State, Request, Response>(props: IHTTPOptions<State, Reques
             body: props.body ? JSON.stringify(props.body) : null,
             method: props.method,
             headers: new Headers([
-                ["Bearer", localStorage.getItem("email")]
+                ["Bearer", readUserEmail()]
             ])
         };
         if (!props.showScreenWhileLoading) {
@@ -36,7 +37,7 @@ export const http = <State, Request, Response>(props: IHTTPOptions<State, Reques
             const rawResponse2 = rawResponse.clone();
             rawResponse.json().then(response => {
                 if (response.hasOwnProperty("email")) {
-                    localStorage.setItem("email", response.email);
+                    writeUserEmail(response.email);
                 }
                 dispatch([props.resultAction, response]);
             }) .catch((err) => {
