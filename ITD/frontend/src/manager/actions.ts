@@ -81,6 +81,7 @@ export const ChangeStaffType = (state: ManagerAppState) => {
 
 const DELETE_STAFF = "staff/delete";
 export const DeleteStaff = (state: ManagerAppState) => {
+    // Prevent delete thyself // TODO: Deleting will not be implemented
     return [state, http({
         path: DELETE_STAFF,
         method: "POST",
@@ -174,6 +175,7 @@ export const CancelPartnerStoreAddition = (state: ManagerAppState): ManagerAppSt
     return {
         ...state,
         foundPartnerStore: undefined,
+
     };
 };
 
@@ -186,3 +188,7 @@ export const RemovePartnerStore = (partnerStore: Store) => (state: ManagerAppSta
         }
     }
 }
+
+
+// TODO: Update timeout
+// TODO: Add weekday to the working hours

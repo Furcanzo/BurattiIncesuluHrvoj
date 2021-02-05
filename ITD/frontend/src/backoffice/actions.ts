@@ -23,11 +23,14 @@ export const UpdateStoreField = (field: "managerEmail" | "name") =>
 const StoreAdded = (state: CreateStoreAppState) => {
     return state;
 }
+
+const CREATE_STORE = "addStore";
+
 export const SubmitStore = (state: CreateStoreAppState) => {
     const newStore = state.newStore
     if (newStore.managerEmail && newStore.name) {
         return [state, http({
-            path: "addStore",
+            path: CREATE_STORE,
             method: "POST",
             body: newStore,
             errorAction: Errored,

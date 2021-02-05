@@ -95,7 +95,7 @@ export const lineNumberCard = (lineNumber: LineNumber, action) => {
     return clickable(card(
         titleText(lineNumber.number.toString(), "2"),
         [
-            titleText(lineNumber.location.name),
+            titleText(lineNumber.store.name),
             titleText(`${timeStr(lineNumber.time.start)} - ${timeStr(lineNumber.time.end)}`, "4"),
             titleText(dateStr(lineNumber.time.day), "4"),
         ],

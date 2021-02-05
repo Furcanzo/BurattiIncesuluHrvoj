@@ -10,22 +10,39 @@ export const INIT = (state: State<Customer>): CustomerAppState => {
 
 const GET_LINE_NUMBERS = "lineNumbers";
 export const GetLineNumbers = (state: CustomerAppState) => {
-    return [{...state, showDetailsOf: undefined, lineNumberReserved: undefined, newLineNumber: undefined, myLineNumbers: []} as CustomerAppState, http({path: GET_LINE_NUMBERS, method: "GET", errorAction: INIT, resultAction: GotLineNumbers})]
+    return [{
+        ...state,
+        showDetailsOf: undefined,
+        lineNumberReserved: undefined,
+        newLineNumber: undefined,
+        myLineNumbers: []
+    } as CustomerAppState, http({
+        path: GET_LINE_NUMBERS,
+        method: "GET",
+        errorAction: Errored,
+        resultAction: GotLineNumbers,
+    })];
 }
 
 export const GotLineNumbers = (state: CustomerAppState, lineNumbers: LineNumber[]): CustomerAppState => {
     return {myLineNumbers: lineNumbers, ...state};
 }
+
 const GET_OPEN_STORES = "stores"
 
 export const BookLineNumber = (state: CustomerAppState) => {
     const newLineNumber = new LineNumberRequest()
     newLineNumber.estimatedTimeOfVisit = new Time();
     newLineNumber.previousErrored = false;
-    return [{...state, newLineNumber, showDetailsOf: undefined, lineNumberReserved: undefined} as CustomerAppState, http({
+    return [{
+        ...state,
+        newLineNumber,
+        showDetailsOf: undefined,
+        lineNumberReserved: undefined
+    } as CustomerAppState, http({
         path: GET_OPEN_STORES,
         method: "GET",
-        errorAction: INIT,
+        errorAction: Errored,
         resultAction: GotBookingStores
     })]
 }
@@ -43,11 +60,11 @@ export const UnSelectStore = (state: CustomerAppState): CustomerAppState => {
 }
 const GET_STORE_TIMESLOTS = (id: string) => `store/${id}/availableTimeSlots`;
 export const SubmitStore = (state: CustomerAppState) => {
-    return [ state, http({
+    return [state, http({
         path: GET_STORE_TIMESLOTS(state.newLineNumber.store.id),
         method: "GET",
         resultAction: StoreTimeSlotsRetrieved,
-        errorAction: INIT,
+        errorAction: ReservationFailed,
 
     })]
 }
@@ -66,6 +83,7 @@ export const UpdateVisitTimeField = (field: "hour" | "minute") => (state: Custom
 
 export const SelectTimeSlot = (timeSlot: TimeSlot) => (state: CustomerAppState): CustomerAppState => {
     return {...state, newLineNumber: {...state.newLineNumber, time: timeSlot, previousErrored: false}};
+    // TODO: Show the ETA during line number creation.
 }
 
 export const UnSelectTimeSlot = (state: CustomerAppState): CustomerAppState => {
@@ -79,13 +97,21 @@ export const SendLineNumberRequest = (state: CustomerAppState) => {
         method: "POST",
         body: {time, estimatedTimeOfVisit},
         resultAction: LineNumberReserved,
-        errorAction: INIT,
+        errorAction: ReservationFailed,
     })]
 }
 
-export const ReservationFailed = (state: CustomerAppState, text?:string) => {
+export const ReservationFailed = (state: CustomerAppState, text?: string) => {
     if (text === "Maximum capacity reached") {
-        return SubmitStore({...state, newLineNumber: {...state.newLineNumber, time: undefined, potentialTimeSlots: undefined, previousErrored: true}});
+        return SubmitStore({
+            ...state,
+            newLineNumber: {
+                ...state.newLineNumber,
+                time: undefined,
+                potentialTimeSlots: undefined,
+                previousErrored: true
+            }
+        });
     }
     if (text === "Store not available") {
         return BookLineNumber(state);
@@ -93,7 +119,7 @@ export const ReservationFailed = (state: CustomerAppState, text?:string) => {
     return Errored(state, text);
 }
 export const LineNumberReserved = (state: CustomerAppState, lineNumber: LineNumber): CustomerAppState => {
-    return  {...state, lineNumberReserved: lineNumber, newLineNumber: undefined};
+    return {...state, lineNumberReserved: lineNumber, newLineNumber: undefined};
 }
 
 export const ShowDetailsOf = (lineNumber: LineNumber) => (state: CustomerAppState): CustomerAppState => {
@@ -138,10 +164,24 @@ const setWeek = (current: Date, next: boolean) => {
     newDate.setDate(currentDay);
     return newDate;
 }
-export const NextWeek = (state: CustomerAppState):CustomerAppState => {
-    return {...state, newLineNumber: {...state.newLineNumber, selectedWeekSlot: setWeek(state.newLineNumber.selectedWeekSlot, true), previousErrored: false}}
+export const NextWeek = (state: CustomerAppState): CustomerAppState => {
+    return {
+        ...state,
+        newLineNumber: {
+            ...state.newLineNumber,
+            selectedWeekSlot: setWeek(state.newLineNumber.selectedWeekSlot, true),
+            previousErrored: false
+        }
+    }
 }
 
 export const PrevWeek = (state: CustomerAppState): CustomerAppState => {
-    return {...state, newLineNumber: {...state.newLineNumber, selectedWeekSlot: setWeek(state.newLineNumber.selectedWeekSlot, false), previousErrored: false}};
+    return {
+        ...state,
+        newLineNumber: {
+            ...state.newLineNumber,
+            selectedWeekSlot: setWeek(state.newLineNumber.selectedWeekSlot, false),
+            previousErrored: false
+        }
+    };
 }

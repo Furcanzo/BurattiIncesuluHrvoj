@@ -9,7 +9,7 @@ export const numbersView = ({myLineNumbers, showDetailsOf}: CustomerAppState) =>
     if (showDetailsOf) {
         return [
             row(lineNumberCard(showDetailsOf, Nothing)),
-            row(markerMap(showDetailsOf.location.location, false)),
+            row(markerMap(showDetailsOf.store.location, false)),
             row(button([X_CIRCLE_FILL, text("Close")], "danger", UnSelectDetails)),
         ];
     }
