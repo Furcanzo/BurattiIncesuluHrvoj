@@ -1,6 +1,6 @@
 package com.example.demo.repositories;
 
-import com.example.demo.entities.WorkingHour;
+import com.example.demo.model.entities.WorkingHour;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

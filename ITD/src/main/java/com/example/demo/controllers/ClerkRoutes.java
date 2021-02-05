@@ -1,7 +1,7 @@
 package com.example.demo.controllers;
 
-import com.example.demo.entities.Employee;
-import com.example.demo.entities.LineNumber;
+import com.example.demo.model.entities.Employee;
+import com.example.demo.model.entities.LineNumber;
 import com.example.demo.exceptions.NoSuchEntityException;
 import com.example.demo.services.EmployeeService;
 import com.example.demo.services.SecurityService;

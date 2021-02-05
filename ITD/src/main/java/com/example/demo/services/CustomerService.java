@@ -1,14 +1,14 @@
 package com.example.demo.services;
 
-import com.example.demo.entities.dtos.CustomerDTO;
-import com.example.demo.entities.dtos.LineNumberDTO;
+import com.example.demo.model.dtos.CustomerDTO;
+import com.example.demo.model.dtos.LineNumberDTO;
 import com.example.demo.exceptions.NoSuchEntityException;
 import com.example.demo.exceptions.NoTimeSlotsException;
 import com.example.demo.exceptions.TimeSlotFullException;
-import com.example.demo.entities.Customer;
-import com.example.demo.entities.LineNumber;
-import com.example.demo.entities.Store;
-import com.example.demo.entities.TimeSlot;
+import com.example.demo.model.entities.Customer;
+import com.example.demo.model.entities.LineNumber;
+import com.example.demo.model.entities.Store;
+import com.example.demo.model.entities.TimeSlot;
 import com.example.demo.repositories.CustomerRepository;
 import com.example.demo.repositories.StoreRepository;
 import com.example.demo.repositories.TimeSlotRepository;

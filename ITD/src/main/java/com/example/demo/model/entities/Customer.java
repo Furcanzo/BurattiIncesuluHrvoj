@@ -1,4 +1,4 @@
-package com.example.demo.entities;
+package com.example.demo.model.entities;
 
 import com.google.gson.annotations.Expose;
 

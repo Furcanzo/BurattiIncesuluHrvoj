@@ -1,11 +1,12 @@
 package com.example.demo.services;
 
-import com.example.demo.entities.Employee;
-import com.example.demo.entities.LineNumber;
-import com.example.demo.entities.dtos.EmployeeDTO;
-import com.example.demo.entities.dtos.StoreDTO;
+import com.example.demo.model.MonitorState;
+import com.example.demo.model.entities.Employee;
+import com.example.demo.model.entities.LineNumber;
+import com.example.demo.model.entities.Store;
 import com.example.demo.exceptions.NoSuchEntityException;
-import com.example.demo.entities.Store;
+import com.example.demo.model.dtos.EmployeeDTO;
+import com.example.demo.model.dtos.StoreDTO;
 import com.example.demo.repositories.EmployeeRepository;
 import com.example.demo.repositories.LineNumberRepository;
 import com.example.demo.repositories.StoreRepository;
@@ -35,8 +36,14 @@ public class EmployeeService {
         if(myStore == null){
             throw new NoSuchEntityException();
         }
+        myStore.setName(store.getName()!=null? store.getName() : myStore.getName());
+        myStore.setDescription(store.getDescription()!= null ? store.getName() : myStore.getDescription());
+        myStore.setLongitude(store.getLongitude() != 0.0 ? store.getLongitude() : myStore.getLongitude());
+        myStore.setLatitude(store.getLatitude() != 0.0 ? store.getLatitude() : myStore.getLatitude());
+        myStore.setMaxCustomers(store.getMaxCustomers() != 0 ? store.getMaxCustomers() : myStore.getMaxCustomers());
+        myStore.setTimeOut(store.getTimeOut() != 0 ? store.getTimeOut() : myStore.getTimeOut());
 
-        //todo update
+        //todo update lists
         return storeRepository.save(myStore);
     }
 
@@ -90,5 +97,11 @@ public class EmployeeService {
             throw new NoSuchEntityException();
         }
         return lineNumber;
+    }
+
+    public MonitorState monitorLive(int id) {
+        long timestamp = System.currentTimeMillis();
+        int numberOfCustomers = lineNumberRepository.monitor(id);
+        return new MonitorState(timestamp,numberOfCustomers, id);
     }
 }

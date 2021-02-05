@@ -1,7 +1,7 @@
-package com.example.demo.entities.dtos;
+package com.example.demo.model.dtos;
 
-import com.example.demo.entities.Store;
-import com.example.demo.entities.WorkingHour;
+import com.example.demo.model.entities.Store;
+import com.example.demo.model.entities.WorkingHour;
 
 import java.util.ArrayList;
 import java.util.List;

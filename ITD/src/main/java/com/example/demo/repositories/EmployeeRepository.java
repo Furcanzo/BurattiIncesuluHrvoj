@@ -1,6 +1,6 @@
 package com.example.demo.repositories;
 
-import com.example.demo.entities.Employee;
+import com.example.demo.model.entities.Employee;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

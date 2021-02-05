@@ -1,29 +1,30 @@
-package com.example.demo.entities;
+package com.example.demo.model.entities;
 
 import com.google.gson.annotations.Expose;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "workingHours")
-public class WorkingHour {
+@Table(name = "employee")
+public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "workingHoursID")
+    @Column(name = "employeeID")
     @Expose
     private int id;
 
-    @Column(name = "openingTime")
+    @Column(name = "email")
     @Expose
-    private long from;
+    private String email;
 
-    @Column(name = "closingTime")
+    @Column(name = "Role")
     @Expose
-    private long until;
+    private String role;
 
     @ManyToOne
     @JoinColumn(name = "storeID")
+    @Expose
     private Store store;
 
     public int getId() {
@@ -34,20 +35,20 @@ public class WorkingHour {
         this.id = id;
     }
 
-    public long getFrom() {
-        return from;
+    public String getEmail() {
+        return email;
     }
 
-    public void setFrom(long from) {
-        this.from = from;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public long getUntil() {
-        return until;
+    public String getRole() {
+        return role;
     }
 
-    public void setUntil(long until) {
-        this.until = until;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public Store getStore() {
