@@ -1,10 +1,10 @@
 package com.example.demo.services;
 
-import com.example.demo.entities.Employee;
-import com.example.demo.entities.Store;
-import com.example.demo.entities.WorkingHour;
-import com.example.demo.entities.dtos.EmployeeDTO;
-import com.example.demo.entities.dtos.StoreDTO;
+import com.example.demo.model.entities.Employee;
+import com.example.demo.model.entities.Store;
+import com.example.demo.model.entities.WorkingHour;
+import com.example.demo.model.dtos.EmployeeDTO;
+import com.example.demo.model.dtos.StoreDTO;
 import com.example.demo.exceptions.NoSuchEntityException;
 import com.example.demo.repositories.StoreRepository;
 import com.example.demo.repositories.WorkingHourRepository;

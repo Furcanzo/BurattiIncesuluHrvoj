@@ -1,9 +1,9 @@
 package com.example.demo.controllers;
 
-import com.example.demo.entities.Employee;
-import com.example.demo.entities.Store;
-import com.example.demo.entities.dtos.EmployeeDTO;
-import com.example.demo.entities.dtos.StoreDTO;
+import com.example.demo.model.entities.Employee;
+import com.example.demo.model.entities.Store;
+import com.example.demo.model.dtos.EmployeeDTO;
+import com.example.demo.model.dtos.StoreDTO;
 import com.example.demo.exceptions.NoSuchEntityException;
 import com.example.demo.services.CustomerService;
 import com.example.demo.services.EmployeeService;
@@ -47,7 +47,8 @@ public class ManagerRoutes {
         }
     }
 
-    @GetMapping
+    //todo add security
+    @GetMapping(path = "/user")
     public ResponseEntity<String> getUser (@RequestParam String type, @RequestParam int id) {
         if (type.equals("customer")){
             try {
@@ -72,7 +73,7 @@ public class ManagerRoutes {
         if (securityService.managerCheck(manager,employee.getStoreId())){
             try {
                 Employee newEmploee = employeeService.addEmployee(employee);
-                return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(manager));
+                return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(newEmploee));
             } catch (NoSuchEntityException e) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("store not found");
             }
@@ -80,6 +81,18 @@ public class ManagerRoutes {
         else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("The requester doesn't have the permission to do this");
         }
+    }
+
+    @GetMapping(path = "monitorLive")
+    public ResponseEntity<String> monitorLive (@RequestParam int id, @RequestHeader(name = "bearer") String bearer) {
+        Employee manager = employeeService.findEmployeeByEmail(bearer);
+        if (securityService.managerCheck(manager, id)){
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(employeeService.monitorLive(id)));
+        }else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("The requester doesn't have the permission to do this");
+        }
+
+
     }
 
 }

@@ -1,6 +1,6 @@
-package com.example.demo.entities.dtos;
+package com.example.demo.model.dtos;
 
-import com.example.demo.entities.Customer;
+import com.example.demo.model.entities.Customer;
 
 public class CustomerDTO {
 

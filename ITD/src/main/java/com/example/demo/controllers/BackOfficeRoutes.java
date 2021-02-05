@@ -1,9 +1,9 @@
 package com.example.demo.controllers;
 
-import com.example.demo.entities.Employee;
-import com.example.demo.entities.Store;
-import com.example.demo.entities.dtos.EmployeeDTO;
-import com.example.demo.entities.dtos.StoreDTO;
+import com.example.demo.model.entities.Employee;
+import com.example.demo.model.entities.Store;
+import com.example.demo.model.dtos.EmployeeDTO;
+import com.example.demo.model.dtos.StoreDTO;
 import com.example.demo.exceptions.NoSuchEntityException;
 import com.example.demo.services.BackOfficeService;
 import com.example.demo.services.SecurityService;
