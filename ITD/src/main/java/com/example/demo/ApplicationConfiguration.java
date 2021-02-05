@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +26,7 @@ public class ApplicationConfiguration {
 
     @Bean
     public Gson gson(){
-        return new Gson();
+        return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     }
 
     @Bean
@@ -57,7 +58,6 @@ public class ApplicationConfiguration {
 
         return em;
     }
-
 
     @Bean
     public PlatformTransactionManager transactionManager() {
