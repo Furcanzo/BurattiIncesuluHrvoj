@@ -1,0 +1,70 @@
+package com.example.demo.model.entities;
+
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+@Table(name = "timeslot")
+public class TimeSlot {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "timeSlotID")
+    private int id;
+
+    @Column(name = "startTime")
+    private long startTime;
+
+    @Column(name = "endTime")
+    private long endTime;
+
+    @ManyToOne
+    @JoinColumn(name = "storeID")
+    private Store store;
+
+    @OneToMany(mappedBy = "timeSlot")
+    private List<LineNumber> lineNumbers;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
+    }
+
+    public long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(long endTime) {
+        this.endTime = endTime;
+    }
+
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
+    }
+
+    public List<LineNumber> getLineNumbers() {
+        return lineNumbers;
+    }
+
+    public void setLineNumbers(List<LineNumber> lineNumbers) {
+        for (LineNumber ln : lineNumbers){
+            ln.setTimeSlot(this);
+        }
+        this.lineNumbers = lineNumbers;
+    }
+}
