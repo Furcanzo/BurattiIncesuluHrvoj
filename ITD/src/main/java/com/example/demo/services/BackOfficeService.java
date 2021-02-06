@@ -4,10 +4,8 @@ import com.example.demo.exceptions.NoSuchEntityException;
 import com.example.demo.model.dtos.EmployeeDTO;
 import com.example.demo.model.dtos.NewStoreDTO;
 import com.example.demo.model.dtos.StoreDTO;
-import com.example.demo.model.dtos.WorkingHourDTO;
 import com.example.demo.model.entities.Employee;
 import com.example.demo.model.entities.Store;
-import com.example.demo.model.entities.WorkingHour;
 import com.example.demo.repositories.EmployeeRepository;
 import com.example.demo.repositories.StoreRepository;
 import com.example.demo.repositories.WorkingHourRepository;
@@ -44,16 +42,12 @@ public class BackOfficeService {
                 store.getLatitude(),
                 store.getMaxCustomers(),
                 store.getTimeOut(),
-                store.getWorkingHourDTOs(),
+                store.getWorkingHourDTO(),
                 store.getPartnerStoreIds());
         Store created = generateStore(storeDTO);
         EmployeeDTO firstManagerDTO = new EmployeeDTO(store.getFirstManagerEmail(), "manager", created.getId());
         Employee firstManager = employeeService.generateEmployee(firstManagerDTO);
-        if (created.getWorkingHours() != null){
-            for (WorkingHour wh : created.getWorkingHours()){
-                workingHourRepository.save(wh);
-            }
-        }
+        workingHourRepository.save(created.getWorkingHour());
         employeeRepository.save(firstManager);
         return storeRepository.save(created);
     }
@@ -66,13 +60,7 @@ public class BackOfficeService {
         created.setLongitude(storeDTO.getLongitude());
         created.setMaxCustomers(storeDTO.getMaxCustomers());
         created.setTimeOut(storeDTO.getTimeOut());
-        List<WorkingHour> workingHours = new ArrayList<>();
-        if (storeDTO.getWorkingHourDTOs() != null) {
-            for (WorkingHourDTO whdto : storeDTO.getWorkingHourDTOs()) {
-                workingHours.add(employeeService.generateWorkingHour(whdto));
-            }
-            created.setWorkingHours(workingHours);
-        }
+        created.setWorkingHour(employeeService.generateWorkingHour(storeDTO.getWorkingHourDTO()));
         List<Store> partnerStores = new ArrayList<>();
         if (storeDTO.getPartnerStoreIds() != null) {
             for (Integer ps : storeDTO.getPartnerStoreIds()) {

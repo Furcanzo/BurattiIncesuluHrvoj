@@ -22,8 +22,7 @@ public class WorkingHour {
     @Expose
     private long until;
 
-    @ManyToOne
-    @JoinColumn(name = "storeID")
+    @OneToOne(mappedBy = "workingHour")
     private Store store;
 
     public int getId() {

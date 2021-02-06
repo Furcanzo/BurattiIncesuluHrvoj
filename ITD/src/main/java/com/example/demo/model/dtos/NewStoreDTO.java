@@ -10,18 +10,18 @@ public class NewStoreDTO {
     private final double latitude;
     private final int maxCustomers;
     private final int timeOut;
-    private final List<WorkingHourDTO> workingHourDTOs;
+    private final WorkingHourDTO workingHourDTO;
     private final List<Integer> partnerStoreIds;
     private final String firstManagerEmail;
 
-    public NewStoreDTO(String name, String description, double longitude, double latitude, int maxCustomers, int timeOut, List<WorkingHourDTO> workingHourDTOs, List<Integer> partnerStoreIds, String firstManagerEmail) {
+    public NewStoreDTO(String name, String description, double longitude, double latitude, int maxCustomers, int timeOut, WorkingHourDTO workingHourDTO, List<Integer> partnerStoreIds, String firstManagerEmail) {
         this.name = name;
         this.description = description;
         this.longitude = longitude;
         this.latitude = latitude;
         this.maxCustomers = maxCustomers;
         this.timeOut = timeOut;
-        this.workingHourDTOs = workingHourDTOs;
+        this.workingHourDTO = workingHourDTO;
         this.partnerStoreIds = partnerStoreIds;
         this.firstManagerEmail = firstManagerEmail;
     }
@@ -50,8 +50,8 @@ public class NewStoreDTO {
         return timeOut;
     }
 
-    public List<WorkingHourDTO> getWorkingHourDTOs() {
-        return workingHourDTOs;
+    public WorkingHourDTO getWorkingHourDTO() {
+        return workingHourDTO;
     }
 
     public List<Integer> getPartnerStoreIds() {
