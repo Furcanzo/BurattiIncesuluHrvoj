@@ -1,0 +1,115 @@
+\input{commandsFile}
+
+\begin{document}
+
+%TITLE PAGE
+
+\begin{titlepage}
+
+%LOGO
+
+{\begin{table}[t!]
+\centering
+\begin{tabu} to \textwidth { X[1.3,r,p] X[1.7,l,p] }
+\textcolor{Blue}
+{\textbf{\small{CLup project Roberto Buratti, Hrvoje Hrvoj, Ozan Incesulu}}} & \includegraphics[scale=0.5]{Images/PolimiLogo}
+\end{tabu}
+\end{table}}~\\ [7cm]
+
+%TITLE 
+
+\begin{flushleft}
+
+%Replace the text string with your title
+{\textcolor{Blue}{\textbf{\Huge{Design
+        Document}}}} \\ [1cm]
+
+\end{flushleft}
+
+\end{titlepage}
+
+%Define deliverable specific info
+%Replace cell contents where needed
+\begin{table}[h!]
+\begin{tabu} to \textwidth { X[0.3,r,p] X[0.7,l,p] }
+\hline
+
+%TODO: Software -> "simply a link to the file/directory that includes what needs to be installed plus a link to the source code"
+
+\textbf{Deliverable:} & DD\\
+\textbf{Title:} & Design Document \\
+\textbf{Authors:} & Roberto Buratti, Hrvoje Hrvoj, Ozan Incesulu \\
+\textbf{Version:} & 1.0 \\ 
+\textbf{Date:} & \the\day{}-\the\month{}-\the\year{} \\
+\textbf{Download page:} & https://github.com/Furcanzo/BurattiIncesuluHrvoj \\
+\textbf{Copyright:} & Copyright © \the\year{}, Roberto Buratti, Hrvoje Hrvoj, Ozan Incesulu – All rights reserved \\
+\hline
+\end{tabu}
+\end{table}
+
+
+
+
+\setcounter{page}{2}
+
+
+%------------------------------------------------------------------------------------------------------------------------------------------------
+\newpage
+\addcontentsline{toc}{section}{Table of Contents}
+\tableofcontents
+\newpage
+\addcontentsline{toc}{section}{List of Figures}
+\listoffigures
+\addcontentsline{toc}{section}{List of Tables}
+\listoftables
+
+%TODO: Connect sections with new files
+%------------------------------------------------------------------------------------------------------------------------------------------------
+\clearpage
+{\color{Blue}{\section{Introduction}}}
+\label{sect:introduction}
+\input{Files/introduction}
+
+%------------------------------------------------------------------------------------------------------------------------------------------------
+\clearpage
+{\color{Blue}{\section{Requirements Implemented}}}
+\label{sect:arch}
+\input{Files/requirementsImplemented.tex}
+
+%------------------------------------------------------------------------------------------------------------------------------------------------
+\clearpage
+{\color{Blue}{\section{User Interface Design}}}
+\label{sect:ui}
+\input{Files/userInterfaceDesign}
+
+%------------------------------------------------------------------------------------------------------------------------------------------------
+\clearpage
+{\color{Blue}{\section{Requirements Traceability}}}
+\label{sect:trace}
+\input{Files/requirementsTraceability}
+
+%------------------------------------------------------------------------------------------------------------------------------------------------
+\clearpage
+{\color{Blue}{\section{Implementation, Integration and test plan}}}
+\label{sect:iitp}
+\input{Files/implementationIntegrationTestPlan}
+
+%------------------------------------------------------------------------------------------------------------------------------------------------
+\clearpage
+{\color{Blue}{\section{Effort Spent}}}
+\label{sect:effort}
+\input{Files/effort}
+
+
+%------------------------------------------------------------------------------------------------------------------------------------------------
+\clearpage
+\nocite{*}
+\addcontentsline{toc}{section}{References}
+\bibliographystyle{plain}
+\bibliography{main}
+%------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+\end{document}
