@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.exceptions.MailAlreadyUsedException;
 import com.example.demo.model.entities.Customer;
 import com.example.demo.model.entities.LineNumber;
 import com.example.demo.model.entities.Store;
@@ -33,6 +34,11 @@ public class CustomerRoutes {
         this.gson = gson;
     }
 
+    @GetMapping(path = "/timeSlots")
+    public ResponseEntity<String> getTimeSlots(@RequestParam int storeId){
+        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(customerService.availableTimeSlots(storeId)));
+    }
+
     @PostMapping(path = "/book")
     public ResponseEntity<String> bookFutureLineNumber(@RequestBody LineNumberDTO lineNumber, @RequestHeader(name = "bearer") String bearer){
         try {
@@ -42,10 +48,10 @@ public class CustomerRoutes {
                 LineNumber created = customerService.bookFutureLineNUmber(lineNumber, customer, actualStore );
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(created));
             } catch (NoTimeSlotsException e) {
-                List<Store> available = customerService.partnerStores(actualStore);
+                List<Store> available = actualStore.getPartnerStores();
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(available));
             } catch (TimeSlotFullException e) {
-                List<TimeSlot> available = customerService.availableTimeSlots(actualStore);
+                List<TimeSlot> available = customerService.availableTimeSlots(actualStore.getId());
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(available));
             }
         } catch (NoSuchEntityException e){
@@ -54,8 +60,8 @@ public class CustomerRoutes {
     }
 
     @GetMapping(path = "/ETA")
-    public ResponseEntity<String> getETA(){
-        int eta = customerService.calcETA();
+    public ResponseEntity<String> getETA(@RequestBody LineNumberDTO lineNumber){
+        int eta = customerService.calcETA(lineNumber);
         return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(eta));
     }
 
@@ -65,10 +71,10 @@ public class CustomerRoutes {
             Store actualStore = customerService.getStore(lineNumber.getStoreId());
             try {
                 Customer customer = customerService.findCustomerByEmail(bearer);
-                LineNumber created = customerService.retrieveLineNUmber(lineNumber, customer);
+                LineNumber created = customerService.retrieveLineNumber(lineNumber, customer);
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(created));
             } catch (NoTimeSlotsException e) {
-                List<TimeSlot> available = customerService.availableTimeSlots(actualStore);
+                List<TimeSlot> available = customerService.availableTimeSlots(actualStore.getId());
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(available));
             }
         } catch (NoSuchEntityException e){
@@ -93,6 +99,10 @@ public class CustomerRoutes {
 
     @PostMapping(path = "/register")
     public ResponseEntity<String> register(@RequestBody CustomerDTO customer){
-        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(customerService.register(customer)));
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(customerService.register(customer)));
+        } catch (MailAlreadyUsedException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already used");
+        }
     }
 }

@@ -58,12 +58,6 @@ public class Store {
             inverseJoinColumns = @JoinColumn(name = "partnerStoreID"))
     private List<Store> partnerStores;
 
-    public Store(){}
-
-    public Store(Integer id) {
-        this.id = id;
-    }
-
     public int getId() {
         return id;
     }
