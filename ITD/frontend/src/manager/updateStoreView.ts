@@ -20,12 +20,13 @@ import {
     RemovePartnerStore,
     SaveStore,
     UpdatePartnerStoreId,
-    UpdateStoreCapacity,
+    UpdateStoreCapacity, UpdateStoreDescription,
     UpdateStoreName,
-    UpdateStoreOpeningHours
+    UpdateStoreOpeningHours, UpdateStoreTimeout
 } from "./actions";
 
 export const updateStoreView = ({foundPartnerStore, updatingStore, newPartnerStoreId}: ManagerAppState) => {
+    // TODO: Add description
     if (foundPartnerStore) {
         return confirmationPrompt(
             `Would you like to add store ${foundPartnerStore.name} (id: ${foundPartnerStore.id} as a partner store?`,
@@ -42,7 +43,14 @@ export const updateStoreView = ({foundPartnerStore, updatingStore, newPartnerSto
                 formField(updatingStore.name, "Store Name", UpdateStoreName, "text"),
             ]),
             row([
+                formField(updatingStore.description, "Store Description", UpdateStoreDescription, "text"),
+            ]),
+            row([
                 formField(updatingStore.maxCustomerCapacity.toString(), "Store's maximum capacity", UpdateStoreCapacity, "number"),
+            ]),
+
+            row([
+                formField(updatingStore.timeoutMinutes.toString(), "Ticket Timespan (minutes)", UpdateStoreTimeout, "number"),
             ]),
 
             centered(card(titleText("Opening Hours", "4"), [
@@ -78,7 +86,7 @@ export const updateStoreView = ({foundPartnerStore, updatingStore, newPartnerSto
                 ]);
             }),
                 card(titleText("New Partner Store", "4"), [
-                    inlineForm(row(formField(newPartnerStoreId, "Store ID:", UpdatePartnerStoreId))),
+                    inlineForm(row(formField(newPartnerStoreId.toString(), "Store ID:", UpdatePartnerStoreId, "number"))),
                     row(centered(button("Add", "success", FindPartnerStore))),
                 ]),
             ])))),

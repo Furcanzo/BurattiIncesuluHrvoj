@@ -10,7 +10,7 @@ export interface IHTTPOptions<State, Request, Response> {
     body?: Request;
     resultAction: (state: State, data: Response) => State;
     errorAction: (state: State, text?: string) => any;
-    method: "GET" | "POST" | "DELETE" | "PUT" ;// TODO: Add more if needed
+    method: "GET" | "POST" | "DELETE" | "PUT" | "PATCH";// TODO: Add more if needed
     showScreenWhileLoading?: boolean;
 }
 const getErrorMessage = (e: Error) => {

@@ -65,7 +65,7 @@ public class CustomerService {
         return 0;
     }
 
-    public LineNumber retrieveLineNUmber(LineNumberDTO lineNumber, Customer customer) throws NoTimeSlotsException {
+    public LineNumber retrieveLineNumber(LineNumberDTO lineNumber, Customer customer) throws NoTimeSlotsException {
         //todo
         return null;
     }

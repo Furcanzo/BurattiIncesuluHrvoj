@@ -4,15 +4,25 @@ import {row, text} from "../widgets";
 import {Component, INavigatorItem, State, User} from "../state";
 import {view} from "./view";
 
+export interface IManagementPartnerStore {
+    id: number;
+    name: string;
+}
+
+export class ManagementStore extends Store {
+    // @ts-ignore
+    partners: IManagementPartnerStore[];
+}
 export class ManagerAppState extends State<Manager> {
     activeTab: "update" | "staff" | "monitor";
     staffMembers: User[];
     newMember: User;
-    store: Store;
-    updatingStore: Store;
-    foundPartnerStore?: Store;
-    newPartnerStoreId?: string;
+    store: ManagementStore;
+    updatingStore: ManagementStore;
+    foundPartnerStore?: IManagementPartnerStore;
+    newPartnerStoreId?: number;
     numberOfVisitors?: number;
+    lastUpdatedVisitors?: Date;
 }
 
 const navigationItems: INavigatorItem[] = [{

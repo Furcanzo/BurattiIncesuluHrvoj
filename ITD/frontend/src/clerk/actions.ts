@@ -13,6 +13,7 @@ const serverError = (response: any): string => {
 
 const VERIFY_PATH = "QR/verify";
 export const ReadQRCode = (state: ClerkAppState, qrCodeContent: string) => {
+    // TODO: Rewrite this
     return [{...state, lastScannedText: qrCodeContent}, http({
         path: VERIFY_PATH,
         method: "POST",
