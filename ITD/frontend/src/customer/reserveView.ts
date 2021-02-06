@@ -2,7 +2,7 @@ import {CustomerAppState} from "./models";
 import {LineNumber, LineNumberRequest} from "../models";
 import {alertBar, button, card, clickable, largeColumn, markerMap, row, text, titleText} from "../widgets";
 import {
-    BookLineNumber, GetLineNumbers,
+    BookLineNumber, GetLineNumbers, ImmediatelyBook,
     SelectStore,
     SendLineNumberRequest,
     ShowDetailsOf, SubmitStore,
@@ -30,7 +30,7 @@ export const reserveView = ({newLineNumber, lineNumberReserved}: CustomerAppStat
         // Store selected show detail screen
         return storeDetails(newLineNumber);
     }
-    if (!newLineNumber.time) {
+    if (newLineNumber.time === undefined) {
         // Store confirmed, select timeslots
         let result = dateTimeSlotSelection(newLineNumber);
         if (newLineNumber.previousErrored) {
@@ -40,6 +40,9 @@ export const reserveView = ({newLineNumber, lineNumberReserved}: CustomerAppStat
             ]
         }
         return result;
+    }
+    if (newLineNumber.time === null) {
+         // TODO: Fill details for the current booking, is this different from the one below
     }
     if (!lineNumberReserved) {
         // Fill details
@@ -68,16 +71,18 @@ export const storeCard = (store, action) => {
     ))
 }
 const storeDetails = ({store}: LineNumberRequest) => {
-    return [card(
+    return [card(// TODO: Add description
         titleText(store.name, "2"),
         [
+            titleText(store.description, "3"),
             markerMap(store.location, false),
             titleText("Opens at: " + timeStr(store.workingHours.start), "3"),
             titleText("Closes at: " + timeStr(store.workingHours.end), "3"),
-            titleText("(The opening hours are valid for each day)", "3"),
+            titleText("(The opening hours are valid for each day)", "4"),
         ]
     ),
         row([
+            button(text(CHECK_CIRCLE, "Book Now!"), "success", ImmediatelyBook),
             button(text([CHECK_CIRCLE, "Continue"]), "success", SubmitStore),
             button(text([X_CIRCLE_FILL, "Cancel"]), "danger", UnSelectStore),
         ])

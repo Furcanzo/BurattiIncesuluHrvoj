@@ -37,4 +37,5 @@ export const SubmitStore = (state: CreateStoreAppState) => {
             resultAction: StoreAdded,
         })]
     }
+    return Errored(state, "Please fill all the required fields");
 }

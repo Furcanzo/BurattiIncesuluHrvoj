@@ -12,7 +12,15 @@ import {
 } from "../widgets";
 import {addZero, timeSlotEq} from "../util";
 import {CHECK_CIRCLE, CIRCLE} from "../icons";
-import {NextWeek, PrevWeek, SelectDayOfTimeSlot, SelectTimeSlot, ShowDetailsOf, UpdateVisitTimeField} from "./actions";
+import {
+    NextWeek,
+    PrevWeek,
+    SelectDayOfTimeSlot,
+    SelectStore,
+    SelectTimeSlot,
+    ShowDetailsOf,
+    UpdateVisitTimeField
+} from "./actions";
 import {storeCard} from "./reserveView";
 
 const selectionCard = (title: string, onClick: any, selected: boolean, border: Color = "primary") => {
@@ -72,7 +80,7 @@ export const dateTimeSlotSelection = (lineNumberRequest: LineNumberRequest) => {
     } else if (selectedDate) {
         cardBody = [titleText("There are no time slots available for the slot that you selected.")]
         if (lineNumberRequest.store.partners.length > 0) {
-            const storeCards = lineNumberRequest.store.partners.map(storeCard)
+            const storeCards = lineNumberRequest.store.partners.map(store => storeCard(store, SelectStore(store)))
             cardBody = [...cardBody, titleText("However following partner stores are available:"), ...storeCards];
         }
     } else {

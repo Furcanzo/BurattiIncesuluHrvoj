@@ -70,21 +70,17 @@ public class EmployeeService {
     }
 
     @Transactional
-    public boolean checkin(int lineNumberId) {
+    public boolean checkInOut(int lineNumberId) {
         LineNumber lineNumber = lineNumberRepository.findById(lineNumberId).orElse(null);
-        if (lineNumber != null && lineNumber.getStatus().equals("WAITING")){
-            lineNumber.setStatus("VISITING");
-            lineNumberRepository.save(lineNumber);
-            return true;
-        }
-        return false;
-    }
+        if (lineNumber != null){
+            if (lineNumber.getStatus().equals("WAITING")) {
 
-    @Transactional
-    public boolean checkout(int lineNumberId) {
-        LineNumber lineNumber = lineNumberRepository.findById(lineNumberId).orElse(null);
-        if (lineNumber != null && lineNumber.getStatus().equals("VISITING")){
-            lineNumber.setStatus("VISITED");
+                lineNumber.setStatus("VISITING");
+            } else if (lineNumber.getStatus().equals("VISITING")) {
+                lineNumber.setStatus("VISITED");
+            } else {
+                return false;
+            }
             lineNumberRepository.save(lineNumber);
             return true;
         }

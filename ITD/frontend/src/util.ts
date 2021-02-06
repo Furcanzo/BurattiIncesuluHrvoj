@@ -35,7 +35,6 @@ export const parseServerTimeSlot = ({start, end}: IServerTimeSlot): TimeSlot => 
     const endDate = new Date(end);
     result.day = new Date(start);
     result.day.setHours(0, 0, 0, 0); // Days are significant with their time
-    result.start = new Time();
     result.start = {hour: startDate.getHours(), minute: startDate.getMinutes()};
     result.end = {hour: endDate.getHours(), minute: endDate.getMinutes()};
     return result;
@@ -54,4 +53,12 @@ export const readUserEmail = (): string => {
 }
 export const writeUserEmail = (email: string) => {
     localStorage.setItem("email", email);
+}
+
+export const timeToMillis = (time: Time) => {
+    return ((time.hour * 60) + time.minute) * 60 * 1000;
+}
+
+export const getCurrentTimeMillis = (): number => {
+    return new Date().valueOf();
 }

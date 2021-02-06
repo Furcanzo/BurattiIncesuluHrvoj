@@ -1,5 +1,5 @@
 import {CustomerAppState, customerComponent} from "./customer/models";
-import {ManagerAppState, managerComponent} from "./manager/models";
+import {ManagementStore, ManagerAppState, managerComponent} from "./manager/models";
 import {ClerkAppState, clerkComponent} from "./clerk/models";
 import {LoginAppState, loginComponent} from "./login/models";
 import {createStoreComponent} from "./backoffice/models";
@@ -9,7 +9,7 @@ import {INavigatorItem, State, User} from "./state";
 
 
 export class Manager extends User {
-    constructor(readonly location: Store, readonly email: string) {
+    constructor(readonly location: ManagementStore, readonly email: string) {
         super();
         this.userType = "manager";
     }
@@ -17,18 +17,38 @@ export class Manager extends User {
 
 
 export class Clerk extends User {
-    constructor(readonly location: Store, readonly email: string) {
+    constructor(readonly location: ManagementStore, readonly email: string) {
         super();
         this.userType = "clerk";
     }
 }
 
+export interface IServerEmployeeResponse {
+    id: number;
+    email: string;
+    role: string;
+    store: Store;
+}
 
+export interface IServerEmployeeRequest {
+    email: string;
+    role: string;
+    storeId: number;
+}
 export class Customer extends User {
     name: string;
     surname: string;
     tel: string;
-    lineNumbers: LineNumber[];
+}
+
+export interface IServerCustomerRequest {
+    name: string;
+    surname: string;
+    phoneNumber: string;
+    email: string;
+}
+export interface IServerCustomerResponse extends IServerCustomerRequest {
+    id: number;
 }
 
 export class StoreLocation {
@@ -42,21 +62,33 @@ export class Time {
 }
 
 export class TimeSlot {
+    id: number;
     start: Time;
     end: Time;
     day: Date; // Timeslots are retrieved from server (future lockdowns etc...)
 }
 
 export class Store {
-    readonly id?: string;
+    readonly id?: number;
     location: StoreLocation;
     name: string;
-    readonly openTimeSlots: TimeSlot[];
     workingHours: TimeSlot; // Ignore date value
     timeoutMinutes: number; // TODO: convert to milis for backend
     maxCustomerCapacity: number;
     partners: Store[];
+    description: string;
 
+}
+
+export interface IServerStoreRequest {
+    name: string;
+    description: string;
+    latitude: number;
+    longitude: number;
+    maxCustomers: number;
+    // TODO: Server will update the working hours
+    partnerStoreIds: number[];
+    timeOut: number // TODO: in miliseconds
 }
 
 
@@ -70,7 +102,7 @@ export class BackOfficeUser extends User {
 
 
 export class LineNumber {
-    id: string;
+    id: number;
     number: number;
     store: Store;
     time: TimeSlot;
@@ -82,14 +114,36 @@ export class LineNumberRequest {
     potentialTimeSlots: TimeSlot[];
     selectedDateSlot?: Date;
     selectedWeekSlot?: Date;
-    time: TimeSlot;
+    time: TimeSlot | null; // null indicates immediate
     estimatedTimeOfVisit: Time;
+    etaMilliseconds?: number;
     previousErrored: boolean;
 }
 
 export interface IServerTimeSlot {
     start: number;
     end: number;
+}
+export interface IServerStoreResponse extends IServerStoreRequest {
+    id: number;
+}
+
+export interface IServerLineNumberResponse {
+    id: number;
+    status: string;
+    number: number;
+    from: number;
+    until: number;
+    timeSlot: IServerTimeSlot;
+    store: IServerStoreResponse;
+    customer: IServerCustomerResponse;
+}
+
+export interface IServerLineNumberRequest {
+    from: number;
+    until: number;
+    timeSlotId: number;
+    storeId: number;
 }
 
 export const isManagerState = (state: State<User>): state is ManagerAppState => {
@@ -125,4 +179,8 @@ export const routes = {
 
 }
 
-
+export interface IServerMonitorResponse {
+    timestamp: number;
+    customersInStore: number;
+    storeId: number;
+}

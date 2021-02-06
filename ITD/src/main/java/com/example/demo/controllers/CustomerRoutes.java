@@ -18,13 +18,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RestController(value = "/api")
 public class CustomerRoutes {
 
     private final CustomerService customerService;
 
     private final Gson gson;
 
+    private static final String STORE_NOT_AVAILABLE = "Store not available";
+    private static final String TIMESLOT_IS_FULL = "Maximum capacity reached";
     private static final String STORE_NOT_FOUND = "store not found";
 
     @Autowired
@@ -42,11 +44,9 @@ public class CustomerRoutes {
                 LineNumber created = customerService.bookFutureLineNUmber(lineNumber, customer, actualStore );
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(created));
             } catch (NoTimeSlotsException e) {
-                List<Store> available = customerService.partnerStores(actualStore);
-                return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(available));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(STORE_NOT_AVAILABLE);
             } catch (TimeSlotFullException e) {
-                List<TimeSlot> available = customerService.availableTimeSlots(actualStore);
-                return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(available));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(TIMESLOT_IS_FULL);
             }
         } catch (NoSuchEntityException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(STORE_NOT_FOUND);
@@ -65,7 +65,7 @@ public class CustomerRoutes {
             Store actualStore = customerService.getStore(lineNumber.getStoreId());
             try {
                 Customer customer = customerService.findCustomerByEmail(bearer);
-                LineNumber created = customerService.retrieveLineNUmber(lineNumber, customer);
+                LineNumber created = customerService.retrieveLineNumber(lineNumber, customer);
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(created));
             } catch (NoTimeSlotsException e) {
                 List<TimeSlot> available = customerService.availableTimeSlots(actualStore);

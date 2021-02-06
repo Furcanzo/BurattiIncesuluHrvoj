@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@RestController(value = "/api")
 public class ManagerRoutes {
 
     private final CustomerService customerService;
@@ -67,13 +67,13 @@ public class ManagerRoutes {
         }
     }
 
-    @PostMapping(path = "emploee")
-    public ResponseEntity<String> addEmploee (@RequestBody EmployeeDTO employee, @RequestHeader(name = "bearer") String bearer){
+    @PostMapping(path = "/employee")
+    public ResponseEntity<String> addEmployee (@RequestBody EmployeeDTO employee, @RequestHeader(name = "bearer") String bearer){
         Employee manager = employeeService.findEmployeeByEmail(bearer);
         if (securityService.managerCheck(manager,employee.getStoreId())){
             try {
-                Employee newEmploee = employeeService.addEmployee(employee);
-                return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(newEmploee));
+                Employee newEmployee = employeeService.addEmployee(employee);
+                return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(newEmployee));
             } catch (NoSuchEntityException e) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("store not found");
             }
@@ -83,7 +83,7 @@ public class ManagerRoutes {
         }
     }
 
-    @GetMapping(path = "monitorLive")
+    @GetMapping(path = "/monitorLive")
     public ResponseEntity<String> monitorLive (@RequestParam int id, @RequestHeader(name = "bearer") String bearer) {
         Employee manager = employeeService.findEmployeeByEmail(bearer);
         if (securityService.managerCheck(manager, id)){

@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@RestController(value = "/api")
 public class BackOfficeRoutes {
 
     private final SecurityService securityService;
@@ -29,6 +29,7 @@ public class BackOfficeRoutes {
         this.backOfficeService = backOfficeService;
     }
 
+    // TODO: @Roberto These two requests shall become one, input is manager email and store name
     @PostMapping(path = "/store")
     public ResponseEntity<String> createStore(@RequestBody StoreDTO store, @RequestHeader(name = "bearer") String bearer) {
         if (securityService.backOffice(bearer)) {

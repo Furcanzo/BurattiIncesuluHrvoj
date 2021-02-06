@@ -1,8 +1,9 @@
-import {AnonUser} from "../models";
+import {AnonUser, Customer, IServerCustomerRequest, IServerCustomerResponse} from "../models";
 import {LoginAppState} from "./models";
 import {http} from "../effects";
 import {Errored, NewUser} from "../actions";
 import {State} from "../state";
+import {reqGetUser, reqRegister} from "../requests";
 
 export const INIT = (state: State<AnonUser>): LoginAppState => {
     return {...state, user: {email: ""}, currentTab: "login"};
@@ -25,7 +26,7 @@ export const SubmitLogin = (state: LoginAppState) => {
             method: "POST",
             body: state.user,
             errorAction: Errored,
-            resultAction: NewUser as any
+            resultAction: NewUser as any // TODO: Adapt from Roberto's things
         })];
     } else {
         return Errored(state, "Please provide an email");
@@ -45,13 +46,16 @@ export const UpdateRegisterField = (field: "email" | "repeatEmail" | "tel" | "na
 export const SubmitRegister = (state: LoginAppState) => {
     const newUser = state.user;
     if (newUser.repeatEmail === newUser.email && newUser.email && newUser.name && newUser.surname && newUser.tel) {
-        return [state, http({
-            path: "register",
-            method: "POST",
-            body: newUser,
-            errorAction: Errored,
-            resultAction: NewUser as any,
-        })]
+        const requestUser: IServerCustomerRequest = {name: newUser.name,phoneNumber: newUser.tel, surname: newUser.surname, email: newUser.email};
+        const success = (state, response: IServerCustomerResponse) => {
+            const user = new Customer();
+            user.name = response.name;
+            user.surname = response.surname;
+            user.tel = response.phoneNumber;
+            user.email = response.email;
+            return NewUser(state, user);
+        }
+        return [state, reqRegister(success, Errored, requestUser)];
     }
     return Errored(state, "Please provide all the values on the form below");
 }
