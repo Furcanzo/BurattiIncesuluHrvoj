@@ -1,13 +1,18 @@
 package com.example.demo.model.dtos;
 
-import com.example.demo.model.entities.Customer;
-
 public class CustomerDTO {
 
-    private String name;
-    private String surname;
-    private String phoneNumber;
-    private String email;
+    private final String name;
+    private final String surname;
+    private final String phoneNumber;
+    private final String email;
+
+    public CustomerDTO(String name, String surname, String phoneNumber, String email) {
+        this.name = name;
+        this.surname = surname;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }
 
     public String getName() {
         return name;
@@ -25,12 +30,4 @@ public class CustomerDTO {
         return email;
     }
 
-    public Customer generateEntity() {
-        Customer customer = new Customer();
-        customer.setName(this.name);
-        customer.setSurname(this.surname);
-        customer.setPhoneNumber(this.phoneNumber);
-        customer.setEmail(this.email);
-        return customer;
-    }
 }

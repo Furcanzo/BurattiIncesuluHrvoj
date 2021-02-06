@@ -2,7 +2,7 @@ package com.example.demo.model.dtos;
 
 import java.util.List;
 
-public class StoreDTO {
+public class NewStoreDTO {
 
     private final String name;
     private final String description;
@@ -12,8 +12,9 @@ public class StoreDTO {
     private final int timeOut;
     private final WorkingHourDTO workingHourDTO;
     private final List<Integer> partnerStoreIds;
+    private final String firstManagerEmail;
 
-    public StoreDTO(String name, String description, double longitude, double latitude, int maxCustomers, int timeOut, WorkingHourDTO workingHourDTO, List<Integer> partnerStoreIds) {
+    public NewStoreDTO(String name, String description, double longitude, double latitude, int maxCustomers, int timeOut, WorkingHourDTO workingHourDTO, List<Integer> partnerStoreIds, String firstManagerEmail) {
         this.name = name;
         this.description = description;
         this.longitude = longitude;
@@ -22,6 +23,7 @@ public class StoreDTO {
         this.timeOut = timeOut;
         this.workingHourDTO = workingHourDTO;
         this.partnerStoreIds = partnerStoreIds;
+        this.firstManagerEmail = firstManagerEmail;
     }
 
     public String getName() {
@@ -56,4 +58,7 @@ public class StoreDTO {
         return partnerStoreIds;
     }
 
+    public String getFirstManagerEmail() {
+        return firstManagerEmail;
+    }
 }

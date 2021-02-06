@@ -11,8 +11,7 @@ public class SecurityService {
     }
 
     public boolean backOffice(String bearer) {
-        //todo
-        return true;
+        return bearer.equals("backOffice");
     }
 
     public boolean checkClerk(Employee employee, int storeId) {
