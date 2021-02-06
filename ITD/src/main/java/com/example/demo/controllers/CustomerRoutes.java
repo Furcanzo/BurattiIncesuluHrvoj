@@ -1,10 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.exceptions.MailAlreadyUsedException;
-import com.example.demo.model.entities.Customer;
-import com.example.demo.model.entities.LineNumber;
-import com.example.demo.model.entities.Store;
-import com.example.demo.model.entities.TimeSlot;
+import com.example.demo.model.entities.*;
 import com.example.demo.model.dtos.CustomerDTO;
 import com.example.demo.model.dtos.LineNumberDTO;
 import com.example.demo.exceptions.NoSuchEntityException;
@@ -34,9 +31,13 @@ public class CustomerRoutes {
         this.gson = gson;
     }
 
-    @GetMapping(path = "/timeSlots")
+    @GetMapping(path = "/timeSlot/list")
     public ResponseEntity<String> getTimeSlots(@RequestParam int storeId){
-        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(customerService.availableTimeSlots(storeId)));
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(customerService.availableTimeSlots(storeId)));
+        }catch (NoSuchEntityException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(STORE_NOT_FOUND);
+        }
     }
 
     @PostMapping(path = "/book")
@@ -45,7 +46,7 @@ public class CustomerRoutes {
             Store actualStore = customerService.getStore(lineNumber.getStoreId());
             try {
                 Customer customer = customerService.findCustomerByEmail(bearer);
-                LineNumber created = customerService.bookFutureLineNUmber(lineNumber, customer, actualStore );
+                LineNumber created = customerService.bookFutureLineNUmber(lineNumber, customer);
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(created));
             } catch (NoTimeSlotsException e) {
                 List<Store> available = actualStore.getPartnerStores();
@@ -61,8 +62,12 @@ public class CustomerRoutes {
 
     @GetMapping(path = "/ETA")
     public ResponseEntity<String> getETA(@RequestBody LineNumberDTO lineNumber){
-        int eta = customerService.calcETA(lineNumber);
-        return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(eta));
+        try {
+            int eta = customerService.calcETA(lineNumber);
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(eta));
+        } catch (NoSuchEntityException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(STORE_NOT_FOUND);
+        }
     }
 
     @PostMapping(path = "/retrieve")
@@ -103,6 +108,16 @@ public class CustomerRoutes {
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(customerService.register(customer)));
         } catch (MailAlreadyUsedException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already used");
+        }
+    }
+
+    @GetMapping(path = "/lineNumber/list")
+    public ResponseEntity<String> getLineNumbers(@RequestHeader(name = "bearer") String bearer){
+        try {
+            Customer customer = customerService.findCustomerByEmail(bearer);
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(customer.getLineNumbers()));
+        } catch (NoSuchEntityException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User doesn't exists");
         }
     }
 }

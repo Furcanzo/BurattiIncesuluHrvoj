@@ -2,19 +2,19 @@ package com.example.demo.model.dtos;
 
 public class WorkingHourDTO {
 
-    private final long from;
-    private final long until;
+    private final int from;
+    private final int until;
 
-    public WorkingHourDTO(long from, long until) {
+    public WorkingHourDTO(int from, int until) {
         this.from = from;
         this.until = until;
     }
 
-    public long getFrom() {
+    public int getFrom() {
         return from;
     }
 
-    public long getUntil() {
+    public int getUntil() {
         return until;
     }
 
