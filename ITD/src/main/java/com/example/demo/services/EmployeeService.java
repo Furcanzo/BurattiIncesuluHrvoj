@@ -1,19 +1,19 @@
 package com.example.demo.services;
 
+import com.example.demo.exceptions.MailAlreadyUsedException;
 import com.example.demo.model.MonitorState;
-import com.example.demo.model.entities.Employee;
-import com.example.demo.model.entities.LineNumber;
-import com.example.demo.model.entities.Store;
+import com.example.demo.model.dtos.WorkingHourDTO;
+import com.example.demo.model.entities.*;
 import com.example.demo.exceptions.NoSuchEntityException;
 import com.example.demo.model.dtos.EmployeeDTO;
 import com.example.demo.model.dtos.StoreDTO;
-import com.example.demo.repositories.EmployeeRepository;
-import com.example.demo.repositories.LineNumberRepository;
-import com.example.demo.repositories.StoreRepository;
+import com.example.demo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class EmployeeService {
@@ -24,13 +24,20 @@ public class EmployeeService {
 
     private final LineNumberRepository lineNumberRepository;
 
+    private final TimeSlotRepository timeSlotRepository;
+
+    private final WorkingHourRepository workingHourRepository;
+
     @Autowired
-    public EmployeeService(StoreRepository storeRepository, EmployeeRepository employeeRepository, LineNumberRepository lineNumberRepository) {
+    public EmployeeService(StoreRepository storeRepository, EmployeeRepository employeeRepository, LineNumberRepository lineNumberRepository, TimeSlotRepository timeSlotRepository, WorkingHourRepository workingHourRepository) {
         this.storeRepository = storeRepository;
         this.employeeRepository = employeeRepository;
         this.lineNumberRepository = lineNumberRepository;
+        this.timeSlotRepository = timeSlotRepository;
+        this.workingHourRepository = workingHourRepository;
     }
 
+    @Transactional
     public Store updateStore(int storeId, StoreDTO store) throws NoSuchEntityException {
         Store myStore = storeRepository.findById(storeId).orElse(null);
         if(myStore == null){
@@ -42,8 +49,25 @@ public class EmployeeService {
         myStore.setLatitude(store.getLatitude() != 0.0 ? store.getLatitude() : myStore.getLatitude());
         myStore.setMaxCustomers(store.getMaxCustomers() != 0 ? store.getMaxCustomers() : myStore.getMaxCustomers());
         myStore.setTimeOut(store.getTimeOut() != 0 ? store.getTimeOut() : myStore.getTimeOut());
-
-        //todo update lists
+        if (store.getWorkingHourDTOs() != null){
+            for (WorkingHour wh : myStore.getWorkingHours()){
+                workingHourRepository.delete(wh);
+            }
+            List<WorkingHour> newWorkingHours = new ArrayList<>();
+            for (WorkingHourDTO whdto : store.getWorkingHourDTOs()) {
+                WorkingHour wh = generateWorkingHour(whdto);
+                workingHourRepository.save(wh);
+                newWorkingHours.add(wh);
+            }
+            myStore.setWorkingHours(newWorkingHours);
+        }
+        if (store.getPartnerStoreIds() != null){
+            List<Store> newPartnerStores =  new ArrayList<>();
+            for( int i : store.getPartnerStoreIds()){
+                newPartnerStores.add(storeRepository.findById(i).orElse(null));
+            }
+            myStore.setPartnerStores(newPartnerStores);
+        }
         return storeRepository.save(myStore);
     }
 
@@ -55,29 +79,36 @@ public class EmployeeService {
         return employee;
     }
 
-    public Employee findEmployeeByEmail(String email) {
-        return employeeRepository.findByEmail(email);
+    public Employee findEmployeeByEmail(String email) throws NoSuchEntityException {
+        Employee employee = employeeRepository.findByEmail(email).orElse(null);
+        if (employee == null){
+            throw new NoSuchEntityException();
+        }
+        return employee;
     }
 
-    public Employee addEmployee(EmployeeDTO employee) throws NoSuchEntityException {
-        Employee firstEmployee = employee.generateEntity();
-        Store store = storeRepository.findById(firstEmployee.getStore().getId()).orElse(null);
-        if (store!= null) {
-            firstEmployee.setStore(store);
-            return firstEmployee;
+    public Employee addEmployee(EmployeeDTO employeeDTO) throws NoSuchEntityException, MailAlreadyUsedException {
+        Employee employee = generateEmployee(employeeDTO);
+        Employee error = employeeRepository.findByEmail(employee.getEmail()).orElse(null);
+        if (error == null) {
+            return employeeRepository.save(employee);
         }
-        throw new NoSuchEntityException();
+        throw new MailAlreadyUsedException();
     }
 
     @Transactional
     public boolean checkin(int lineNumberId) {
         LineNumber lineNumber = lineNumberRepository.findById(lineNumberId).orElse(null);
-        if (lineNumber != null && lineNumber.getStatus().equals("WAITING")){
+        if (lineNumber != null && lineNumber.getStatus().equals("WAITING") && lineNumber.getTimeSlot().equals(getActualTimeSlot(lineNumber.getStore().getId()))){
             lineNumber.setStatus("VISITING");
             lineNumberRepository.save(lineNumber);
             return true;
         }
         return false;
+    }
+
+    private TimeSlot getActualTimeSlot(int storeId) {
+        return timeSlotRepository.findActual(storeId);
     }
 
     @Transactional
@@ -103,5 +134,29 @@ public class EmployeeService {
         long timestamp = System.currentTimeMillis();
         int numberOfCustomers = lineNumberRepository.monitor(id);
         return new MonitorState(timestamp,numberOfCustomers, id);
+    }
+
+    Employee generateEmployee(EmployeeDTO employeeDTO) throws NoSuchEntityException {
+        Employee created = new Employee();
+        Store store = storeRepository.findById(employeeDTO.getStoreId()).orElse(null);
+        if (store != null) {
+            created.setEmail(employeeDTO.getEmail());
+            created.setRole(employeeDTO.getRole());
+            created.setStore(storeRepository.findById(employeeDTO.getStoreId()).orElse(null));
+            return created;
+        }
+        throw new NoSuchEntityException();
+    }
+
+    WorkingHour generateWorkingHour( WorkingHourDTO workingHourDTO) {
+        WorkingHour workingHour = new WorkingHour();
+        workingHour.setFrom(workingHourDTO.getFrom());
+        workingHour.setUntil(workingHourDTO.getUntil());
+        return workingHour;
+    }
+
+    public Employee changeRole(Employee employee, String role) {
+        employee.setRole(role);
+        return employeeRepository.save(employee);
     }
 }

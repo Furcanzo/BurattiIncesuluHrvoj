@@ -1,11 +1,14 @@
 package com.example.demo.model.dtos;
 
-import com.example.demo.model.entities.WorkingHour;
-
 public class WorkingHourDTO {
 
-    private long from;
-    private long until;
+    private final long from;
+    private final long until;
+
+    public WorkingHourDTO(long from, long until) {
+        this.from = from;
+        this.until = until;
+    }
 
     public long getFrom() {
         return from;
@@ -15,10 +18,4 @@ public class WorkingHourDTO {
         return until;
     }
 
-    public WorkingHour generateEntity() {
-        WorkingHour workingHour = new WorkingHour();
-        workingHour.setFrom(this.from);
-        workingHour.setUntil(this.until);
-        return workingHour;
-    }
 }

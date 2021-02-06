@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.exceptions.MailAlreadyUsedException;
 import com.example.demo.model.dtos.CustomerDTO;
 import com.example.demo.model.dtos.LineNumberDTO;
 import com.example.demo.exceptions.NoSuchEntityException;
@@ -33,49 +34,24 @@ public class CustomerService {
         this.timeSlotRepository = timeSlotRepository;
     }
 
-    public List<Customer> findAllCustomers() {
-        return customerRepository.findAll();
-    }
-
-    public List<Customer> findCustomerByName(String name) {
-        return customerRepository.findByName(name);
-    }
-
-    public Customer createCustomer(Customer customer){
-        return customerRepository.save(customer);
-    }
-
     public LineNumber bookFutureLineNUmber(LineNumberDTO lineNumber, Customer customer, Store store) throws TimeSlotFullException, NoTimeSlotsException {
         //todo
         return null;
     }
 
-    public List<Store> partnerStores(Store store) {
+    public List<TimeSlot> availableTimeSlots(int storeId) {
         //todo
         return null;
     }
 
-    public List<TimeSlot> availableTimeSlots(Store store) {
-        //todo
-        return null;
-    }
-
-    public int calcETA() {
+    public int calcETA(LineNumberDTO lineNumber) {
         //todo
         return 0;
     }
 
-    public LineNumber retrieveLineNUmber(LineNumberDTO lineNumber, Customer customer) throws NoTimeSlotsException {
+    public LineNumber retrieveLineNumber(LineNumberDTO lineNumber, Customer customer) throws NoTimeSlotsException {
         //todo
         return null;
-    }
-
-    public Customer findCustomerById(int id) throws NoSuchEntityException {
-        Customer customer = customerRepository.findById(id).orElse(null);
-        if (customer == null){
-            throw new NoSuchEntityException();
-        }
-        return customer;
     }
 
     public List<Store> getStoreList() {
@@ -90,12 +66,29 @@ public class CustomerService {
         return store;
     }
 
-    public Customer findCustomerByEmail(String email) {
-        return customerRepository.findByEmail(email);
+    public Customer findCustomerByEmail(String email) throws NoSuchEntityException {
+        Customer customer = customerRepository.findByEmail(email).orElse(null);
+        if (customer == null){
+            throw new NoSuchEntityException();
+        }
+        return customer;
     }
 
-    public Customer register(CustomerDTO customer) {
-        Customer created = customer.generateEntity();
-        return customerRepository.save(created);
+    public Customer register(CustomerDTO customer) throws MailAlreadyUsedException {
+        Customer created = generateCustomer(customer);
+        Customer error = customerRepository.findByEmail(created.getEmail()).orElse(null);
+        if (error == null) {
+            return customerRepository.save(created);
+        }
+        throw new MailAlreadyUsedException();
+    }
+
+    private Customer generateCustomer(CustomerDTO customerDTO) {
+        Customer customer = new Customer();
+        customer.setName(customerDTO.getName());
+        customer.setSurname(customerDTO.getSurname());
+        customer.setPhoneNumber(customerDTO.getPhoneNumber());
+        customer.setEmail(customerDTO.getEmail());
+        return customer;
     }
 }
