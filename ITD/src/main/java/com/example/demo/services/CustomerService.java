@@ -32,12 +32,15 @@ public class CustomerService {
 
     private final LineNumberRepository lineNumberRepository;
 
+    private int number;
+
     @Autowired
     public CustomerService(CustomerRepository customerRepository, StoreRepository storeRepository, TimeSlotRepository timeSlotRepository, LineNumberRepository lineNumberRepository) {
         this.customerRepository = customerRepository;
         this.storeRepository = storeRepository;
         this.timeSlotRepository = timeSlotRepository;
         this.lineNumberRepository = lineNumberRepository;
+        this.number = 1;
     }
 
     public LineNumber bookFutureLineNUmber(LineNumberDTO lineNumberDTO, Customer customer) throws TimeSlotFullException, NoTimeSlotsException, NoSuchEntityException {
@@ -118,6 +121,7 @@ public class CustomerService {
         }
         timeSlot.setStore(store);
         timeSlotRepository.save(timeSlot);
+        this.number = 1;
     }
 
     private boolean lastTimeSlotEndsDay(Store store) {
@@ -155,13 +159,25 @@ public class CustomerService {
         return max > System.currentTimeMillis() + 3*7*24*60*60*1000; //3 weeks
     }
 
-    public int calcETA(LineNumberDTO lineNumberDTO) throws NoSuchEntityException {
+    public int calcETA(LineNumberDTO lineNumberDTO) throws NoSuchEntityException, NoTimeSlotsException {
         LineNumber lineNumber = generateLineNumber(lineNumberDTO, null);
         deleteOldTimeSlots(lineNumber.getStore());
         createNewTimeSlotsIfNeeded(lineNumber.getStore());
-        //todo
+        int duration = (int)(lineNumber.getUntil()- lineNumber.getFrom());
+        if (testIfFits(duration, System.currentTimeMillis(), lineNumber.getStore().getMaxCustomers(), lineNumber.getStore().getId())){
+            return 0;
+        }
+        for (LineNumber  ln : lineNumber.getStore().getLineNumbers()){
+            if (ln.getUntil() < calcTimeStamp(lineNumber.getUntil(), lineNumber.getStore().getWorkingHour().getUntil(), 0) && testIfFits(duration, ln.getUntil(), lineNumber.getStore().getMaxCustomers(), lineNumber.getStore().getId())){
+                return (int) (ln.getUntil() - System.currentTimeMillis());
+            }
+        }
+        throw new NoTimeSlotsException();
+    }
 
-        return 0;
+    private boolean testIfFits(int duration, long start, int maxCustomers, int storeId) {
+        return lineNumberRepository.overLapsAt(storeId, start) < maxCustomers &&lineNumberRepository.overLapsAt(storeId, start + duration) < maxCustomers;
+
     }
 
     public LineNumber retrieveLineNumber(LineNumberDTO lineNumberDTO, Customer customer) throws NoTimeSlotsException, NoSuchEntityException {
@@ -171,9 +187,11 @@ public class CustomerService {
         if (noTimeSlots(lineNumber.getStore())){
             throw new NoTimeSlotsException();
         }
-        //todo
-
-        return null;
+        long fromTimeStamp = System.currentTimeMillis() + calcETA(lineNumberDTO);
+        lineNumber.setFrom(fromTimeStamp);
+        lineNumber.setUntil(fromTimeStamp + (lineNumberDTO.getUntil() - lineNumberDTO.getFrom()));
+        lineNumber.setTimeSlot(timeSlotRepository.getTimeSlotAt(lineNumber.getStore().getId(), fromTimeStamp));
+        return lineNumberRepository.save(lineNumber);
     }
 
     public List<Store> getStoreList() {
@@ -226,6 +244,8 @@ public class CustomerService {
         lineNumber.setTimeSlot(timeSlot);
         lineNumber.setStore(store);
         lineNumber.setCustomer(customer);
+        lineNumber.setNumber(number);
+        this.number++;
         return lineNumber;
     }
 }

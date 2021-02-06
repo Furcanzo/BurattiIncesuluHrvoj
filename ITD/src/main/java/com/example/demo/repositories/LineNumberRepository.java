@@ -13,6 +13,9 @@ public interface LineNumberRepository extends CrudRepository<LineNumber, Integer
 
     List<LineNumber> findAll();
 
-    @Query(value = "select count(ln) from LineNumber ln where store = :storeId and status= 'VISITING'")
+    @Query(value = "select count(ln) from LineNumber ln where ln.store = :storeId and status= 'VISITING'")
     int monitor(@Param("storeId")int storeId);
+
+    @Query(value = "select count(ln) from LineNumber ln where ln.store = :storeId and :time between ln.from and ln.until")
+    int overLapsAt(@Param("storeId")int storeId, @Param("time") long time);
 }
