@@ -1,4 +1,5 @@
 import {
+    Clerk,
     IServerEmployeeRequest,
     IServerMonitorResponse, IServerStoreRequest,
     IServerStoreResponse,
@@ -10,7 +11,8 @@ import {IManagementPartnerStore, ManagementStore, ManagerAppState} from "./model
 import {http, timeout} from "../effects";
 import {Crashed, Errored} from "../actions";
 import {State, User} from "../state";
-import {reqAddEmployee, reqGetStore, reqMonitor, reqUpdateStore} from "../requests";
+import {reqAddEmployee, reqChangeRole, reqGetStaffList, reqGetStore, reqMonitor, reqUpdateStore} from "../requests";
+import {serializeTimeSlotForServer, timeToMillis} from "../util";
 
 export const INIT = (state: State<Manager>): ManagerAppState => {
     return {
@@ -25,14 +27,21 @@ export const INIT = (state: State<Manager>): ManagerAppState => {
 }
 
 export const MonitoringLoaded = (state: ManagerAppState, {customersInStore, timestamp}: IServerMonitorResponse) => {
-    return [{...state, numberOfVisitors: customersInStore, lastUpdatedVisitors: new Date(timestamp)} as ManagerAppState, timeout({
+    return [{
+        ...state,
+        numberOfVisitors: customersInStore,
+        lastUpdatedVisitors: new Date(timestamp)
+    } as ManagerAppState, timeout({
         seconds: 5,
         action: RefreshMonitoringData
     })];
 }
 
 export const LoadMonitoringTab = (state: ManagerAppState) => {
-    return [{...state, activeTab: "monitor"} as ManagerAppState, reqMonitor(MonitoringLoaded, Crashed, state.store.id, false)]
+    return [{
+        ...state,
+        activeTab: "monitor"
+    } as ManagerAppState, reqMonitor(MonitoringLoaded, Crashed, state.store.id, false)]
 };
 
 export const RefreshMonitoringData = (state: ManagerAppState) => {
@@ -42,15 +51,11 @@ export const RefreshMonitoringData = (state: ManagerAppState) => {
     return [state, reqMonitor(MonitoringLoaded, Crashed, state.store.id, true)];
 
 }
-const GET_STAFF_LIST = "staff/list";
 export const LoadStaffTab = (state: ManagerAppState) => {
-    // TODO: Wait backend?
-    return [{...state, activeTab: "staff", newMember: new Manager(state.store, "")} as ManagerAppState, http({
-        path: GET_STAFF_LIST,
-        method: "GET",
-        resultAction: StaffListLoaded,
-        errorAction: Crashed,
-    })]
+    return [
+        {...state, activeTab: "staff", newMember: new Manager(state.store, "")} as ManagerAppState,
+        reqGetStaffList(StaffListLoaded, Crashed),
+    ]
 }
 export const StaffListLoaded = (state: ManagerAppState, staffMembers: User[]): ManagerAppState => {
     return {...state, staffMembers};
@@ -67,53 +72,45 @@ export const SetNewMemberAs = (as: "manager" | "clerk") => (state: ManagerAppSta
 export const SubmitNewMember = (state: ManagerAppState) => {
     const serverMember: IServerEmployeeRequest = {
         storeId: state.store.id,
-        role: state.newMember.userType,
+        role: state.newMember.role,
         email: state.newMember.email,
     }
     return [state, reqAddEmployee(LoadStaffTab, Errored, serverMember)];
 }
-const CHANGE_STAFF_TYPE = "staff/toggle";
-export const ChangeStaffType = (state: ManagerAppState) => {
-    return [state, http({
-        path: CHANGE_STAFF_TYPE,
-        method: "POST",
-        resultAction: (state: ManagerAppState, _) => LoadStaffTab(state) as any,
-        errorAction: Errored, // TODO: Wait for backend
-    })]
-}
 
-const DELETE_STAFF = "staff/delete";
-export const DeleteStaff = (state: ManagerAppState) => {
-    // Prevent delete thyself // TODO: Deleting will not be implemented
-    return [state, http({
-        path: DELETE_STAFF,
-        method: "POST",
-        resultAction: (state: ManagerAppState, _) => LoadStaffTab(state) as any,
-        errorAction: Errored,
-    })]
-};
+export const ChangeStaffType = (member: Manager | Clerk) => (state: ManagerAppState) => {
+    const newRole = member.role === "clerk" ? "manager" : "clerk";
+    return [state, reqChangeRole(LoadStaffTab, Errored, member.id, newRole)];
+}
 
 export const LoadUpdateStoreTab = (state: ManagerAppState): ManagerAppState => {
     return {...state, updatingStore: {...state.store}, activeTab: "update"};
 }
 
-export const SaveStore = (state: ManagerAppState) => {
+export const SaveStore = ({updatingStore, ...rest}: ManagerAppState) => {
     const serverStore: IServerStoreRequest = {
-        ...state.store,
-        latitude: state.store.location.lat,
-        longitude: state.store.location.lon,
-        maxCustomers: state.store.maxCustomerCapacity,
-        partnerStoreIds: state.store.partners.map((partner) => partner.id),
-        timeOut: state.store.timeoutMinutes * 60 * 1000,
+        ...updatingStore,
+        latitude: updatingStore.location.lat,
+        longitude: updatingStore.location.lon,
+        maxCustomers: updatingStore.maxCustomerCapacity,
+        partnerStoreIds: updatingStore.partners.map((partner) => partner.id),
+        timeOut: updatingStore.timeoutMinutes * 60 * 1000,
+        workingHour: {
+            from: timeToMillis(updatingStore.workingHours.start),
+            until: timeToMillis(updatingStore.workingHours.end),
+        }
 
     }
-    return [state, reqUpdateStore(StoreUpdated, Errored, state.store.id, serverStore)]
+    return [{...rest, updatingStore}, reqUpdateStore(StoreUpdated, Errored, updatingStore.id, serverStore)]
 };
 
 export const StoreUpdated = (state: ManagerAppState) => {
-    state.currentUser = {...state.currentUser, location: state.updatingStore};
-    return LoadUpdateStoreTab(state);
-}
+    return LoadUpdateStoreTab({
+        ...state,
+        store: state.updatingStore,
+        currentUser: {...state.currentUser, location: state.updatingStore}
+    });
+};
 
 export const UpdateStoreOpeningHours = (part: "hour" | "minute", of: "start" | "end") =>
     (state: ManagerAppState, content: string) => {
@@ -208,7 +205,3 @@ export const RemovePartnerStore = (partnerStore: IManagementPartnerStore) => (st
         }
     }
 }
-
-
-// TODO: Update timeout
-// TODO: Add weekday to the working hours

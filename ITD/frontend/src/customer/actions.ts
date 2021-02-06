@@ -6,66 +6,79 @@ import {
     TimeSlot,
     Time,
     IServerLineNumberResponse,
-    IServerCustomerRequest, IServerLineNumberRequest
+    IServerLineNumberRequest, IServerTimeSlot, IServerStoreResponse
 } from "../models";
 import {CustomerAppState} from "./models";
-import {http} from "../effects";
 import {State} from "../state";
 import {Errored} from "../actions";
-import {reqBookFutureLineNumber, reqETA, reqGetImmediateLineNumber, reqGetStoreList} from "../requests";
+import {
+    reqBookFutureLineNumber,
+    reqETA,
+    reqGetImmediateLineNumber,
+    reqGetStoreList,
+    reqListLineNumbers, reqListTimeSlotsOf
+} from "../requests";
 import {getCurrentTimeMillis, parseServerTimeSlot, serializeTimeSlotForServer, timeToMillis} from "../util";
 
 export const INIT = (state: State<Customer>): CustomerAppState => {
     return {...state, newLineNumber: undefined, myLineNumbers: undefined};
 }
 
-const GET_LINE_NUMBERS = "lineNumbers";
 export const GetLineNumbers = (state: CustomerAppState) => {
-    // TODO: From Roberto
     return [{
         ...state,
         showDetailsOf: undefined,
         lineNumberReserved: undefined,
         newLineNumber: undefined,
         myLineNumbers: []
-    } as CustomerAppState, http({
-        path: GET_LINE_NUMBERS,
-        method: "GET",
-        errorAction: Errored,
-        resultAction: GotLineNumbers,
-    })];
+    } as CustomerAppState, reqListLineNumbers(GotLineNumbers, Errored)];
 }
 
-export const GotLineNumbers = (state: CustomerAppState, lineNumbers: LineNumber[]): CustomerAppState => {
+export const GotLineNumbers = (state: CustomerAppState, serverLineNumbers: IServerLineNumberResponse[]): CustomerAppState => {
+    const lineNumbers: LineNumber[] = serverLineNumbers.map((serverLineNumber): LineNumber => {
+        return {
+            ...serverLineNumber,
+            time: parseServerTimeSlot(serverLineNumber.timeSlot),
+            store: {
+                ...serverLineNumber.store,
+                location: {
+                    lat: serverLineNumber.store.latitude,
+                    lon: serverLineNumber.store.longitude,
+                }
+            } as any as Store, // We don't need the other fields in the views.
+        }
+    })
     return {myLineNumbers: lineNumbers, ...state};
 }
 
-const GET_OPEN_STORES = "stores"
 
 export const BookLineNumber = (state: CustomerAppState, previousErrored: boolean = false) => {
     const newLineNumber = new LineNumberRequest()
     newLineNumber.estimatedTimeOfVisit = new Time();
     newLineNumber.previousErrored = previousErrored;
     const success = (doneState, storeResponses) => {
-        const emptyPartnerStores = storeResponses.map((storeResponse) => {
+        const emptyPartnerStores = storeResponses.map((storeResponse: IServerStoreResponse) => {
             return {
                 ...storeResponse,
                 location: {
                     lat: storeResponse.latitude,
                     lon: storeResponse.longitude,
                 },
-                workingHours: {} as any, // TODO When server changes
+                workingHours: parseServerTimeSlot({
+                    startTime: storeResponse.workingHour.from,
+                    endTime: storeResponse.workingHour.until
+                }),
                 timeoutMinutes: storeResponse.timeOut / 60 / 1000,
                 maxCustomerCapacity: storeResponse.maxCustomers,
                 partners: storeResponse.partnerStoreIds, // Partners will be populated once we have all the stores
             }
-        }, );
+        },);
         const stores: Store[] = emptyPartnerStores.map(emptyStore => {
 
             return {
-                partners: emptyStore.partnerStoreIds.map((storeId:number): Store => emptyPartnerStores.find((store_) => store_.id === storeId)).filter(store => !!store),
-                ... emptyStore,
-            } as any;
+                partners: emptyStore.partnerStoreIds.map((storeId: number): Store => emptyPartnerStores.find((store_) => store_.id === storeId)).filter(store => !!store),
+                ...emptyStore,
+            };
         });
         return GotBookingStores(doneState, stores);
 
@@ -85,52 +98,49 @@ export const GotBookingStores = (state: CustomerAppState, stores: Store[]): Cust
 export const SelectStore = (store: Store) => (state: CustomerAppState): CustomerAppState => {
     return {...state, newLineNumber: {...state.newLineNumber, store}};
 }
-// TODO: Implement immediate reservation,... sigh get ETA and then ask how much time they will spend
 export const UnSelectStore = (state: CustomerAppState): CustomerAppState => {
     return {...state, newLineNumber: {...state.newLineNumber, store: undefined}};
 }
 
+const convertLineNumberRequest = (newLineNumber: LineNumberRequest): IServerLineNumberRequest => {
+    const {startTime, endTime} = serializeTimeSlotForServer(newLineNumber.time);
+    return {
+        ...newLineNumber,
+        from: startTime + newLineNumber.etaMilliseconds,
+        until: startTime + newLineNumber.etaMilliseconds + timeToMillis(newLineNumber.estimatedTimeOfVisit),
+        timeSlotId: newLineNumber.time.id,
+        storeId: newLineNumber.store.id,
+    }
+}
 export const ImmediatelyBook = (state: CustomerAppState) => {
-    return [state, reqETA(ImmediateETARetrieved, ReservationFailed)];
+    return [{
+        ...state,
+        newLineNumber: {...state.newLineNumber, time: null}
+    } as CustomerAppState, reqETA(ETARetrieved, ReservationFailed, convertLineNumberRequest(state.newLineNumber))];
 }
 
-export const ImmediateETARetrieved = (state: CustomerAppState, etaMilliseconds: number): CustomerAppState => {
+export const ETARetrieved = (state: CustomerAppState, etaMilliseconds: number): CustomerAppState => {
     return {...state, newLineNumber: {...state.newLineNumber, etaMilliseconds}};
 }
 
 export const SubmitImmediateBooking = ({newLineNumber, ...rest}: CustomerAppState) => {
-    const {start, end} = serializeTimeSlotForServer(newLineNumber.time);
     const success = (doneState, response: IServerLineNumberResponse) => {
         const reservedLN: LineNumber = {
             ...response,
-            time: parseServerTimeSlot({start: response.from, end: response.until}),
+            time: parseServerTimeSlot({startTime: response.from, endTime: response.until}),
             store: newLineNumber.potentialStores.find(store => store.id === response.store.id),
         }
         LineNumberReserved(doneState, reservedLN);
     };
-    const lineNumber: IServerLineNumberRequest = {
-        ...newLineNumber,
-        from: start + newLineNumber.etaMilliseconds,
-        until: start + newLineNumber.etaMilliseconds + timeToMillis(newLineNumber.estimatedTimeOfVisit),
-        timeSlotId: newLineNumber.time.id,
-        storeId: newLineNumber.store.id,
-
-    }
+    const lineNumber: IServerLineNumberRequest = convertLineNumberRequest(newLineNumber);
     return [{newLineNumber, ...rest}, reqGetImmediateLineNumber(success, ReservationFailed, lineNumber)];
 }
-const GET_STORE_TIMESLOTS = (id: string) => `store/${id}/availableTimeSlots`;
+
 export const SubmitStore = (state: CustomerAppState) => {
-
-    return [state, http({
-        path: GET_STORE_TIMESLOTS(state.newLineNumber.store.id.toString()), // TODO: wait for backend
-        method: "GET",
-        resultAction: StoreTimeSlotsRetrieved,
-        errorAction: ReservationFailed,
-
-    })]
+    return [state, reqListTimeSlotsOf(StoreTimeSlotsRetrieved, ReservationFailed, state.newLineNumber.store.id)];
 }
-export const StoreTimeSlotsRetrieved = (state: CustomerAppState, timeSlots: TimeSlot[]): CustomerAppState => {
-    return {...state, newLineNumber: {...state.newLineNumber, potentialTimeSlots: timeSlots}};
+export const StoreTimeSlotsRetrieved = (state: CustomerAppState, timeSlots: IServerTimeSlot[]): CustomerAppState => {
+    return {...state, newLineNumber: {...state.newLineNumber, potentialTimeSlots: timeSlots.map(parseServerTimeSlot)}};
 }
 
 export const UpdateVisitTimeField = (field: "hour" | "minute") => (state: CustomerAppState, content: string): CustomerAppState => {
@@ -142,9 +152,11 @@ export const UpdateVisitTimeField = (field: "hour" | "minute") => (state: Custom
     return newState;
 }
 
-export const SelectTimeSlot = (timeSlot: TimeSlot) => (state: CustomerAppState): CustomerAppState => {
-    return {...state, newLineNumber: {...state.newLineNumber, time: timeSlot, previousErrored: false}};
-    // TODO: Show the ETA during line number creation. // actually get it before confirmation
+export const SelectTimeSlot = (timeSlot: TimeSlot) => (state: CustomerAppState) => {
+    return [{
+        ...state,
+        newLineNumber: {...state.newLineNumber, time: timeSlot, previousErrored: false}
+    }, reqETA(ETARetrieved, Errored, convertLineNumberRequest(state.newLineNumber))];
 }
 
 export const UnSelectTimeSlot = (state: CustomerAppState): CustomerAppState => {
@@ -155,7 +167,7 @@ export const SendLineNumberRequest = (state: CustomerAppState) => {
     const success = (doneState, response: IServerLineNumberResponse) => {
         const reservedLN: LineNumber = {
             ...response,
-            time: parseServerTimeSlot({start: response.from, end: response.until}),
+            time: parseServerTimeSlot({startTime: response.from, endTime: response.until}),
             store: state.newLineNumber.potentialStores.find(store => store.id === response.store.id),
         }
         LineNumberReserved(doneState, reservedLN);

@@ -1,4 +1,5 @@
 import {
+    AnonUser,
     isAnonState,
     isClerkState,
     isCustomerState,
@@ -11,8 +12,9 @@ import {LoginAppState, loginComponent} from "./login/models";
 import {INIT as LoginINIT} from "./login/actions";
 import { effects } from '@mrbarrysoftware/hyperapp-router';
 import {Component, INavigatorItem, State, User} from "./state";
-import {readUserEmail} from "./util";
+import {readUserEmail, writeUserEmail} from "./util";
 import {http} from "./effects";
+import {reqLogin} from "./requests";
 
 export const Loading = <U extends User>(state: State<U>): State<U> => {
     return {...state, loading: true};
@@ -57,9 +59,9 @@ export const Nothing = <U extends User>(state: State<U>): State<U> => {
 const firstState = {
     loading: false,
     currentUser: {
-        userType: "anonymous",
+        role: "anonymous",
         email: "",
-    },
+    } as User,
     error: undefined,
 };
 
@@ -70,17 +72,16 @@ export const RemoveErrors = (state: State<User>): State<User> => {
     return state;
 }
 
-const GET_ME = "me";
 export const INIT = () => {
     const state = {...firstState};
     state.currentUser.email = readUserEmail();
-    return [firstState, http({
-        path: GET_ME,
-        method: "GET",
-        resultAction: NewUser,
-        errorAction: Crashed,
-    })];
+    if (state.currentUser.email) {
+        return [state, reqLogin(NewUser, Crashed, state.currentUser.email)];
+    }
+    return firstState;
 }
 
-
-// TODO: Logout
+export const Logout = (state: State<User>) => {
+    writeUserEmail("");
+    return NewUser({...firstState}, {email: "", role: "anonymous"})
+}

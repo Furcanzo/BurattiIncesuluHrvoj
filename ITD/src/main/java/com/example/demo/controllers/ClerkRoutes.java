@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.time.Instant;
 import java.util.List;
 
 @RestController(value = "/api")
@@ -54,22 +56,27 @@ public class ClerkRoutes {
     }
 
     @PostMapping(path = "/guestTicket")
-    public ResponseEntity<String> retrieveGuestLineNumber(@RequestBody LineNumberDTO lineNumber, @RequestHeader(name = "bearer") String bearer){
+    public ResponseEntity<String> retrieveGuestLineNumber(@RequestBody LineNumberDTO lineNumber, @RequestHeader(name = "bearer") String bearer) {
         try {
             Employee employee = employeeService.findEmployeeByEmail(bearer);
             if (securityService.checkClerk(employee, lineNumber.getStoreId())) {
                 Store actualStore = customerService.getStore(lineNumber.getStoreId());
+                List<TimeSlot> availableSlots = customerService.availableTimeSlots(actualStore.getId());
+                TimeSlot firstTimeSlot = availableSlots.get(0);
                 try {
-                    LineNumber created = customerService.retrieveLineNumber(lineNumber, null);
+                    LineNumberDTO actualTimeSlottedLN = new LineNumberDTO(lineNumber.getFrom(), lineNumber.getUntil(), firstTimeSlot.getId(), lineNumber.getStoreId());
+                    LineNumber created = customerService.retrieveLineNumber(actualTimeSlottedLN, null);
                     return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(created));
                 } catch (NoTimeSlotsException e) {
-                    List<TimeSlot> available = customerService.availableTimeSlots(actualStore.getId());
-                    return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(available));
+
+                    long diff = firstTimeSlot.getStartTime() - Instant.now().getEpochSecond();
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Maximum store capacity is reached, please try again in "
+                            + (Math.round((float)diff / 1000 / 60 / 60)) + " minutes");
                 }
             } else {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("The requester doesn't have the permission to do this");
             }
-        } catch (NoSuchEntityException e){
+        } catch (NoSuchEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("store not found");
         }
     }

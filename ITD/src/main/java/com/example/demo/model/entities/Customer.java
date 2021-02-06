@@ -34,6 +34,9 @@ public class Customer {
     @OneToMany(mappedBy = "customer")
     private List<LineNumber> lineNumbers;
 
+    @Expose
+    private String role = "customer";
+
     public int getId() {
         return id;
     }

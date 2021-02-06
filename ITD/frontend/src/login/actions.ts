@@ -1,9 +1,8 @@
 import {AnonUser, Customer, IServerCustomerRequest, IServerCustomerResponse} from "../models";
 import {LoginAppState} from "./models";
-import {http} from "../effects";
 import {Errored, NewUser} from "../actions";
 import {State} from "../state";
-import {reqGetUser, reqRegister} from "../requests";
+import {reqLogin, reqRegister} from "../requests";
 
 export const INIT = (state: State<AnonUser>): LoginAppState => {
     return {...state, user: {email: ""}, currentTab: "login"};
@@ -21,16 +20,9 @@ export const UpdateLoginEmail = (state: LoginAppState, content: string): LoginAp
 
 export const SubmitLogin = (state: LoginAppState) => {
     if (state.user.email) {
-        return [state, http({
-            path: "login",
-            method: "POST",
-            body: state.user,
-            errorAction: Errored,
-            resultAction: NewUser as any // TODO: Adapt from Roberto's things
-        })];
-    } else {
-        return Errored(state, "Please provide an email");
+        return [state, reqLogin(NewUser, Errored, state.user.email)];
     }
+    return Errored(state, "Please provide an email");
 }
 
 export const LoadRegisterPage = (state: LoginAppState): LoginAppState => {
@@ -46,7 +38,12 @@ export const UpdateRegisterField = (field: "email" | "repeatEmail" | "tel" | "na
 export const SubmitRegister = (state: LoginAppState) => {
     const newUser = state.user;
     if (newUser.repeatEmail === newUser.email && newUser.email && newUser.name && newUser.surname && newUser.tel) {
-        const requestUser: IServerCustomerRequest = {name: newUser.name,phoneNumber: newUser.tel, surname: newUser.surname, email: newUser.email};
+        const requestUser: IServerCustomerRequest = {
+            name: newUser.name,
+            phoneNumber: newUser.tel,
+            surname: newUser.surname,
+            email: newUser.email
+        };
         const success = (state, response: IServerCustomerResponse) => {
             const user = new Customer();
             user.name = response.name;

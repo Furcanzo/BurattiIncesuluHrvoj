@@ -1,13 +1,11 @@
 import {button, qrCodeGenerator, qrCodeReader, row, text, titleText} from "../widgets";
-import {GenerateQR, isLineNumber, PrintQR, ReadQRCode} from "./actions";
+import {GenerateQR, PrintQR, ReadQRCode} from "./actions";
 import {ClerkAppState} from "./models";
 import {PRINTER_FILL} from "../icons";
 
 const qrCodeReadPane = (state: ClerkAppState) => {
-    const lastRead = state.lastServerResult ? [
-        isLineNumber(state.lastServerResult)
-            ? text(`Line Number: ${state.lastServerResult.number}`)
-            : text(`Scanned QR code is invalid`)
+    const lastRead = state.lastCheckInOut ? [
+        text(`Line Number: ${state.lastCheckInOut.number} checked ${state.lastCheckInOut.status === "VISITING" ? "in" : "out"}.`)
     ]: [];
 
     const scanner = [
@@ -24,7 +22,7 @@ const qrCodeReadPane = (state: ClerkAppState) => {
 
     const generated = state.lastGeneratedTicket ? [
         text("Here is the last generated ticket:"),
-        qrCodeGenerator(state.lastGeneratedTicket.id),
+        qrCodeGenerator(state.lastGeneratedTicket.id.toString()),
         titleText(state.lastGeneratedTicket.number.toString(), "3"),
         button([PRINTER_FILL, "Print QR"], "primary", PrintQR, "lg"),
     ]: [];

@@ -10,7 +10,7 @@ export interface IHTTPOptions<State, Request, Response> {
     body?: Request;
     resultAction: (state: State, data: Response) => State;
     errorAction: (state: State, text?: string) => any;
-    method: "GET" | "POST" | "DELETE" | "PUT" | "PATCH";// TODO: Add more if needed
+    method: "GET" | "POST" | "DELETE" | "PUT" | "PATCH";
     showScreenWhileLoading?: boolean;
 }
 const getErrorMessage = (e: Error) => {
@@ -32,7 +32,7 @@ export const http = <State, Request, Response>(props: IHTTPOptions<State, Reques
         if (!props.showScreenWhileLoading) {
             dispatch(Loading);
         }
-        /*TODO: Do we want to remove the previous request if a new one is issued whole screen will be loading so we won't have that case*/
+        /*Do we want to remove the previous request if a new one is issued whole screen will be loading so we won't have that case*/
         fetch(url, requestProps).then((rawResponse) => {
             const rawResponse2 = rawResponse.clone();
             rawResponse.json().then(response => {

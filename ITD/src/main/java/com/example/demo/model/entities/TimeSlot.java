@@ -1,5 +1,7 @@
 package com.example.demo.model.entities;
 
+import com.google.gson.annotations.Expose;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -10,12 +12,15 @@ public class TimeSlot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "timeSlotID")
+    @Expose
     private int id;
 
     @Column(name = "startTime")
+    @Expose
     private long startTime;
 
     @Column(name = "endTime")
+    @Expose
     private long endTime;
 
     @ManyToOne

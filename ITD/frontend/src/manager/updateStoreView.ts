@@ -26,7 +26,6 @@ import {
 } from "./actions";
 
 export const updateStoreView = ({foundPartnerStore, updatingStore, newPartnerStoreId}: ManagerAppState) => {
-    // TODO: Add description
     if (foundPartnerStore) {
         return confirmationPrompt(
             `Would you like to add store ${foundPartnerStore.name} (id: ${foundPartnerStore.id} as a partner store?`,
