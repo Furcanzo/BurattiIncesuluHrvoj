@@ -2,17 +2,14 @@ import {
     Clerk,
     IServerEmployeeRequest,
     IServerMonitorResponse, IServerStoreRequest,
-    IServerStoreResponse,
     Manager,
-    Store,
-    StoreLocation
 } from "../models";
-import {IManagementPartnerStore, ManagementStore, ManagerAppState} from "./models";
-import {http, timeout} from "../effects";
+import {IManagementPartnerStore, ManagerAppState} from "./models";
+import {timeout} from "../effects";
 import {Crashed, Errored} from "../actions";
-import {State, User} from "../state";
+import {State, StoreLocation, User} from "../noImport";
 import {reqAddEmployee, reqChangeRole, reqGetStaffList, reqGetStore, reqMonitor, reqUpdateStore} from "../requests";
-import {serializeTimeSlotForServer, timeToMillis} from "../util";
+import {timeToMillis} from "../util";
 
 export const INIT = (state: State<Manager>): ManagerAppState => {
     return {

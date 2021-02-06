@@ -1,3 +1,5 @@
+CREATE DATABASE IF NOT EXISTS clup;
+USE clup;
 CREATE TABLE Customer
 (
   name VARCHAR(50) NOT NULL,

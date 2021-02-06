@@ -1,13 +1,10 @@
 import {
     Customer,
-    IServerCustomerResponse,
-    IServerLineNumberResponse,
-    IServerStoreResponse, IServerTimeSlot,
     LineNumber,
-    LineNumberRequest, Time, TimeSlot
+    LineNumberRequest
 } from "../models";
 import {BookLineNumber, GetLineNumbers, INIT} from "./actions";
-import {Component, INavigatorItem, State} from "../state";
+import {Component, INavigatorItem, State} from "../noImport";
 import {view} from "./view";
 
 export class CustomerAppState extends State<Customer> {

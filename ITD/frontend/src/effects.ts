@@ -1,8 +1,8 @@
 import {API_URL, MAPS_LOCATION_SELECTED_EVENT_NAME} from "./const";
 import {Loaded, Loading} from "./actions";
-import {isManagerState, StoreLocation} from "./models";
+import {isManagerState} from "./models";
 import {UpdateLocation} from "./manager/actions";
-import {State} from "./state";
+import {State, StoreLocation} from "./noImport";
 import {readUserEmail, writeUserEmail} from "./util";
 
 export interface IHTTPOptions<State, Request, Response> {

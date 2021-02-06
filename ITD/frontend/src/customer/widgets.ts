@@ -1,4 +1,4 @@
-import {LineNumber, LineNumberRequest, Time, TimeSlot} from "../models";
+import {LineNumber, LineNumberRequest} from "../models";
 import {
     card,
     column,
@@ -22,6 +22,7 @@ import {
     UpdateVisitTimeField
 } from "./actions";
 import {storeCard} from "./reserveView";
+import {Time, TimeSlot} from "../noImport";
 
 const selectionCard = (title: string, onClick: any, selected: boolean, border: Color = "primary") => {
     return clickable(card(

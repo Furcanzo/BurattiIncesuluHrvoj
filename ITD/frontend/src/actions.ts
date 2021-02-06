@@ -1,6 +1,6 @@
 import {
     AnonUser,
-    isAnonState,
+    isAnonState, isBackOfficeState,
     isClerkState,
     isCustomerState,
     isManagerState,
@@ -15,6 +15,7 @@ import {Component, INavigatorItem, State, User} from "./state";
 import {readUserEmail, writeUserEmail} from "./util";
 import {http} from "./effects";
 import {reqLogin} from "./requests";
+import {createStoreComponent} from "./backoffice/models";
 
 export const Loading = <U extends User>(state: State<U>): State<U> => {
     return {...state, loading: true};
@@ -38,7 +39,8 @@ export const SwitchTab = (route: string) => (state)  => {
     return [state, effects.Navigate(route)];
 }
 export const NewUser = <U extends User>(state: State<User>, newUser: U): any[] => {
-    let newState: State<U> = {currentUser: newUser, ...state} as State<U>;
+    debugger;
+    let newState: State<U> = {...state, currentUser: newUser} as State<U>; // Old state is on the front?
     let component: Component<any, any>;
     if (isClerkState(newState)) {
         component = clerkComponent;
@@ -48,6 +50,8 @@ export const NewUser = <U extends User>(state: State<User>, newUser: U): any[] =
         component = customerComponent;
     } else if (isAnonState(newState)) {
         component = loginComponent;
+    } else if (isBackOfficeState(newState)) {
+        component = createStoreComponent;
     }
     newState = component.initAction(newState);
     return [newState, effects.Navigate(findDefaultNavigation(component).route)];
@@ -78,7 +82,7 @@ export const INIT = () => {
     if (state.currentUser.email) {
         return [state, reqLogin(NewUser, Crashed, state.currentUser.email)];
     }
-    return firstState;
+    return NewUser(firstState, state.currentUser);
 }
 
 export const Logout = (state: State<User>) => {

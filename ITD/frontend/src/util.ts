@@ -1,6 +1,8 @@
-import {IServerTimeSlot, Time, TimeSlot} from "./models";
+import 'regenerator-runtime/runtime';
 import {Loader} from "@googlemaps/js-api-loader";
 import {BASE_URL, MAPS_API_KEY} from "./const";
+import {Time, TimeSlot} from "./noImport";
+import {IServerTimeSlot} from "./models";
 
 export const timeSlotEq = (left: TimeSlot, right: TimeSlot) => {
     return left.start.minute === right.start.minute

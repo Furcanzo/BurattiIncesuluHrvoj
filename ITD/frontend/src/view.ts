@@ -5,7 +5,7 @@ import {managerComponent} from "./manager/models";
 import {loginComponent} from "./login/models";
 import {navbar, text, wrapper} from "./widgets";
 import {Logout, Nothing, SwitchTab} from "./actions";
-import {INavigatorItem, State, User} from "./state";
+import {INavigatorItem, State, User} from "./noImport";
 import {getCurrentPath} from "./util";
 
 export const view = (state: State<User>) => {

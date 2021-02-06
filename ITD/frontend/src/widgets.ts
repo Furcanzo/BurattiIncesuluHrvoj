@@ -3,10 +3,9 @@ import {text as hyperappText} from "hyperapp";
 import {currentYear, debounce, randInt} from "./util";
 import {toCanvas} from "qrcode";
 import {confirm} from "bootbox";
-import {StoreLocation} from "./models";
 import "../lib/instascan.min.js";
 import {MAPS_LOCATION_SELECTED_EVENT_NAME} from "./const";
-import {State} from "./state";
+import {State, StoreLocation} from "./noImport";
 
 const addStyle = (content: any, addition: { [key: string]: string }) => {
 

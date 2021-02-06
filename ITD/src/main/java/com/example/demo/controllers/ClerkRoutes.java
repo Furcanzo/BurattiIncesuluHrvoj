@@ -17,7 +17,9 @@ import java.sql.Date;
 import java.time.Instant;
 import java.util.List;
 
-@RestController(value = "/api")
+@CrossOrigin
+@RestController
+@RequestMapping("/api")
 public class ClerkRoutes {
 
     private final EmployeeService employeeService;
