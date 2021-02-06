@@ -49,17 +49,11 @@ public class EmployeeService {
         myStore.setLatitude(store.getLatitude() != 0.0 ? store.getLatitude() : myStore.getLatitude());
         myStore.setMaxCustomers(store.getMaxCustomers() != 0 ? store.getMaxCustomers() : myStore.getMaxCustomers());
         myStore.setTimeOut(store.getTimeOut() != 0 ? store.getTimeOut() : myStore.getTimeOut());
-        if (store.getWorkingHourDTOs() != null){
-            for (WorkingHour wh : myStore.getWorkingHours()){
-                workingHourRepository.delete(wh);
-            }
-            List<WorkingHour> newWorkingHours = new ArrayList<>();
-            for (WorkingHourDTO whdto : store.getWorkingHourDTOs()) {
-                WorkingHour wh = generateWorkingHour(whdto);
-                workingHourRepository.save(wh);
-                newWorkingHours.add(wh);
-            }
-            myStore.setWorkingHours(newWorkingHours);
+        if (store.getWorkingHourDTO() != null) {
+            WorkingHour workingHour = generateWorkingHour(store.getWorkingHourDTO());
+            workingHourRepository.delete(myStore.getWorkingHour());
+            workingHourRepository.save(workingHour);
+            myStore.setWorkingHour(workingHour);
         }
         if (store.getPartnerStoreIds() != null){
             List<Store> newPartnerStores =  new ArrayList<>();
