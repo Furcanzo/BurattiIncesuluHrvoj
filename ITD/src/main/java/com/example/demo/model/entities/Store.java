@@ -42,9 +42,10 @@ public class Store {
     @OneToMany(mappedBy = "store")
     private List<LineNumber> lineNumbers;
 
-    @OneToMany(mappedBy = "store")
+    @OneToOne
+    @JoinColumn(name = "workingHourID")
     @Expose
-    private List<WorkingHour> workingHours;
+    private WorkingHour workingHour;
 
     @OneToMany(mappedBy = "store")
     private List<Employee> employees;
@@ -57,12 +58,6 @@ public class Store {
             joinColumns = @JoinColumn(name = "primaryStoreID"),
             inverseJoinColumns = @JoinColumn(name = "partnerStoreID"))
     private List<Store> partnerStores;
-
-    public Store(){}
-
-    public Store(Integer id) {
-        this.id = id;
-    }
 
     public int getId() {
         return id;
@@ -131,15 +126,13 @@ public class Store {
         this.lineNumbers = lineNumbers;
     }
 
-    public List<WorkingHour> getWorkingHours() {
-        return workingHours;
+    public WorkingHour getWorkingHour() {
+        return workingHour;
     }
 
-    public void setWorkingHours(List<WorkingHour> workingHours) {
-        for (WorkingHour wh : workingHours){
-            wh.setStore(this);
-        }
-        this.workingHours = workingHours;
+    public void setWorkingHour(WorkingHour workingHour) {
+        workingHour.setStore(this);
+        this.workingHour = workingHour;
     }
 
     public List<Employee> getEmployees() {

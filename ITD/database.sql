@@ -8,6 +8,14 @@ CREATE TABLE Customer
   PRIMARY KEY (customerID)
 );
 
+CREATE TABLE WorkingHours
+(
+  workingHoursID INT NOT NULL UNIQUE AUTO_INCREMENT,
+  openingTime INT NOT NULL,
+  closingTime INT NOT NULL,
+  PRIMARY KEY (workingHoursID)
+);
+
 CREATE TABLE Store
 (
   storeID INT NOT NULL UNIQUE AUTO_INCREMENT,
@@ -17,17 +25,9 @@ CREATE TABLE Store
   latitude FLOAT NOT NULL,
   maxCustomers INT NOT NULL,
   timeOut INT NOT NULL,
-  PRIMARY KEY (storeID)
-);
-
-CREATE TABLE WorkingHours
-(
-  workingHoursID INT NOT NULL UNIQUE AUTO_INCREMENT,
-  openingTime INT NOT NULL,
-  closingTime INT NOT NULL,
-  storeID INT NOT NULL,
-  PRIMARY KEY (workingHoursID),
-  FOREIGN KEY (storeID) REFERENCES Store(storeID)
+  workingHourID INT NOT NULL,
+  PRIMARY KEY (storeID),
+  FOREIGN KEY (workingHourID) REFERENCES WorkingHours(workingHoursID)
 );
 
 CREATE TABLE Employee

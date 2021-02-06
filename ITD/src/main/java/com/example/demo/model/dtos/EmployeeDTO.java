@@ -1,13 +1,16 @@
 package com.example.demo.model.dtos;
 
-import com.example.demo.model.entities.Employee;
-import com.example.demo.model.entities.Store;
-
 public class EmployeeDTO {
 
-    private String email;
-    private String role;
-    private int storeId;
+    private final String email;
+    private final String role;
+    private final int storeId;
+
+    public EmployeeDTO(String email, String role, int storeId) {
+        this.email = email;
+        this.role = role;
+        this.storeId = storeId;
+    }
 
     public String getEmail() {
         return email;
@@ -21,11 +24,4 @@ public class EmployeeDTO {
         return storeId;
     }
 
-    public Employee generateEntity() {
-        Employee created = new Employee();
-        created.setEmail(this.getEmail());
-        created.setRole(this.getRole());
-        created.setStore(new Store(storeId));
-        return created;
-    }
 }

@@ -16,14 +16,13 @@ public class WorkingHour {
 
     @Column(name = "openingTime")
     @Expose
-    private long from;
+    private int from;
 
     @Column(name = "closingTime")
     @Expose
-    private long until;
+    private int until;
 
-    @ManyToOne
-    @JoinColumn(name = "storeID")
+    @OneToOne(mappedBy = "workingHour")
     private Store store;
 
     public int getId() {
@@ -34,19 +33,19 @@ public class WorkingHour {
         this.id = id;
     }
 
-    public long getFrom() {
+    public int getFrom() {
         return from;
     }
 
-    public void setFrom(long from) {
+    public void setFrom(int from) {
         this.from = from;
     }
 
-    public long getUntil() {
+    public int getUntil() {
         return until;
     }
 
-    public void setUntil(long until) {
+    public void setUntil(int until) {
         this.until = until;
     }
 
