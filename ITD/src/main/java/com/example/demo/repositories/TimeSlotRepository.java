@@ -16,4 +16,6 @@ public interface TimeSlotRepository extends CrudRepository<TimeSlot, Integer> {
     @Query("select ts FROM TimeSlot ts WHERE current_timestamp between ts.startTime and ts.endTime and ts.store.id = :storeId")
     TimeSlot findActual(@Param("storeId")int storeId);
 
+    @Query("select ts FROM TimeSlot ts WHERE :fromTimeSlot between ts.startTime and ts.endTime and ts.store.id = :storeId")
+    TimeSlot getTimeSlotAt(@Param("storeId")int storeId,@Param("fromTimeSlot") long fromTimeStamp);
 }
