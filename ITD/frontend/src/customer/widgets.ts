@@ -8,7 +8,7 @@ import {
     clickable,
     formField,
     smallColumn,
-    Color, centered
+    Color, centered, markerMap
 } from "../widgets";
 import {addZero, timeSlotEq} from "../util";
 import {CHECK_CIRCLE, CIRCLE} from "../icons";

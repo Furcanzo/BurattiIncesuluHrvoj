@@ -15,7 +15,7 @@ export const manageStaffView = ({staffMembers, newMember}: ManagerAppState) => {
             ...staffMembers.map((member) => {
                 return row([
                     titleText(member.email, "4"),
-                    button(member.userType === "clerk" ? "Promote to Manager" : "Make a Clerk", "primary", ChangeStaffType)
+                    button(member.role === "clerk" ? "Promote to Manager" : "Make a Clerk", "primary", ChangeStaffType)
                 ])
             })
         ]),
@@ -23,11 +23,11 @@ export const manageStaffView = ({staffMembers, newMember}: ManagerAppState) => {
             inlineForm(row(formField(newMember.email, "Email", UpdateNewMemberEmail))),
             pillSelection([{
                 content: text("Manager"),
-                active: newMember.userType === "manager",
+                active: newMember.role === "manager",
                 onClick: SetNewMemberAs("manager")
             }, {
                 content: text("Clerk"),
-                active: newMember.userType === "clerk",
+                active: newMember.role === "clerk",
                 onClick: SetNewMemberAs("clerk"),
             }]),
             row(centered(button("Add", "success", SubmitNewMember))),

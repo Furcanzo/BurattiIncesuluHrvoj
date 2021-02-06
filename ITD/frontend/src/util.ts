@@ -29,11 +29,11 @@ export const addZero = (target: number) => target < 10 ? "0" + target.toString()
 
 export const getCurrentPath = () => "/" + (window.location.href.split(BASE_URL)[1]);
 
-export const parseServerTimeSlot = ({start, end}: IServerTimeSlot): TimeSlot => {
+export const parseServerTimeSlot = ({startTime, endTime}: IServerTimeSlot): TimeSlot => {
     const result = new TimeSlot();
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-    result.day = new Date(start);
+    const startDate = new Date(startTime);
+    const endDate = new Date(endTime);
+    result.day = new Date(startTime);
     result.day.setHours(0, 0, 0, 0); // Days are significant with their time
     result.start = {hour: startDate.getHours(), minute: startDate.getMinutes()};
     result.end = {hour: endDate.getHours(), minute: endDate.getMinutes()};
@@ -45,7 +45,7 @@ export const serializeTimeSlotForServer = (slot: TimeSlot): IServerTimeSlot => {
     startTime.setHours(slot.start.hour, slot.start.minute);
     const endTime = new Date(slot.day);
     endTime.setHours(slot.end.hour, slot.end.minute);
-    return {start: startTime.valueOf(), end: endTime.valueOf()};
+    return {startTime: startTime.valueOf(), endTime: endTime.valueOf()};
 }
 
 export const readUserEmail = (): string => {
@@ -61,4 +61,9 @@ export const timeToMillis = (time: Time) => {
 
 export const getCurrentTimeMillis = (): number => {
     return new Date().valueOf();
+}
+
+export const millisToTime = (millis: number): Time => {
+   const date = (new Date(millis));
+   return {hour: date.getHours(), minute: date.getMinutes()};
 }

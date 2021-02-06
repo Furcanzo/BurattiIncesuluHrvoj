@@ -60,7 +60,7 @@ public class CustomerRoutes {
         }
     }
 
-    @GetMapping(path = "/ETA")
+    @PostMapping(path = "/ETA")
     public ResponseEntity<String> getETA(@RequestBody LineNumberDTO lineNumber){
         try {
             int eta = customerService.calcETA(lineNumber);

@@ -11,7 +11,7 @@ import {INavigatorItem, State, User} from "./state";
 export class Manager extends User {
     constructor(readonly location: ManagementStore, readonly email: string) {
         super();
-        this.userType = "manager";
+        this.role = "manager";
     }
 }
 
@@ -19,7 +19,7 @@ export class Manager extends User {
 export class Clerk extends User {
     constructor(readonly location: ManagementStore, readonly email: string) {
         super();
-        this.userType = "clerk";
+        this.role = "clerk";
     }
 }
 
@@ -73,11 +73,19 @@ export class Store {
     location: StoreLocation;
     name: string;
     workingHours: TimeSlot; // Ignore date value
-    timeoutMinutes: number; // TODO: convert to milis for backend
+    timeoutMinutes: number;
     maxCustomerCapacity: number;
     partners: Store[];
     description: string;
 
+}
+
+export interface IServerWorkingHourRequest {
+    from: number;
+    until: number;
+}
+export interface IServerWorkingHourResponse extends IServerWorkingHourRequest {
+    id: number;
 }
 
 export interface IServerStoreRequest {
@@ -86,9 +94,9 @@ export interface IServerStoreRequest {
     latitude: number;
     longitude: number;
     maxCustomers: number;
-    // TODO: Server will update the working hours
     partnerStoreIds: number[];
-    timeOut: number // TODO: in miliseconds
+    timeOut: number;
+    workingHour: IServerWorkingHourRequest;
 }
 
 
@@ -106,6 +114,7 @@ export class LineNumber {
     number: number;
     store: Store;
     time: TimeSlot;
+    status?: string;
 }
 
 export class LineNumberRequest {
@@ -121,11 +130,12 @@ export class LineNumberRequest {
 }
 
 export interface IServerTimeSlot {
-    start: number;
-    end: number;
+    startTime: number;
+    endTime: number;
 }
 export interface IServerStoreResponse extends IServerStoreRequest {
     id: number;
+    workingHour: IServerWorkingHourResponse;
 }
 
 export interface IServerLineNumberResponse {
@@ -147,18 +157,18 @@ export interface IServerLineNumberRequest {
 }
 
 export const isManagerState = (state: State<User>): state is ManagerAppState => {
-    return state.currentUser.userType === "manager";
+    return state.currentUser.role === "manager";
 }
 export const isCustomerState = (state: State<User>): state is CustomerAppState => {
-    return state.currentUser.userType === "customer";
+    return state.currentUser.role === "customer";
 }
 
 export const isClerkState = (state: State<User>): state is ClerkAppState => {
-    return state.currentUser.userType === "clerk";
+    return state.currentUser.role === "clerk";
 }
 
 export const isAnonState = (state: State<User>): state is LoginAppState => {
-    return state.currentUser.userType === "anonymous";
+    return state.currentUser.role === "anonymous";
 }
 
 

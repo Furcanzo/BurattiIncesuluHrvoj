@@ -1,6 +1,7 @@
 export class User {
+    id?: number;
     email: string;
-    userType: "manager" | "clerk" | "customer" | "anonymous" | "backoffice";
+    role: "manager" | "clerk" | "customer" | "anonymous" | "backoffice";
 }
 export abstract class State<U extends User> {
     currentUser?: U;

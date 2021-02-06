@@ -4,7 +4,7 @@ import {customerComponent} from "./customer/models";
 import {managerComponent} from "./manager/models";
 import {loginComponent} from "./login/models";
 import {navbar, text, wrapper} from "./widgets";
-import {Nothing, SwitchTab} from "./actions";
+import {Logout, Nothing, SwitchTab} from "./actions";
 import {INavigatorItem, State, User} from "./state";
 import {getCurrentPath} from "./util";
 
@@ -37,6 +37,15 @@ export const view = (state: State<User>) => {
 }
 
 const navigation = (navigationItems: INavigatorItem[], state: State<User>) => {
+    if (state.currentUser.role !== "anonymous") {
+        const logout: INavigatorItem = {
+            title: "Logout",
+            route: "/logout",
+            onEnter: Logout,
+            isDefault: false
+        };
+        navigationItems = [...navigationItems, logout];
+    }
     return navbar(navigationItems.map(item => {
         return {active: item.route === getCurrentPath(), title: item.title, onClick: SwitchTab(item.route)};
     }), Nothing)

@@ -1,4 +1,11 @@
-import {Customer, LineNumber, LineNumberRequest} from "../models";
+import {
+    Customer,
+    IServerCustomerResponse,
+    IServerLineNumberResponse,
+    IServerStoreResponse, IServerTimeSlot,
+    LineNumber,
+    LineNumberRequest, Time, TimeSlot
+} from "../models";
 import {BookLineNumber, GetLineNumbers, INIT} from "./actions";
 import {Component, INavigatorItem, State} from "../state";
 import {view} from "./view";

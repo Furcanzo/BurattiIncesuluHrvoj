@@ -1,13 +1,12 @@
-import {Clerk, LineNumber} from "../models";
+import {Clerk, IServerLineNumberResponse, LineNumber} from "../models";
 import {view} from "./views";
 import {INIT, OpenGenerateTab, OpenScanTab} from "./actions";
 import {Component, INavigatorItem, State} from "../state";
 
-export type ServerResult = LineNumber | string;
 
 export class ClerkAppState extends State<Clerk> {
-    lastServerResult?: ServerResult;
-    lastGeneratedTicket?: LineNumber;
+    lastCheckInOut?: IServerLineNumberResponse;
+    lastGeneratedTicket?: IServerLineNumberResponse;
     activeTab: "generate" | "scan"
 }
 

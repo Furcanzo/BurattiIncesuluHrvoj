@@ -4,6 +4,7 @@ import com.example.demo.exceptions.MailAlreadyUsedException;
 import com.example.demo.exceptions.NoSuchEntityException;
 import com.example.demo.model.dtos.EmployeeDTO;
 import com.example.demo.model.dtos.StoreDTO;
+import com.example.demo.model.entities.BackOfficeUser;
 import com.example.demo.model.entities.Customer;
 import com.example.demo.model.entities.Employee;
 import com.example.demo.model.entities.Store;
@@ -29,7 +30,7 @@ public class ManagerRoutes {
 
     private static final String FORBIDDEN = "The requester doesn't have the permission to do this";
 
-    private static final String NOT_FOUND= "entity not found";
+    private static final String NOT_FOUND = "entity not found";
 
     @Autowired
     public ManagerRoutes(EmployeeService employeeService, CustomerService customerService, Gson gson, SecurityService securityService) {
@@ -43,7 +44,7 @@ public class ManagerRoutes {
     public ResponseEntity<String> updateStore(@RequestBody StoreDTO store, @RequestHeader(name = "bearer") String bearer) {
         try {
             Employee manager = employeeService.findEmployeeByEmail(bearer);
-            if (!securityService.managerCheck(manager, manager.getStore().getId())){
+            if (!securityService.managerCheck(manager, manager.getStore().getId())) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(FORBIDDEN);
             }
             Store created = employeeService.updateStore(manager.getStore().getId(), store);
@@ -55,39 +56,39 @@ public class ManagerRoutes {
 
 
     @GetMapping(path = "/employee/list")
-    public ResponseEntity<String> getAllEmployees ( @RequestHeader(name = "bearer") String bearer){
+    public ResponseEntity<String> getAllEmployees(@RequestHeader(name = "bearer") String bearer) {
         try {
             Employee manager = employeeService.findEmployeeByEmail(bearer);
             if (securityService.managerCheck(manager, manager.getStore().getId())) {
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(manager.getStore().getEmployees()));
-            }else {
+            } else {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(FORBIDDEN);
             }
-        }catch (NoSuchEntityException e){
+        } catch (NoSuchEntityException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("bad request");
         }
     }
 
     @GetMapping(path = "/employee")
-    public ResponseEntity<String> getEmployee ( @RequestParam int id, @RequestHeader(name = "bearer") String bearer) {
+    public ResponseEntity<String> getEmployee(@RequestParam int id, @RequestHeader(name = "bearer") String bearer) {
         try {
             Employee manager = employeeService.findEmployeeByEmail(bearer);
             Employee requested = employeeService.findEmployeeById(id);
-            if (securityService.managerCheck(manager,requested.getStore().getId())) {
+            if (securityService.managerCheck(manager, requested.getStore().getId())) {
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(requested));
             } else {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(FORBIDDEN);
             }
-        }catch (NoSuchEntityException e) {
+        } catch (NoSuchEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(NOT_FOUND);
         }
     }
 
     @PostMapping(path = "/employee")
-    public ResponseEntity<String> addEmployee (@RequestBody EmployeeDTO employee, @RequestHeader(name = "bearer") String bearer){
+    public ResponseEntity<String> addEmployee(@RequestBody EmployeeDTO employee, @RequestHeader(name = "bearer") String bearer) {
         try {
             Employee manager = employeeService.findEmployeeByEmail(bearer);
-            if (securityService.managerCheck(manager,employee.getStoreId())){
+            if (securityService.managerCheck(manager, employee.getStoreId())) {
                 Employee newEmployee = employeeService.addEmployee(employee);
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(newEmployee));
             } else {
@@ -101,11 +102,14 @@ public class ManagerRoutes {
     }
 
     @PutMapping(path = "/changeRole")
-    public ResponseEntity<String> changeRole (@RequestParam int id, @RequestParam String role, @RequestHeader(name = "bearer") String bearer){
+    public ResponseEntity<String> changeRole(@RequestParam int id, @RequestParam String role, @RequestHeader(name = "bearer") String bearer) {
         try {
             Employee manager = employeeService.findEmployeeByEmail(bearer);
             Employee requested = employeeService.findEmployeeById(id);
-            if (securityService.managerCheck(manager,requested.getStore().getId())){
+            if (id == manager.getId()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("You can not change your own role");
+            }
+            if (securityService.managerCheck(manager, requested.getStore().getId())) {
                 Employee employee = employeeService.changeRole(requested, role);
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(employee));
             } else {
@@ -117,7 +121,7 @@ public class ManagerRoutes {
     }
 
     @GetMapping(path = "/monitorLive")
-    public ResponseEntity<String> monitorLive (@RequestHeader(name = "bearer") String bearer) {
+    public ResponseEntity<String> monitorLive(@RequestHeader(name = "bearer") String bearer) {
         try {
             Employee manager = employeeService.findEmployeeByEmail(bearer);
             if (securityService.managerCheck(manager, manager.getStore().getId())) {
@@ -132,13 +136,16 @@ public class ManagerRoutes {
     }
 
     @GetMapping(path = "/login")
-    public ResponseEntity<String> login(@RequestHeader(name = "bearer") String bearer){
+    public ResponseEntity<String> login(@RequestParam(name = "email") String email) {
+        if (email.equals("backOffice")) {
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new BackOfficeUser()));
+        }
         try {
-            Employee employee = employeeService.findEmployeeByEmail(bearer);
+            Employee employee = employeeService.findEmployeeByEmail(email);
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(employee));
         } catch (NoSuchEntityException e) {
             try {
-                Customer customer = customerService.findCustomerByEmail(bearer);
+                Customer customer = customerService.findCustomerByEmail(email);
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(customer));
             } catch (NoSuchEntityException e1) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not registered");
