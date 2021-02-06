@@ -1,15 +1,12 @@
 import {
     Customer,
     LineNumber,
-    Store,
     LineNumberRequest,
-    TimeSlot,
-    Time,
     IServerLineNumberResponse,
     IServerLineNumberRequest, IServerTimeSlot, IServerStoreResponse
 } from "../models";
 import {CustomerAppState} from "./models";
-import {State} from "../state";
+import {State, Store, Time, TimeSlot} from "../noImport";
 import {Errored} from "../actions";
 import {
     reqBookFutureLineNumber,

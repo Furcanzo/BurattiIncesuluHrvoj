@@ -1,17 +1,18 @@
 import {CustomerAppState} from "./models";
-import {LineNumber, LineNumberRequest, Time, TimeSlot} from "../models";
+import {LineNumber, LineNumberRequest} from "../models";
 import {alertBar, button, card, clickable, largeColumn, markerMap, row, text, titleText} from "../widgets";
 import {
-    BookLineNumber, GetLineNumbers, ImmediatelyBook,
+    GetLineNumbers, ImmediatelyBook,
     SelectStore,
     SendLineNumberRequest,
-    ShowDetailsOf, SubmitImmediateBooking, SubmitStore,
+    SubmitImmediateBooking, SubmitStore,
     UnSelectStore,
     UnSelectTimeSlot
 } from "./actions";
-import {dateStr, dateTimeSlotSelection, estimatedStaySelector, lineNumberCard, timeStr} from "./widgets";
-import {CHECK_CIRCLE, PATCH_CHECK, PLUS_CIRCLE_FILL, X_CIRCLE_FILL} from "../icons";
+import {dateTimeSlotSelection, estimatedStaySelector, lineNumberCard, timeStr} from "./widgets";
+import {CHECK_CIRCLE, PATCH_CHECK, X_CIRCLE_FILL} from "../icons";
 import {getCurrentTimeMillis, millisToTime} from "../util";
+import {Time, TimeSlot} from "../noImport";
 
 export const reserveView = ({newLineNumber, lineNumberReserved}: CustomerAppState) => {
 

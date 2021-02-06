@@ -2,24 +2,22 @@ import {CustomerAppState, customerComponent} from "./customer/models";
 import {ManagementStore, ManagerAppState, managerComponent} from "./manager/models";
 import {ClerkAppState, clerkComponent} from "./clerk/models";
 import {LoginAppState, loginComponent} from "./login/models";
-import {createStoreComponent} from "./backoffice/models";
+import {CreateStoreAppState, createStoreComponent} from "./backoffice/models";
 import {NewUser} from "./actions";
-import {INavigatorItem, State, User} from "./state";
+import {INavigatorItem, State, Store, Time, TimeSlot, User} from "./noImport";
 
 
 
 export class Manager extends User {
-    constructor(readonly location: ManagementStore, readonly email: string) {
+    constructor(readonly location: ManagementStore, readonly email: string, readonly role: "manager" = "manager") {
         super();
-        this.role = "manager";
     }
 }
 
 
 export class Clerk extends User {
-    constructor(readonly location: ManagementStore, readonly email: string) {
+    constructor(readonly location: ManagementStore, readonly email: string, readonly role: "clerk" = "clerk") {
         super();
-        this.role = "clerk";
     }
 }
 
@@ -51,34 +49,6 @@ export interface IServerCustomerResponse extends IServerCustomerRequest {
     id: number;
 }
 
-export class StoreLocation {
-    constructor(readonly lat: number, readonly lon: number) {
-    }
-}
-
-export class Time {
-    hour: number;
-    minute: number;
-}
-
-export class TimeSlot {
-    id: number;
-    start: Time;
-    end: Time;
-    day: Date; // Timeslots are retrieved from server (future lockdowns etc...)
-}
-
-export class Store {
-    readonly id?: number;
-    location: StoreLocation;
-    name: string;
-    workingHours: TimeSlot; // Ignore date value
-    timeoutMinutes: number;
-    maxCustomerCapacity: number;
-    partners: Store[];
-    description: string;
-
-}
 
 export interface IServerWorkingHourRequest {
     from: number;
@@ -169,6 +139,10 @@ export const isClerkState = (state: State<User>): state is ClerkAppState => {
 
 export const isAnonState = (state: State<User>): state is LoginAppState => {
     return state.currentUser.role === "anonymous";
+}
+
+export const isBackOfficeState = (state: State<BackOfficeUser>): state is CreateStoreAppState => {
+    return state.currentUser.role === "backoffice";
 }
 
 

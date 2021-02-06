@@ -1,6 +1,6 @@
 import {ClerkAppState} from "./models";
 import {Clerk, IServerLineNumberRequest, IServerLineNumberResponse} from "../models";
-import {State} from "../state";
+import {State} from "../noImport";
 import {reqCheckInOut, reqGenerateQr} from "../requests";
 import {Errored} from "../actions";
 import {getCurrentTimeMillis} from "../util";

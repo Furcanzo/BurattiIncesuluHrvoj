@@ -15,8 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-@RestController(value = "/api")
+@CrossOrigin
+@RestController
+@RequestMapping("/api")
 public class CustomerRoutes {
 
     private final CustomerService customerService;

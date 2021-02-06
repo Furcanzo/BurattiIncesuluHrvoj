@@ -2,7 +2,7 @@ import {AnonUser} from "../models";
 import {CreateStoreAppState, NewStore} from "./models";
 import {http} from "../effects";
 import {Errored} from "../actions";
-import {State} from "../state";
+import {State} from "../noImport";
 
 const emptyNewStore: NewStore = {name: "", managerEmail: ""}
 export const INIT = (state: State<AnonUser>): CreateStoreAppState => {

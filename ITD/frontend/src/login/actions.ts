@@ -1,7 +1,7 @@
 import {AnonUser, Customer, IServerCustomerRequest, IServerCustomerResponse} from "../models";
 import {LoginAppState} from "./models";
 import {Errored, NewUser} from "../actions";
-import {State} from "../state";
+import {State} from "../noImport";
 import {reqLogin, reqRegister} from "../requests";
 
 export const INIT = (state: State<AnonUser>): LoginAppState => {

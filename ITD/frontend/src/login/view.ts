@@ -1,5 +1,5 @@
 import {button, card, centered, formField, hiddenText, row, text, titleText, url} from "../widgets";
-import {LoginAppState, loginComponent, ROUTE_LOGIN, ROUTE_REGISTER} from "./models";
+import {LoginAppState, ROUTE_REGISTER} from "./models";
 import {LoadRegisterPage, SubmitLogin, SubmitRegister, UpdateLoginEmail, UpdateRegisterField} from "./actions";
 import {SwitchTab} from "../actions";
 

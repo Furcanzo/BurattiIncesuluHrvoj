@@ -1,7 +1,7 @@
 import {BackOfficeUser} from "../models";
 import {CreateStorePage, INIT} from "./actions";
 import {view} from "./view";
-import {Component, INavigatorItem, State} from "../state";
+import {Component, INavigatorItem, State} from "../noImport";
 
 export class NewStore {
     name: string;

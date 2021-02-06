@@ -1,7 +1,7 @@
-import {Clerk, IServerLineNumberResponse, LineNumber} from "../models";
+import {Clerk, IServerLineNumberResponse} from "../models";
 import {view} from "./views";
 import {INIT, OpenGenerateTab, OpenScanTab} from "./actions";
-import {Component, INavigatorItem, State} from "../state";
+import {Component, INavigatorItem, State} from "../noImport";
 
 
 export class ClerkAppState extends State<Clerk> {

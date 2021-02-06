@@ -1,7 +1,6 @@
-import {Manager, Store} from "../models";
+import {Manager} from "../models";
 import {INIT, LoadMonitoringTab, LoadStaffTab, LoadUpdateStoreTab} from "./actions";
-import {row, text} from "../widgets";
-import {Component, INavigatorItem, State, User} from "../state";
+import {Component, INavigatorItem, State, Store, User} from "../noImport";
 import {view} from "./view";
 
 export interface IManagementPartnerStore {

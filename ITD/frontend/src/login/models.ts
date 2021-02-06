@@ -1,7 +1,7 @@
 import {AnonUser} from "../models";
 import {INIT, LoadLoginPage, LoadRegisterPage} from "./actions";
 import {view} from "./view";
-import {Component, INavigatorItem, State} from "../state";
+import {Component, INavigatorItem, State} from "../noImport";
 
 export class LoginAppState extends State<AnonUser> {
     currentTab: "login" | "register";

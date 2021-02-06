@@ -6,7 +6,6 @@ import {
     IServerEmployeeRequest,
     IServerEmployeeResponse, IServerLineNumberRequest, IServerLineNumberResponse, IServerMonitorResponse,
     IServerStoreRequest, IServerStoreResponse, IServerTimeSlot, Manager,
-    Store
 } from "./models";
 import {NewStore} from "./backoffice/models";
 
