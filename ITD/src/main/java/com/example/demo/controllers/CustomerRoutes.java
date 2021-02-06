@@ -68,6 +68,8 @@ public class CustomerRoutes {
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(eta));
         } catch (NoSuchEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(STORE_NOT_FOUND);
+        } catch (NoTimeSlotsException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No time slots available");
         }
     }
 
