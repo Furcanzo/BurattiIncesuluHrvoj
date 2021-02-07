@@ -168,7 +168,7 @@ public class CustomerService {
                 max= ts.getEndTime();
             }
         }
-        return  store.getTimeSlots().size() > 380; //max > timestamp + 3*7*24*60*60*1000; //3 weeks
+        return  max > timestamp + 3*7*24*60*60*1000; //3 weeks
     }
 
     public int calcETA(LineNumberDTO lineNumberDTO, long timestamp) throws NoSuchEntityException, NoTimeSlotsException {
