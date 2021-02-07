@@ -1,4 +1,3 @@
-%TODO Frontend description
 The source code is divided into "src" directory containing source code related to the backend of CLup application and into "frontend" directory
 which contains source code for the frontend of the CLup application.
 
@@ -14,6 +13,11 @@ Services are used to implement the business logic of the CLup application. Each 
 Another important file in the src directory is the ApplicationConfiguration file in which different configurations have been defined.
 
 \subsubsection{Frontend}
+The frontend includes a lib directory where library instascan is provided.
+Under src directory there exist a directory for each user type, which includes the functions to generate the view and to update the application state.
+Inside the directory also there are files that define update and view logic of the whole app (actions such as login, logout are handled in those).
+requests.ts include all the specifications for interacting with backend, while effects.ts include all the side-effects needed by the app.
+
 
 
 
