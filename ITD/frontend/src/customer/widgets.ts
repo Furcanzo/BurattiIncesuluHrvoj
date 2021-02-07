@@ -42,9 +42,6 @@ export const dateStr = (date: Date): string => `${date.getDate()}-${date.getMont
 
 export const dateTimeSlotSelection = (lineNumberRequest: LineNumberRequest) => {
     const selectedTimeSlot = lineNumberRequest.time;
-    if(!lineNumberRequest.selectedWeekSlot) {
-        debugger;
-    }
     const dates = [0, 1, 2, 3, 4, 5, 6].map((additionalDay) => {
         const oldMilisecs = lineNumberRequest.selectedWeekSlot.getTime();
         const newMilisecs = oldMilisecs + (24 * 60 * 60 * 1000) * additionalDay;
@@ -93,8 +90,8 @@ export const dateTimeSlotSelection = (lineNumberRequest: LineNumberRequest) => {
 
 export const estimatedStaySelector = (estimatedTime: Time) => {
     return centered(card(titleText("How much time do you plan on spending in the store?", "5"), row([
-        column(formField(estimatedTime.hour.toString(), "Hours", UpdateVisitTimeField("hour"), "number")),
-        column(formField(estimatedTime.minute.toString(), "Minutes", UpdateVisitTimeField("minute"), "number")),
+        column(formField((estimatedTime.hour || "").toString(), "Hours", UpdateVisitTimeField("hour"), "number")),
+        column(formField((estimatedTime.minute || "").toString(), "Minutes", UpdateVisitTimeField("minute"), "number")),
     ]), "secondary"));
 }
 

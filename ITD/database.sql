@@ -69,11 +69,11 @@ CREATE TABLE LineNumber
   status VARCHAR(50) NOT NULL,
   lineNumberID INT NOT NULL UNIQUE AUTO_INCREMENT,
   number INT NOT NULL,
-  customerID INT NOT NULL,
+  customerID INT,
   storeID INT NOT NULL,
   timeSlotID INT NOT NULL,
   PRIMARY KEY (lineNumberID),
   FOREIGN KEY (customerID) REFERENCES Customer(customerID),
   FOREIGN KEY (storeID) REFERENCES Store(storeID),
-  FOREIGN KEY (timeSlotID) REFERENCES TimeSlot(timeSlotID)
+  FOREIGN KEY (timeSlotID) REFERENCES TimeSlot(timeSlotID) ON DELETE CASCADE
 );

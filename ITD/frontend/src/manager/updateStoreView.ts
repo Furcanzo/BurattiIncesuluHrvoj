@@ -28,7 +28,7 @@ import {
 export const updateStoreView = ({foundPartnerStore, updatingStore, newPartnerStoreId}: ManagerAppState) => {
     if (foundPartnerStore) {
         return confirmationPrompt(
-            `Would you like to add store ${foundPartnerStore.name} (id: ${foundPartnerStore.id} as a partner store?`,
+            `Would you like to add store ${foundPartnerStore.name} (id: ${foundPartnerStore.id}) as a partner store?`,
             AddNewPartnerStore,
             {
                 confirm: {label: "Yes", className: "btn-success"},
@@ -37,7 +37,7 @@ export const updateStoreView = ({foundPartnerStore, updatingStore, newPartnerSto
     }
     const canAddPartnerStore = newPartnerStoreId > 0 && updatingStore.partners.filter(store => store.id === newPartnerStoreId).length === 0 && newPartnerStoreId !== updatingStore.id;
     return [
-        titleText("Update Store Details ", "2"),
+        titleText(`Update Store Details (id: ${updatingStore.id})`, "2"),
         centered(card(titleText("Please update the details regarding the store below", "4"), [
             row([
                 formField(updatingStore.name, "Store Name", UpdateStoreName, "text", true),
@@ -55,8 +55,6 @@ export const updateStoreView = ({foundPartnerStore, updatingStore, newPartnerSto
                     smallColumn(titleText("Opens At:", "5")),
                     spread(column([
                         formField(updatingStore.workingHours.start.hour.toString(), "", UpdateStoreOpeningHours("hour", "start"), "number"),
-                        text(":"),
-                        formField(updatingStore.workingHours.start.minute.toString(), "", UpdateStoreOpeningHours("minute", "start"), "number")
                     ])),
                     column([]),
                 ]),
@@ -64,8 +62,6 @@ export const updateStoreView = ({foundPartnerStore, updatingStore, newPartnerSto
                     smallColumn(titleText("Closes At:", "5")),
                     spread(column([
                         formField(updatingStore.workingHours.end.hour.toString(), "", UpdateStoreOpeningHours("hour", "end"), "number"),
-                        text(":"),
-                        formField(updatingStore.workingHours.end.minute.toString(), "", UpdateStoreOpeningHours("minute", "end"), "number")
                     ])),
                     column([]),
                 ]),

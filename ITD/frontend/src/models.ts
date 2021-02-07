@@ -107,6 +107,7 @@ export class LineNumberRequest {
 export interface IServerTimeSlot {
     startTime: number;
     endTime: number;
+    id: number;
 }
 export interface IServerStoreResponse extends IServerStoreRequest {
     id: number;

@@ -5,7 +5,7 @@ import {currentYear, debounce, randInt} from "./util";
 import {toCanvas} from "qrcode";
 import {confirm} from "bootbox";
 import "../lib/instascan.min.js";
-import {MAPS_LOCATION_SELECTED_EVENT_NAME} from "./const";
+import {MAPS_LOCATION_SELECTED_EVENT_NAME, QR_READ_EVENT_NAME} from "./const";
 import {State, StoreLocation} from "./noImport";
 
 const addStyle = (content: any, addition: { [key: string]: string }) => {
@@ -47,8 +47,7 @@ export const formField = <State>(value: string, title: string, onUpdate: (state:
     `;
 }
 
-export const formTextArea = <State>(value: string, title: string, onUpdate: (state: State, inputValue: string) => any, wide: boolean = false) =>
-{
+export const formTextArea = <State>(value: string, title: string, onUpdate: (state: State, inputValue: string) => any, wide: boolean = false) => {
     const updateWrapper = (state: State, ev: Event) => {
         return onUpdate(state, (ev.target as HTMLTextAreaElement).value)
     }
@@ -128,7 +127,8 @@ export const button = <State>(content: string | any[], color: Color, onClick: (s
     `;
     if (disabled) {
         element.props["disabled"] = true;
-    };
+    }
+    ;
     return element;
 }
 
@@ -140,20 +140,20 @@ export const qrCodeGenerator = (text: string, width?: number) => {
     return html`<canvas id="${randomId}"></canvas>`;
 }
 
-export const qrCodeReader = <State>(onRead: (state: State, text: string) => any) => {
+export const qrCodeReader = <State>() => {
     const randomReader = `qrRead-${randInt()}`;
-    const randomInput = `${randomReader}-input`;
     debounce(async () => {
         const scanner = new (window as any).Instascan.Scanner({video: document.getElementById(randomReader)});
-        scanner.addListener('scan', (content) => {
+        scanner.addListener('scan', (content: string) => {
             console.log(content);
-            (document.getElementById(randomInput) as HTMLInputElement).value = content;
+            const event = new CustomEvent(QR_READ_EVENT_NAME, {detail: content});
+            window.dispatchEvent(event);
         });
         const cameras = await (window as any).Instascan.Camera.getCameras();
         scanner.start(cameras[0]);
 
     });
-    return html`<div class="mx-auto"><video id="${randomReader}" class="mx-auto"></video><input type="hidden" oninput="${onRead}" id="${randomInput}"></div>`;
+    return html`<div class="mx-auto"><video id="${randomReader}" class="mx-auto"></video></div>`;
 }
 
 export const confirmationPrompt = <State>(question: string, onConfirm: (state: State) => any, buttons: { confirm: BootboxButton, cancel: BootboxButton }, onCancel?: (state: State) => any) => {
@@ -177,6 +177,9 @@ export const confirmationPrompt = <State>(question: string, onConfirm: (state: S
 
 export const markerMap = (location: StoreLocation, enableSelection: boolean, zoom: number = 5) => {
     const randomMap = `map`;
+    if (!google) {
+        return html``;
+    }
     const googleMapsLocation = new google.maps.LatLng(location.lat, location.lon);
     let marker;
     const addMarker = (map: google.maps.Map) => {
@@ -196,7 +199,7 @@ export const markerMap = (location: StoreLocation, enableSelection: boolean, zoo
             })
         }
     }
-    if ((window as any).CLUPMap){
+    if ((window as any).CLUPMap) {
         const map = (window as any).CLUPMap;
         addMarker(map);
     } else {
@@ -311,7 +314,7 @@ export const spread = (content: any) => {
 }
 
 export const loadingWidget = () => {
-    return  [text("Loading")];
+    return [text("Loading")];
 }
 
 export const crashedWidget = () => {

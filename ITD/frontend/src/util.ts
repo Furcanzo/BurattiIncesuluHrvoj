@@ -32,7 +32,7 @@ export const addZero = (target: number) => target < 10 ? "0" + target.toString()
 
 export const getCurrentPath = () => "/" + (window.location.href.split(BASE_URL)[1]);
 
-export const parseServerTimeSlot = ({startTime, endTime}: IServerTimeSlot): TimeSlot => {
+export const parseServerTimeSlot = ({startTime, endTime, id}: IServerTimeSlot): TimeSlot => {
     const result = new TimeSlot();
     const startDate = new Date(startTime);
     const endDate = new Date(endTime);
@@ -40,6 +40,7 @@ export const parseServerTimeSlot = ({startTime, endTime}: IServerTimeSlot): Time
     result.day.setHours(0, 0, 0, 0); // Days are significant with their time
     result.start = {hour: startDate.getHours(), minute: startDate.getMinutes()};
     result.end = {hour: endDate.getHours(), minute: endDate.getMinutes()};
+    result.id = id;
     return result;
 }
 
@@ -48,7 +49,7 @@ export const serializeTimeSlotForServer = (slot: TimeSlot): IServerTimeSlot => {
     startTime.setHours(slot.start.hour, slot.start.minute);
     const endTime = new Date(slot.day);
     endTime.setHours(slot.end.hour, slot.end.minute);
-    return {startTime: startTime.valueOf(), endTime: endTime.valueOf()};
+    return {startTime: startTime.valueOf(), endTime: endTime.valueOf(), id: slot.id};
 }
 
 export const readUserEmail = (): string => {
@@ -59,7 +60,7 @@ export const writeUserEmail = (email: string) => {
 }
 
 export const timeToMillis = (time: Time) => {
-    return ((time.hour * 60) + time.minute) * 60 * 1000;
+    return (((time.hour|| 0) * 60) + (time.minute || 0)) * 60 * 1000;
 }
 
 export const getCurrentTimeMillis = (): number => {

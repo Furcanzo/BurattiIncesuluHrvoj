@@ -1,4 +1,4 @@
-import {button, qrCodeGenerator, qrCodeReader, row, text, titleText} from "../widgets";
+import {button, centered, qrCodeGenerator, qrCodeReader, row, text, titleText} from "../widgets";
 import {GenerateQR, PrintQR, ReadQRCode} from "./actions";
 import {ClerkAppState} from "./models";
 import {PRINTER_FILL} from "../icons";
@@ -24,8 +24,8 @@ const qrCodeReadPane = (state: ClerkAppState) => {
         text("Here is the last generated ticket:"),
         qrCodeGenerator(state.lastGeneratedTicket.id.toString()),
         titleText(state.lastGeneratedTicket.number.toString(), "3"),
-        button([PRINTER_FILL, "Print QR"], "primary", PrintQR, "lg"),
-    ]: [];
+        button([PRINTER_FILL, text("Print QR")], "primary", PrintQR, "lg"),
+    ].map(centered): [];
 
     const generateNew = button("Generate a new ticket", "primary", GenerateQR);
     return [

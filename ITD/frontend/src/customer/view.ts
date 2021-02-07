@@ -7,7 +7,7 @@ export const view = (state: CustomerAppState) => {
     if (state.loading) {
         return loadingWidget();
     }
-    if(state.newLineNumber) {
+    if(state.newLineNumber || state.lineNumberReserved) {
         return reserveView(state);
     }
     return numbersView(state);
