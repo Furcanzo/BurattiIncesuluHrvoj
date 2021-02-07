@@ -54,8 +54,8 @@ CREATE TABLE PartnerStore
 
 CREATE TABLE TimeSlot
 (
-  startTime INT NOT NULL,
-  endTime INT NOT NULL,
+  startTime BIGINT NOT NULL,
+  endTime BIGINT NOT NULL,
   timeSlotID INT NOT NULL,
   storeID INT NOT NULL,
   PRIMARY KEY (timeSlotID),
@@ -64,8 +64,8 @@ CREATE TABLE TimeSlot
 
 CREATE TABLE LineNumber
 (
-  startTime INT NOT NULL,
-  endTime INT NOT NULL,
+  startTime BIGINT NOT NULL,
+  endTime BIGINT NOT NULL,
   status VARCHAR(50) NOT NULL,
   lineNumberID INT NOT NULL UNIQUE AUTO_INCREMENT,
   number INT NOT NULL,
