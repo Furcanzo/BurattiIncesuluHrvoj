@@ -2,11 +2,11 @@ This section explains all implemented requirements of the CLup application along
 
 \subsection{Create Store}
 
-Create store function is used by the Back Office to create the first instance of a new store that joins the CLup application.
-It is a part of the BackOfficeService class which is used for generating new stores and for generating employees with the store.
+Create store function is used by the Back Office User to create the first instance of a new store that joins the CLup application.
+It is a part of the BackOfficeService class which is used for generating new stores and for generating employee with the store.
 The store cannot exist without the employee in charge of it.
 The store is generated with the related pieces of information such as its name, description,
-location in a form of longitude and latitude, number of maximal customers, and with a timeout for the line number tickets.
+location in a form of longitude and latitude, number of maximal customers and with a timeout for the line number tickets.
 Methods that are used to create and generate a store with an employee are createStore, generateStore, and generateEmployeeWithStore.
 The creation of the store is a vital function of the CLup application since the main purpose of the application is to create a line spot reservation system.
 
@@ -36,7 +36,7 @@ Retrieve line number is an important function of the CLup application as well as
 Add staff member is used by the manager to generate new staff members. The manager needs to fill the relevant information such as email, storeID and the role of the new staff member.
 The new role of a member can either be a manager or a clerk. New staff member is created with the generateEmployee method.
 Generation of the new employee is important for the CLup application, but not vital.
-A store can function with only having one manager created by the back office if it doesn’t need clerks for scanning and creating line number tickets at the entrance of the store.
+A store can function with only having one manager created by the back office user if it doesn’t need clerks for scanning and creating line number tickets at the entrance of the store.
 
 \subsection{Monitor Customers}
 Monitor Customers is a simple but yet effective function which can be used by the manager to simply retrieve the number of customers in the store for the moment.
