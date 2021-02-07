@@ -1,0 +1,15 @@
+@import "node_modules/bootstrap/scss/bootstrap";
+.form-inline>.form-control {
+  width: inherit;
+}
+.hideit {
+  display: none;
+}
+
+.full-height {
+  height: 500px;
+}
+
+.card.wide {
+  width: 100%;
+}

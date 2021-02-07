@@ -1,0 +1,47 @@
+{
+  "name": "clup-frontend",
+  "version": "1.0.0",
+  "description": "CLup Project frontend for SE2 project",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Furcanzo/BurattiIncesuluHrvoj.git"
+  },
+  "author": "Roberto Buratti, Hrvoje Hrjov, Ozan Incesulu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Furcanzo/BurattiIncesuluHrvoj/issues"
+  },
+  "homepage": "https://github.com/Furcanzo/BurattiIncesuluHrvoj#readme",
+  "dependencies": {
+    "@babel/runtime": "^7.12.5",
+    "@googlemaps/js-api-loader": "^1.8.0",
+    "@mrbarrysoftware/hyperapp-router": "0.0.1-beta.9",
+    "bootbox": "^5.5.1",
+    "bootstrap": "^4.6.0",
+    "core-js": "^3.6.5",
+    "hyperapp": "^2.0.8",
+    "hyperlit": "^0.3.6",
+    "instascan": "^1.0.0",
+    "jquery": "^3.5.1",
+    "lodash": "^4.17.20",
+    "popper.js": "^1.16.1",
+    "qrcode": "^1.4.4",
+    "regenerator-runtime": "^0.13.7"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.12.1",
+    "@types/bootbox": "^5.2.1",
+    "@types/bootstrap": "^5.0.4",
+    "@types/googlemaps": "^3.40.3",
+    "@types/lodash": "^4.14.165",
+    "@types/mocha": "^8.0.3",
+    "@types/qrcode": "^1.3.5",
+    "@types/sinon": "^9.0.8",
+    "cssnano": "^4.1.10",
+    "mocha": "^8.2.1",
+    "parcel": "^2.0.0-beta.1",
+    "sass": "^1.29.0",
+    "sinon": "^9.2.1",
+    "typescript": "^4.0.5"
+  }
+}
