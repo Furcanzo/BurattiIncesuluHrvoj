@@ -2,7 +2,7 @@ import {
     isAnonState, isBackOfficeState,
     isClerkState,
     isCustomerState,
-    isManagerState,
+    isManagerState, routes,
 } from "./models";
 import {clerkComponent} from "./clerk/models";
 import {managerComponent} from "./manager/models";
@@ -10,7 +10,7 @@ import {customerComponent} from "./customer/models";
 import {loginComponent} from "./login/models";
 import { effects } from '@mrbarrysoftware/hyperapp-router';
 import {Component, INavigatorItem, State, User} from "./noImport";
-import {readUserEmail, writeUserEmail} from "./util";
+import {readUserEmail, resetMap, writeUserEmail} from "./util";
 import {reqLogin} from "./requests";
 import {createStoreComponent} from "./backoffice/models";
 
@@ -23,6 +23,7 @@ export const Loaded = <U extends User>(state: State<U>): State<U> => {
 }
 
 export const Errored = <U extends User>(state: State<U>, errorText: string): State<U> => {
+    resetMap();
     return {...state, error: {text: errorText, recoverable: true}};
 }
 
@@ -33,11 +34,14 @@ const findDefaultNavigation = (component: Component<any, any>): INavigatorItem =
     return component.navigation.filter(nav => nav.isDefault)[0];
 }
 export const SwitchTab = (route: string) => (state)  => {
-    return [state, effects.Navigate(route)];
+    const initialized = routes[route].load(state);
+    resetMap();
+    return [...(Array.isArray(initialized) ? initialized : [initialized]), effects.Navigate(route)];
 }
 export const NewUser = <U extends User>(state: State<User>, newUser: U): any[] => {
-    let newState: State<U> = {...state, currentUser: newUser, initialized: true} as State<U>; // Old state is on the front?
+    let newState: State<U> = {...state, currentUser: newUser, initialized: true} as State<U>; /// Old state is on the front?
     let component: Component<any, any>;
+    resetMap();
     if (isClerkState(newState)) {
         component = clerkComponent;
     } else if (isManagerState(newState)) {
@@ -55,7 +59,9 @@ export const NewUser = <U extends User>(state: State<User>, newUser: U): any[] =
         return [newState, Nothing]; // We crashed, everything can happen
     }
     newState = component.initAction(newState);
-    return [newState, effects.Navigate(findDefaultNavigation(component).route)];
+    const nav = findDefaultNavigation(component);
+    const initialized = nav.onEnter(newState);
+    return [...(Array.isArray(initialized) ? initialized : [initialized]), effects.Navigate(nav.route)];
 }
 export const Nothing = <U extends User>(state: State<U>): State<U> => {
     return state;

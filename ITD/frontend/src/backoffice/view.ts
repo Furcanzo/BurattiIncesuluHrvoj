@@ -12,7 +12,7 @@ export const view = (state: CreateStoreAppState) => {
         titleText("Create New Store ", "2"),
         centered(card(titleText("Please fill the form below", "4"), [
             row([
-                formField(newStore.managerEmail, "Manager's email address", UpdateStoreField("managerEmail"), "email"),
+                formField(newStore.firstManagerEmail, "Manager's email address", UpdateStoreField("firstManagerEmail"), "email"),
             ]),
             row([
                 formField(newStore.name, "Store's name", UpdateStoreField("name"), "text"),

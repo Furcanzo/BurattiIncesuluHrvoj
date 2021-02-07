@@ -3,7 +3,7 @@ import {clerkComponent} from "./clerk/models";
 import {customerComponent} from "./customer/models";
 import {managerComponent} from "./manager/models";
 import {loginComponent} from "./login/models";
-import {navbar, text, wrapper} from "./widgets";
+import {crashedWidget, loadingWidget, navbar, text, wrapper} from "./widgets";
 import {Logout, NewUser, Nothing, SwitchTab} from "./actions";
 import {INavigatorItem, State, User} from "./noImport";
 import {getCurrentPath} from "./util";
@@ -23,7 +23,7 @@ export const view = (state: State<User>) => {
         navItems = customerComponent.navigation;
     } else if (isManagerState(state)) {
         innerContent = managerComponent.view(state);
-        navItems = clerkComponent.navigation;
+        navItems = managerComponent.navigation;
     } else if (isAnonState(state)) {
         innerContent = loginComponent.view(state);
         navItems = loginComponent.navigation;
@@ -32,10 +32,10 @@ export const view = (state: State<User>) => {
         navItems = createStoreComponent.navigation;
     }
     if (state.loading) {
-        innerContent = [text("Loading")]; // TODO: Better looking
+        innerContent = loadingWidget();
     }
     if (state.error && !state.error.recoverable) {
-        innerContent = [text("Crashed, please refresh")];
+        innerContent = crashedWidget();
     }
     return wrapper(navigation(navItems, state), innerContent, state.error?.recoverable ? state.error.text : undefined);
 }
@@ -52,7 +52,8 @@ const navigation = (navigationItems: INavigatorItem[], state: State<User>) => {
         navigationItems = [...navigationItems, logout];
     }
     return navbar(navigationItems.map(item => {
-        return {active: item.route === getCurrentPath(), title: item.title, onClick:
+        return {
+            active: item.route === getCurrentPath(), title: item.title, onClick:
                 item.title !== logout.title ? SwitchTab(item.route) : Logout
         };
     }), Nothing)
