@@ -1,1 +1,16 @@
 %TODO
+In order to install and run this app:\\
+\begin{enumerate}
+    \item Provision a MySQL DB.
+    \item Export the necessary environment variables by creating a .env file on project root (touch .env if you use POSIX), and adapt the values accordingly:\\
+    \begin{verbatim}
+        CLUP_DB_HOST="localhost"
+        CLUP_DB_PORT="3306"
+        CLUP_DB_NAME="clup"
+        CLUP_DB_USER="root"
+        CLUP_DB_PASSWORD="root"
+        CLUP_BASE_URL="localhost:8080"
+    \end{verbatim}
+    \item Execute the SQL queries given in file "database.sql"
+    \item Run \textit{mvnw spring-boot:run} (or mvnv.cmd if you are using Windows)
+\end{enumerate}

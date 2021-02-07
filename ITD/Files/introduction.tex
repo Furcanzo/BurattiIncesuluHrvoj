@@ -10,7 +10,6 @@ Once assigned a line number, the customer will track the estimated time of arriv
 Also, "CLup" provides uniquely generated QR codes per the line number, which can be utilized by the store managers as a proper monitoring tool in the entrances and exits of the locations.
 The product's general purpose is to keep the congestion levels in line with the stores at a minimum via providing useful features for all the users.
 
-
 \subsubsection{Goals}
 
 \begin{itemize}
@@ -18,61 +17,22 @@ The product's general purpose is to keep the congestion levels in line with the 
     \item \textbf{$G_{2}$} Avoid people lining up in front of the stores in order to reduce the spreading of COVID-19.
 \end{itemize}
 
-% Manager:
-% Set the estimated customer number to be in the location (based on govt. regulations, space availability etc.)
-% Set the opening and closing hours of the store per day.
-% Set the in-shop location & categories of products in the location
-% Set the limit of reservation per customer per month, per day, per week
-% Set the location of the store
-% Add other chain members or partner stores
-% Observe the current amount of customers in the location.
-% Stop the system from issuing more tickets for a given day in case of an overflow or emergency
-% Schedule a system stop.
-% Set the timeout
-
-% Clerk:
-% Monitor the entrance and exit of customers with line numbers, by scanning their QR codes.
-% Print line numbers with QR code on them for the physically arriving customers who doesn't have a virtual ticket.
-
-% Customer:
-% Retrieve a direct line number for a location
-% Generate a QR code for entry
-% See an ETA, like 30 mins are left for your line number
-% View the location of the store to plan their trip
-% Book a future line number for a day
-% See the occupancy of the location for different time and day.
-% View the alternative slot suggestions for the visit planned
-% View the alternative slots available in near chain or partner stores
-% Set the categories, products of interest before visit for finer granularity.
-% Set the estimated time for visit.
-% See the amount of people currently in the store
-% Set user details, name, surname
-% View forecasted occupancy for time slots.
-
-% System:
-% Forecast the occupancy of store per time slot
-% Timeouts the line numbers when not registered for given timeout by manager.
-
 \subsection{Scope}
 
 The system is expected to implement the following features, which are detailed in the future sections of this document: \\
 \begin{itemize}
     \item \textbf{Generate Line Number}: The customers of the store can generate a line number for themselves as soon as possible to visit a store.
     \item \textbf{Schedule Line Number}: The customers can generate a line number for a future planned visit.
-    Using the CLup app the customers can further define the product categories that they plan to buy to allow finer granularity and better time estimation for a visit.
     The system thus will allocate them a line number according to the time slot the customer has selected and it will send an email to the customer if the line number is canceled for a reason.
     From the system, the customers can view the store's location and plan their route accordingly.
     While scheduling their line numbers, the customers can see an occupancy forecast for the store during time slots so that they can further decide on visiting the store.
     If added by the manager, the customers can instead prefer to visit a partner store.
-    \item \textbf{Print Line Number}: The clerks in the store can generate line number tickets for those customers who have not used the CLup app to generate a line number.
     \item \textbf{Manage Store}: The managers in the store can update the information regarding the store, which are the name and the location of the store.
     Furthermore, the managers can use this feature to activate or deactivate additional features provided by the system to manage customers more effectively.
     They can update the timeout interval for a ticket to expire, to manage the queue in front of the store.
-    They can add product categories that their store provides, for the customers to select before booking their visit as mentioned before.
     They can assign more managers and clerks if necessary to use the system to its full extent.
     They can administer the time slots for their customers by setting the opening and closing hours, with possible breaks in between.
     They can administer the partner stores of their stores if they exist, for their customers to select instead.
-    They can enable the reservation limit to prevent any customer from abusing the system by setting the limit for how many tickets a customer can generate per a given time interval of a month, a week, or a day.
     The stores are to be created by the Back Office User, while granting access to the first manager.
 \end{itemize}
 
@@ -81,19 +41,6 @@ Given its functionality is depending on the current ongoing pandemic, the app is
 For this, the client application is expected to be implemented as an app running on a browser, increasing the range of devices being able to run the app, without increasing the development costs, which can then be ported to a mobile application if needed.
 The server is expected to serve the client application to its users and handle any transaction incoming.
 To implement the location-specific features of the system, due to the complexity of those, namely location finding, addressing, and route planning tasks, an external Maps API is used.
-
-The system is going to provide the following functions:
-\begin{itemize}
-    \item \textbf{$F_{1}$} Customers can issue a line number for a store.
-    \item \textbf{$F_{2}$} Customers can issue line numbers for their future visits.
-    \item \textbf{$F_{3}$} Customers can detail their visits by category.
-    \item \textbf{$F_{4}$} Customers can plan their visit to the store.
-    \item \textbf{$F_{5}$} Customers may prefer to use alternative time slots or partner stores for their visit.
-    \item \textbf{$F_{6}$} Managers can prevent customers from issuing line numbers.
-    \item \textbf{$F_{7}$} Managers can customize the system to allow optimizations for increased granularity, flow control, and time slot forecasting.
-    \item \textbf{$F_{8}$} Clerks and Managers can monitor the customers through their entrance and exits.
-    \item \textbf{$F_{9}$} Customers can obtain printed line number tickets.
-\end{itemize}
 
 \subsubsection{Targeted Users}
 "CLup" aims to resolve the problem of Customers queueing up in front of a store.
@@ -160,41 +107,22 @@ In order to use the CLup application, store or business owners should contact CL
     \item \textbf{$R_n$}: $n^{th}$ functional requirement
     \item \textbf{$F_n$}: $n^{th}$ function
 \end{itemize}
-\subsection{Revision history}
 
+%TODO: Revision History Table
+\subsection{Revision history}
 \begin{table}[H]
     \begin{tabular}{|p{1.5cm}|c|p{2cm}|}
         \hline
-        \textbf{Version}    & \textbf{Changes} & \textbf{Commit Hash} \\ \hline
-        1.0.0          & First release of the document & 06e29871ac\\
-        & & bdd7d85cb6\\
-        & & e448f9c3ff\\
-        & & 2c8d85ebec \\ \hline
-        1.0.1          & \textbullet\ Add version table & a695e254a\\
-        & \textbullet\ Add references & b1dc8e525c \\
-        & \textbullet\ Perform document-wide grammar check & f70a0948a7\\
-        & \textbullet\ Update document structure & 5d86d117bde \\ \hline
-        1.1.0 & Changes according to our tutor's advices: & 778e7062c\\
-        &\textbullet\ Add further explanations for token timeout, database integrity, ACID, and REST  & c0576e3aaa1\\
-        &\textbullet\ Update Component Interfaces diagram to split the ORM interfaces & 0c3c813f49b\\
-        &\textbullet\ Wording and grammar corrections& 1bd46613e\\ \hline
-        2.0.0          & Updated the document to involve maxCustomer limits & b17cc3972b \\
-        & Fix the reference for UTC & 8ec32fc09cd\\
-        & & 9f8fe96e34b\\
-        & & b1809ac9 \\ \hline
-        % Line template:
-        %          &       &    \\ \hline
     \end{tabular}
     \caption{Revision History}
 \end{table}
 
-%TODO: Add Reference Documents (file for installation)
 \subsection{Reference Documents}
 \begin{itemize}
-    \item \href{https://beep.metid.polimi.it/documents/121843524/23d1869d-ab17-4e36-979e-f1ccbc59be24}{Specification Document: R\&DD Assignment AY 2020-2021}
+    \item \href{https://beep.metid.polimi.it/documents/121843524/130a9876-9ac6-4e12-9bb4-d566e36b5dd9}{Specification Document: Implementation Assignment AY 2020-2021}
 \end{itemize}
 
-%TODO: Edit Document Structure according to the ITD sections
+%TODO: Finish Document Structure descriptions.
 \subsection{Document Structure}
 This document is composed of seven sections, each with the purpose described below: \\
 \begin{itemize}
@@ -202,15 +130,11 @@ This document is composed of seven sections, each with the purpose described bel
     The goals of the project are formulated in accordance with the description of actions and actors in the Design Document.
     Within the project's scope, properties and duties of different users and user groups are described in Target Users section.
     Furthermore, under the scope of the project, the relevant phenomena of the project is presented through their relevance to the world and the machine.
-    \item \textbf{Architectural Design}: This section provides a detailed view of the logic behind the CLup Application.
-    In the Overview, it is shown how the application is divided into three layers and examples are given.
-    The Component View, alongside the Deployment view and Runtime view, shows how each part of the application communicates with other parts of the application.
-    By using the Sequence Diagrams it is shown in detail how the pieces of information are sent between different components of the application.
-    \item \textbf{User Interface Design}: This section shows how the user can interact with the application itself through the intuitive graphical interface.
-    \item \textbf{Requirements Traceability}: In this subsection, each requirement specified in the RASD document is matched with the appropriate component’s role in satisfying the requirement.
-    Besides the Functional requirements, non-functional requirements are described and their correspondence with the design choices given in this document.
-    \item \textbf{Implementation, Integration and Test Plan}: This section shows how the components are implemented and integrated based on their dependencies.
-    Later in the section, the testing plan is described.
+    \item \textbf{Implemented Features}: This section provides a list of implemented functions with motivations for including them.
+    \item \textbf{Adopted Development Frameworks}: This section provides a list with used frameworks, programing languages as well as additional APIs used in the implementation of the CLup application.
+    \item \textbf{Source Code}: This section provides the short overview of the source code, and shows how the code is structured.
+    \item \textbf{Testing}: This section describes functional tests that were used for testing the CLup, such as unit tests, integration tests and end to end tests.
+    \item \textbf{Installation Instructions}: This section describes how to install the CLup application.
     \item \textbf{Effort Spent}: This section features the effort table, in which all team members provide a rough estimation of the time spent on the creation of the various sections of the document.
     \item \textbf{References}: This section features different reference materials referred to inside this document.
 \end{itemize}
