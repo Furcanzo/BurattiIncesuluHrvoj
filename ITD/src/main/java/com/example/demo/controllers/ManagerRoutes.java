@@ -91,8 +91,8 @@ public class ManagerRoutes {
     public ResponseEntity<String> addEmployee(@RequestBody EmployeeDTO employee, @RequestHeader(name = "bearer") String bearer) {
         try {
             Employee manager = employeeService.findEmployeeByEmail(bearer);
-            if (securityService.managerCheck(manager, employee.getStoreId())) {
-                Employee newEmployee = employeeService.addEmployee(employee);
+            if (securityService.managerCheck(manager, manager.getStore().getId())) {
+                Employee newEmployee = employeeService.addEmployee(employee, manager.getStore().getId());
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(newEmployee));
             } else {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(FORBIDDEN);
