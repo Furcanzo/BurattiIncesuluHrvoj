@@ -75,14 +75,12 @@ public class CustomerRoutes {
     @PostMapping(path = "/retrieve")
     public ResponseEntity<String> retrieveLineNumber(@RequestBody LineNumberDTO lineNumber,  @RequestHeader(name = "bearer") String bearer){
         try {
-            Store actualStore = customerService.getStore(lineNumber.getStoreId());
             try {
                 Customer customer = customerService.findCustomerByEmail(bearer);
                 LineNumber created = customerService.retrieveLineNumber(lineNumber, customer, System.currentTimeMillis());
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(created));
             } catch (NoTimeSlotsException e) {
-                List<TimeSlot> available = customerService.availableTimeSlots(actualStore.getId(), System.currentTimeMillis());
-                return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(available));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No time slots left");
             }
         } catch (NoSuchEntityException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(STORE_NOT_FOUND);

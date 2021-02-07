@@ -77,13 +77,11 @@ public class ClerkRoutes {
         try {
             Employee employee = employeeService.findEmployeeByEmail(bearer);
             if (securityService.checkClerk(employee, lineNumber.getStoreId())) {
-                Store actualStore = customerService.getStore(lineNumber.getStoreId());
                 try {
                     LineNumber created = customerService.retrieveLineNumber(lineNumber, null, System.currentTimeMillis());
                     return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(created));
                 } catch (NoTimeSlotsException e) {
-                    List<TimeSlot> available = customerService.availableTimeSlots(actualStore.getId(), System.currentTimeMillis());
-                    return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(available));
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No time slots left");
                 }
             } else {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("The requester doesn't have the permission to do this");
