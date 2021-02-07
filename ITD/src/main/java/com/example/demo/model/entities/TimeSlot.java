@@ -1,5 +1,7 @@
 package com.example.demo.model.entities;
 
+import com.google.gson.annotations.Expose;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -13,16 +15,18 @@ public class TimeSlot {
     private int id;
 
     @Column(name = "startTime")
+    @Expose
     private long startTime;
 
     @Column(name = "endTime")
+    @Expose
     private long endTime;
 
     @ManyToOne
     @JoinColumn(name = "storeID")
     private Store store;
 
-    @OneToMany(mappedBy = "timeSlot")
+    @OneToMany(mappedBy = "timeSlot", fetch = FetchType.EAGER)
     private List<LineNumber> lineNumbers;
 
     public int getId() {
@@ -55,6 +59,7 @@ public class TimeSlot {
 
     public void setStore(Store store) {
         this.store = store;
+        store.addTimeSlot(this);
     }
 
     public List<LineNumber> getLineNumbers() {

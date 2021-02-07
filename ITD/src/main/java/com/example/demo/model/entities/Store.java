@@ -164,4 +164,12 @@ public class Store {
     public void setPartnerStores(List<Store> partnerStores) {
         this.partnerStores = partnerStores;
     }
+
+    public void addTimeSlot(TimeSlot timeSlot) {
+        this.timeSlots.add(timeSlot);
+    }
+
+    public void removeTimeSlot(TimeSlot ts) {
+        this.timeSlots.remove(ts);
+    }
 }

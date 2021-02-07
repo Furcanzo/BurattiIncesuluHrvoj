@@ -69,6 +69,7 @@ public class ApplicationConfiguration {
     private Properties additionalProperties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+        properties.setProperty("spring.jpa.show-sql","true");
         return properties;
     }
 
