@@ -1,6 +1,5 @@
 package com.example.demo.controllers;
 
-import com.example.demo.exceptions.NoSuchEntityException;
 import com.example.demo.model.dtos.NewStoreDTO;
 import com.example.demo.model.entities.Store;
 import com.example.demo.services.BackOfficeService;
@@ -13,8 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.transaction.Transactional;
 
 @RestController
 public class BackOfficeRoutes {

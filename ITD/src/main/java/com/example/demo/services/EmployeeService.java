@@ -44,7 +44,7 @@ public class EmployeeService {
             throw new NoSuchEntityException();
         }
         myStore.setName(store.getName()!=null? store.getName() : myStore.getName());
-        myStore.setDescription(store.getDescription()!= null ? store.getName() : myStore.getDescription());
+        myStore.setDescription(store.getDescription()!= null ? store.getDescription() : myStore.getDescription());
         myStore.setLongitude(store.getLongitude() != 0.0 ? store.getLongitude() : myStore.getLongitude());
         myStore.setLatitude(store.getLatitude() != 0.0 ? store.getLatitude() : myStore.getLatitude());
         myStore.setMaxCustomers(store.getMaxCustomers() != 0 ? store.getMaxCustomers() : myStore.getMaxCustomers());
@@ -81,8 +81,8 @@ public class EmployeeService {
         return employee;
     }
 
-    public Employee addEmployee(EmployeeDTO employeeDTO) throws NoSuchEntityException, MailAlreadyUsedException {
-        Employee employee = generateEmployee(employeeDTO);
+    public Employee addEmployee(EmployeeDTO employeeDTO, int storeId) throws NoSuchEntityException, MailAlreadyUsedException {
+        Employee employee = generateEmployee(employeeDTO, storeId);
         Employee error = employeeRepository.findByEmail(employee.getEmail()).orElse(null);
         if (error == null) {
             return employeeRepository.save(employee);
@@ -130,9 +130,9 @@ public class EmployeeService {
         return new MonitorState(timestamp,numberOfCustomers, id);
     }
 
-    Employee generateEmployee(EmployeeDTO employeeDTO) throws NoSuchEntityException {
+    private Employee generateEmployee(EmployeeDTO employeeDTO, int storeId) throws NoSuchEntityException {
         Employee created = new Employee();
-        Store store = storeRepository.findById(employeeDTO.getStoreId()).orElse(null);
+        Store store = storeRepository.findById(storeId).orElse(null);
         if (store != null) {
             created.setEmail(employeeDTO.getEmail());
             created.setRole(employeeDTO.getRole());
