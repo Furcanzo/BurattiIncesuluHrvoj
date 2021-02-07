@@ -68,7 +68,7 @@ public class ClerkRoutes {
                 TimeSlot firstTimeSlot = availableSlots.get(0);
                 try {
                     LineNumberDTO actualTimeSlottedLN = new LineNumberDTO(lineNumber.getFrom(), lineNumber.getUntil(), firstTimeSlot.getId(), lineNumber.getStoreId());
-                    LineNumber created = customerService.retrieveLineNumber(actualTimeSlottedLN, null);
+                    LineNumber created = customerService.retrieveLineNumber(actualTimeSlottedLN, null, System.currentTimeMillis());
                     return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(created));
                 } catch (NoTimeSlotsException e) {
 

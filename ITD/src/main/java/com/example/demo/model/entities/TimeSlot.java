@@ -27,7 +27,7 @@ public class TimeSlot {
     @JoinColumn(name = "storeID")
     private Store store;
 
-    @OneToMany(mappedBy = "timeSlot")
+    @OneToMany(mappedBy = "timeSlot", fetch = FetchType.EAGER)
     private List<LineNumber> lineNumbers;
 
     public int getId() {
@@ -60,6 +60,7 @@ public class TimeSlot {
 
     public void setStore(Store store) {
         this.store = store;
+        store.addTimeSlot(this);
     }
 
     public List<LineNumber> getLineNumbers() {
