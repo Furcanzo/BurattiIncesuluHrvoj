@@ -57,6 +57,7 @@ public class CustomerService {
         if (timeSlotFull(lineNumber.getTimeSlot())){
             throw new TimeSlotFullException();
         }
+        lineNumber.setStatus("WAITING");
         return lineNumberRepository.save(lineNumber);
     }
 
@@ -211,6 +212,9 @@ public class CustomerService {
         lineNumber.setFrom(fromTimeStamp);
         lineNumber.setUntil(fromTimeStamp + (lineNumberDTO.getUntil() - lineNumberDTO.getFrom()));
         TimeSlot timeSlot = timeSlotRepository.getTimeSlotAt(lineNumber.getStore().getId(), fromTimeStamp);
+        if (timeSlot == null){
+            throw new NoTimeSlotsException();
+        }
         lineNumber.setTimeSlot(timeSlot);
         lineNumber.setStatus("WAITING");
         return lineNumberRepository.save(lineNumber);
