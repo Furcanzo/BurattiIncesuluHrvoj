@@ -5,13 +5,13 @@ import {State} from "../noImport";
 import {reqLogin, reqRegister} from "../requests";
 
 export const INIT = (state: State<AnonUser>): LoginAppState => {
-    return {...state, user: {email: ""}, currentTab: "login"};
+    return {...state, user: {email: ""}, activeTab: "login"};
 }
 
 export const LoadLoginPage = (state: LoginAppState): LoginAppState => {
-    state.currentTab = "login";
+    state.activeTab = "login";
     state.user = {email: ""};
-    return {...state, currentTab: "login", user: {email: ""}};
+    return {...state, activeTab: "login", user: {email: ""}};
 }
 
 export const UpdateLoginEmail = (state: LoginAppState, content: string): LoginAppState => {
@@ -26,7 +26,7 @@ export const SubmitLogin = (state: LoginAppState) => {
 }
 
 export const LoadRegisterPage = (state: LoginAppState): LoginAppState => {
-    return {...state, currentTab: "register", user: {email: "", repeatEmail: "", name: "", surname: "", tel: ""}};
+    return {...state, activeTab: "register", user: {email: "", repeatEmail: "", name: "", surname: "", tel: ""}};
 }
 export const UpdateRegisterField = (field: "email" | "repeatEmail" | "tel" | "name" | "surname") =>
     (state: LoginAppState, content: string): LoginAppState => {

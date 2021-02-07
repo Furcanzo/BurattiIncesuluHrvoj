@@ -6,7 +6,7 @@ import {SwitchTab} from "../actions";
 const loginWidget = (state: LoginAppState) => {
     return [
         titleText("Welcome to CLup System", "2"),
-        hiddenText(state.currentTab),
+        hiddenText(state.activeTab),
         centered(card(titleText("To use the system, please login first", "5"), [
             row(formField(state.user.email, "E-mail", UpdateLoginEmail, "email")),
             row([
@@ -21,7 +21,7 @@ const registerWidget = (state: LoginAppState) => {
     const newUser = state.user;
     return [
         titleText("Register ", "2"),
-        hiddenText(state.currentTab),
+        hiddenText(state.activeTab),
         centered(card(titleText("Please fill the form below", "4"), [
             row([
                 formField(newUser.email, "Your Email", UpdateRegisterField("email"), "text"),
@@ -50,7 +50,7 @@ const registerWidget = (state: LoginAppState) => {
 }
 
 export const view = (state: LoginAppState) => {
-    if (state.currentTab === "register") {
+    if (state.activeTab === "register") {
         return registerWidget(state);
     } else {
         return loginWidget(state);

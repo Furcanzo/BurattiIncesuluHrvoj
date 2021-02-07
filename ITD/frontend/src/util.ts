@@ -1,4 +1,5 @@
 import 'regenerator-runtime/runtime';
+import "bootstrap";
 import {Loader} from "@googlemaps/js-api-loader";
 import {BASE_URL, MAPS_API_KEY} from "./const";
 import {Time, TimeSlot} from "./noImport";
@@ -68,4 +69,8 @@ export const getCurrentTimeMillis = (): number => {
 export const millisToTime = (millis: number): Time => {
    const date = (new Date(millis));
    return {hour: date.getHours(), minute: date.getMinutes()};
+}
+
+export const resetMap = () => {
+    (window as any).CLUPMap = undefined;
 }

@@ -4,7 +4,7 @@ import {view} from "./view";
 import {Component, INavigatorItem, State} from "../noImport";
 
 export class LoginAppState extends State<AnonUser> {
-    currentTab: "login" | "register";
+    activeTab: "login" | "register";
     user: {
         email: string;
         repeatEmail?: string;

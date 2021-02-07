@@ -57,6 +57,7 @@ public class Store {
     @JoinTable(name = "PartnerStore",
             joinColumns = @JoinColumn(name = "primaryStoreID"),
             inverseJoinColumns = @JoinColumn(name = "partnerStoreID"))
+    @Expose
     private List<Store> partnerStores;
 
     public int getId() {

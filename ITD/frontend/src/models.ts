@@ -9,14 +9,14 @@ import {INavigatorItem, State, Store, Time, TimeSlot, User} from "./noImport";
 
 
 export class Manager extends User {
-    constructor(readonly location: ManagementStore, readonly email: string, readonly role: "manager" = "manager") {
+    constructor(readonly store: ManagementStore, readonly email: string, readonly role: "manager" = "manager") {
         super();
     }
 }
 
 
 export class Clerk extends User {
-    constructor(readonly location: ManagementStore, readonly email: string, readonly role: "clerk" = "clerk") {
+    constructor(readonly store: ManagementStore, readonly email: string, readonly role: "clerk" = "clerk") {
         super();
     }
 }
@@ -34,6 +34,9 @@ export interface IServerEmployeeRequest {
     storeId: number;
 }
 export class Customer extends User {
+    constructor(readonly role:"customer"="customer") {
+        super();
+    }
     name: string;
     surname: string;
     tel: string;
@@ -66,7 +69,9 @@ export interface IServerStoreRequest {
     maxCustomers: number;
     partnerStoreIds: number[];
     timeOut: number;
-    workingHour: IServerWorkingHourRequest;
+    workingHour?: IServerWorkingHourRequest;
+    workingHourDTO: IServerWorkingHourResponse;
+
 }
 
 
@@ -105,7 +110,8 @@ export interface IServerTimeSlot {
 }
 export interface IServerStoreResponse extends IServerStoreRequest {
     id: number;
-    workingHour: IServerWorkingHourResponse;
+    partnerStores: Store[];
+    workingHourDTO: IServerWorkingHourResponse;
 }
 
 export interface IServerLineNumberResponse {
@@ -148,7 +154,7 @@ export const isBackOfficeState = (state: State<BackOfficeUser>): state is Create
 
 const generateRoutes = (navigationItems: INavigatorItem[]) => {
     return navigationItems.reduce((acc, item): object => {
-        acc[item.route] = {OnEnter: item.onEnter};
+        acc[item.route] = {load: item.onEnter}; // {OnEnter: item.onEnter};
         return acc;
     }, {})
 }

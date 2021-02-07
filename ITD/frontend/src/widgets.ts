@@ -1,3 +1,4 @@
+import 'regenerator-runtime';
 import html from "hyperlit";
 import {text as hyperappText} from "hyperapp";
 import {currentYear, debounce, randInt} from "./util";
@@ -34,14 +35,27 @@ export type Color =
 export type FormType = "text" | "email" | "password" | "number" | "tel";
 export type TextSize = "1" | "2" | "3" | "4" | "5" | "6";
 export type ButtonSize = "sm" | "md" | "lg";
-export const formField = <State>(value: string, title: string, onUpdate: (state: State, inputValue: string) => any, type_?: FormType) => {
+export const formField = <State>(value: string, title: string, onUpdate: (state: State, inputValue: string) => any, type_?: FormType, wide: boolean = false) => {
     const updateWrapper = (state: State, ev: Event) => {
         return onUpdate(state, (ev.target as HTMLInputElement).value)
     }
     return html`
-    <div class="form-group">
-        <label>${title}</label>
+    <div class="form-group ${wide && 'col-12'}">
+        <label class="form-label">${title}</label>
         <input type=${type_} oninput=${updateWrapper} value="${value}" class="form-control">
+    </div>
+    `;
+}
+
+export const formTextArea = <State>(value: string, title: string, onUpdate: (state: State, inputValue: string) => any, wide: boolean = false) =>
+{
+    const updateWrapper = (state: State, ev: Event) => {
+        return onUpdate(state, (ev.target as HTMLTextAreaElement).value)
+    }
+    return html`
+    <div class="form-group ${wide && 'col-12'}">
+        <label class="form-label">${title}</label>
+        <textarea class="form-control" oninput=${updateWrapper} rows="3">${value}</textarea>
     </div>
     `;
 }
@@ -89,7 +103,7 @@ export const row = (inner: any[]) => {
 }
 
 export const column = (inner: any[]) => {
-    return html`<div class="col-12 col-md-6 col-lg-3">${inner}</div>`
+    return html`<div class="col-12 col-md-6 col-lg-6">${inner}</div>`
 }
 
 export const largeColumn = (inner: any[]) => {
@@ -109,9 +123,13 @@ export const form = (children: any[]) => {
 }
 
 export const button = <State>(content: string | any[], color: Color, onClick: (state: State) => any, size: ButtonSize = "md", huge: boolean = false, disabled: boolean = false) => {
-    return html`
-    <button type="button" class="btn btn-${color} btn-${size} ${huge && 'btn-block'}" ${disabled && "disabled"} onclick=${onClick}>${content}</button>
-    `
+    const element = html`
+    <button type="button" class="btn btn-${color} btn-${size} ${huge && 'btn-block'}" onclick=${onClick}>${content}</button>
+    `;
+    if (disabled) {
+        element.props["disabled"] = true;
+    };
+    return element;
 }
 
 export const qrCodeGenerator = (text: string, width?: number) => {
@@ -157,12 +175,11 @@ export const confirmationPrompt = <State>(question: string, onConfirm: (state: S
             <button id="${randomCancel}" onclick=${onCancel} hidden></button>`;
 };
 
-export const markerMap = (location: StoreLocation, enableSelection: boolean) => {
-    const randomMap = `map-${randInt()}`;
+export const markerMap = (location: StoreLocation, enableSelection: boolean, zoom: number = 5) => {
+    const randomMap = `map`;
     const googleMapsLocation = new google.maps.LatLng(location.lat, location.lon);
     let marker;
-    debounce(() => {
-        const map = new google.maps.Map(document.getElementById(randomMap), {zoom: 4, center: googleMapsLocation});
+    const addMarker = (map: google.maps.Map) => {
         marker = new google.maps.Marker({
             position: googleMapsLocation,
             map,
@@ -178,8 +195,19 @@ export const markerMap = (location: StoreLocation, enableSelection: boolean) => 
                 })
             })
         }
-    });
-    return html`<div id="${randomMap}"></div>`;
+    }
+    if ((window as any).CLUPMap){
+        const map = (window as any).CLUPMap;
+        addMarker(map);
+    } else {
+        debounce(() => {
+            const map = new google.maps.Map(document.getElementById(randomMap), {zoom: 4, center: googleMapsLocation});
+            (window as any).CLUPMap = map;
+            map.setZoom(zoom);
+            addMarker(map);
+        });
+    }
+    return html`<div id="${randomMap}" class="full-height"></div>`;
 }
 
 const navbarItem = (navigationItem: NavigationItem) => {
@@ -271,10 +299,21 @@ export const pillSelection = (pills: IPill[]) => {
     const renderedPills = pills.map(pill => {
         return html`<li class="nav-item"><a class="nav-link ${pill.active && "active"} ${pill.disabled && "disabled"}" onclick=${pill.onClick}>${pill.content}</a> </li>`
     })
-    html`
+    return html`
     <ul class="nav nav-pills">
         ${renderedPills}
     </ul>
     `
 }
 
+export const spread = (content: any) => {
+    return addClass(content, ["d-flex"]);
+}
+
+export const loadingWidget = () => {
+    return  [text("Loading")];
+}
+
+export const crashedWidget = () => {
+    return [text("Crashed, please refresh")];
+}

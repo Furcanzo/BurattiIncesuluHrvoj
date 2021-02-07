@@ -30,9 +30,9 @@ export const reqUpdateStore = (success, fail, storeId: number, newStore: IServer
     })
 }
 
-export const reqGetUser = (success: (state: any, user: IServerCustomerResponse | IServerEmployeeResponse) => any, fail, userType: "customer" | "employee", userId: string) => {
+export const reqGetUser = (success: (state: any, user: IServerCustomerResponse | IServerEmployeeResponse) => any, fail, role: "customer" | "employee", userId: string) => {
     return http({
-        path: `/user?type=${encodeURIComponent(userType)}&id=${encodeURIComponent(userId)}`,
+        path: `/user?type=${encodeURIComponent(role)}&id=${encodeURIComponent(userId)}`,
         method: "GET",
         resultAction: success,
         errorAction: fail,
@@ -49,9 +49,9 @@ export const reqAddEmployee = (success: (state: any, employee: IServerEmployeeRe
     })
 }
 
-export const reqMonitor = (success: (state: any, result: IServerMonitorResponse) => any, fail, storeId: number, showResults: boolean) => {
+export const reqMonitor = (success: (state: any, result: IServerMonitorResponse) => any, fail, showResults: boolean) => {
     return http({
-        path: "/monitorLive?id=" + encodeURIComponent(storeId),
+        path: "/monitorLive",
         method: "GET",
         resultAction: success,
         errorAction: fail,

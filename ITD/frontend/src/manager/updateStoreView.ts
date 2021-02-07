@@ -5,10 +5,10 @@ import {
     centered,
     column,
     confirmationPrompt,
-    formField, inlineForm,
+    formField, formTextArea, inlineForm,
     largeColumn,
     markerMap,
-    row,
+    row, smallColumn, spread,
     text,
     titleText
 } from "../widgets";
@@ -35,45 +35,43 @@ export const updateStoreView = ({foundPartnerStore, updatingStore, newPartnerSto
                 cancel: {label: "Cancel", className: "btn-danger"}
             }, CancelPartnerStoreAddition);
     }
+    const canAddPartnerStore = newPartnerStoreId > 0 && updatingStore.partners.filter(store => store.id === newPartnerStoreId).length === 0 && newPartnerStoreId !== updatingStore.id;
     return [
         titleText("Update Store Details ", "2"),
         centered(card(titleText("Please update the details regarding the store below", "4"), [
             row([
-                formField(updatingStore.name, "Store Name", UpdateStoreName, "text"),
+                formField(updatingStore.name, "Store Name", UpdateStoreName, "text", true),
             ]),
             row([
-                formField(updatingStore.description, "Store Description", UpdateStoreDescription, "text"),
+                formTextArea(updatingStore.description, "Store Description", UpdateStoreDescription, true),
             ]),
             row([
-                formField(updatingStore.maxCustomerCapacity.toString(), "Store's maximum capacity", UpdateStoreCapacity, "number"),
-            ]),
-
-            row([
-                formField(updatingStore.timeoutMinutes.toString(), "Ticket Timespan (minutes)", UpdateStoreTimeout, "number"),
+                column(formField(updatingStore.maxCustomerCapacity.toString(), "Store's maximum capacity", UpdateStoreCapacity, "number")),
+                column(formField(updatingStore.timeoutMinutes.toString(), "Ticket Timespan (minutes)", UpdateStoreTimeout, "number")),
             ]),
 
             centered(card(titleText("Opening Hours", "4"), [
                 row([
-                    column(titleText("Opens At:", "5")),
-                    column([
+                    smallColumn(titleText("Opens At:", "5")),
+                    spread(column([
                         formField(updatingStore.workingHours.start.hour.toString(), "", UpdateStoreOpeningHours("hour", "start"), "number"),
                         text(":"),
                         formField(updatingStore.workingHours.start.minute.toString(), "", UpdateStoreOpeningHours("minute", "start"), "number")
-                    ]),
+                    ])),
                     column([]),
                 ]),
                 row([
-                    column(titleText("Closes At:", "5")),
-                    column([
+                    smallColumn(titleText("Closes At:", "5")),
+                    spread(column([
                         formField(updatingStore.workingHours.end.hour.toString(), "", UpdateStoreOpeningHours("hour", "end"), "number"),
                         text(":"),
                         formField(updatingStore.workingHours.end.minute.toString(), "", UpdateStoreOpeningHours("minute", "end"), "number")
-                    ]),
+                    ])),
                     column([]),
                 ]),
 
             ], "secondary")),
-            centered(card("", [
+            centered(card(text(""), [
                 titleText("Update Store Location", "5"),
                 markerMap(updatingStore.location, true),
             ])),
@@ -86,7 +84,7 @@ export const updateStoreView = ({foundPartnerStore, updatingStore, newPartnerSto
             }),
                 card(titleText("New Partner Store", "4"), [
                     inlineForm(row(formField(newPartnerStoreId.toString(), "Store ID:", UpdatePartnerStoreId, "number"))),
-                    row(centered(button("Add", "success", FindPartnerStore))),
+                    row(centered(button("Add", "success", FindPartnerStore, "md", false, !canAddPartnerStore))),
                 ]),
             ])))),
             row([

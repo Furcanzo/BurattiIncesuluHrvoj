@@ -1,22 +1,39 @@
 import {
     Clerk,
     IServerEmployeeRequest,
-    IServerMonitorResponse, IServerStoreRequest,
+    IServerMonitorResponse, IServerStoreRequest, IServerStoreResponse,
     Manager,
 } from "../models";
-import {IManagementPartnerStore, ManagerAppState} from "./models";
+import {IManagementPartnerStore, ManagementStore, ManagerAppState} from "./models";
 import {timeout} from "../effects";
 import {Crashed, Errored} from "../actions";
 import {State, StoreLocation, User} from "../noImport";
 import {reqAddEmployee, reqChangeRole, reqGetStaffList, reqGetStore, reqMonitor, reqUpdateStore} from "../requests";
-import {timeToMillis} from "../util";
+import {parseServerTimeSlot, resetMap, timeToMillis} from "../util";
 
 export const INIT = (state: State<Manager>): ManagerAppState => {
+    const oldStore: IServerStoreResponse = state.currentUser.store as any;
+    const clientStore: ManagementStore = {
+        partners: oldStore.partnerStores as any, // Ids always come from the server.
+        timeoutMinutes: oldStore.timeOut / 60 / 1000,
+        workingHours: parseServerTimeSlot({startTime: oldStore.workingHour.from, endTime: oldStore.workingHour.until}),
+        ...oldStore,
+        location: {
+            lat: oldStore.latitude,
+            lon: oldStore.longitude,
+        },
+        maxCustomerCapacity: oldStore.maxCustomers
+
+    }
     return {
         ...state,
+        currentUser: {
+            ...state.currentUser,
+            store: clientStore,
+        },
         activeTab: "monitor",
         updatingStore: undefined,
-        store: state.currentUser.location,
+        store: clientStore,
         staffMembers: [],
         newMember: undefined,
         newPartnerStoreId: undefined,
@@ -38,14 +55,14 @@ export const LoadMonitoringTab = (state: ManagerAppState) => {
     return [{
         ...state,
         activeTab: "monitor"
-    } as ManagerAppState, reqMonitor(MonitoringLoaded, Crashed, state.store.id, false)]
+    } as ManagerAppState, reqMonitor(MonitoringLoaded, Crashed, false)]
 };
 
 export const RefreshMonitoringData = (state: ManagerAppState) => {
     if (state.activeTab !== "monitor") {
         return state;
     }
-    return [state, reqMonitor(MonitoringLoaded, Crashed, state.store.id, true)];
+    return [state, reqMonitor(MonitoringLoaded, Crashed, true)];
 
 }
 export const LoadStaffTab = (state: ManagerAppState) => {
@@ -63,7 +80,7 @@ export const UpdateNewMemberEmail = (state: ManagerAppState, content: string): M
 }
 
 export const SetNewMemberAs = (as: "manager" | "clerk") => (state: ManagerAppState) => {
-    return {...state, newMember: {...state.newMember, userType: as}};
+    return {...state, newMember: {...state.newMember, role: as}};
 }
 
 export const SubmitNewMember = (state: ManagerAppState) => {
@@ -75,13 +92,15 @@ export const SubmitNewMember = (state: ManagerAppState) => {
     return [state, reqAddEmployee(LoadStaffTab, Errored, serverMember)];
 }
 
-export const ChangeStaffType = (member: Manager | Clerk) => (state: ManagerAppState) => {
+export const ChangeStaffType = (member: User) => (state: ManagerAppState) => {
+    debugger;
     const newRole = member.role === "clerk" ? "manager" : "clerk";
     return [state, reqChangeRole(LoadStaffTab, Errored, member.id, newRole)];
 }
 
 export const LoadUpdateStoreTab = (state: ManagerAppState): ManagerAppState => {
-    return {...state, updatingStore: {...state.store}, activeTab: "update"};
+    resetMap();
+    return {...state, updatingStore: {...state.store}, activeTab: "update", newPartnerStoreId: 0};
 }
 
 export const SaveStore = ({updatingStore, ...rest}: ManagerAppState) => {
@@ -92,7 +111,8 @@ export const SaveStore = ({updatingStore, ...rest}: ManagerAppState) => {
         maxCustomers: updatingStore.maxCustomerCapacity,
         partnerStoreIds: updatingStore.partners.map((partner) => partner.id),
         timeOut: updatingStore.timeoutMinutes * 60 * 1000,
-        workingHour: {
+        workingHourDTO: {
+            id: rest.store.workingHours.id,
             from: timeToMillis(updatingStore.workingHours.start),
             until: timeToMillis(updatingStore.workingHours.end),
         }
@@ -105,7 +125,7 @@ export const StoreUpdated = (state: ManagerAppState) => {
     return LoadUpdateStoreTab({
         ...state,
         store: state.updatingStore,
-        currentUser: {...state.currentUser, location: state.updatingStore}
+        currentUser: {...state.currentUser, store: state.updatingStore}
     });
 };
 
@@ -173,6 +193,7 @@ export const FindPartnerStore = (state: ManagerAppState) => {
 }
 
 export const PartnerStoreRetrieved = (state: ManagerAppState, partnerStore: IManagementPartnerStore): ManagerAppState => {
+    resetMap();
     return {...state, foundPartnerStore: partnerStore};
 }
 
@@ -180,7 +201,7 @@ export const AddNewPartnerStore = (state: ManagerAppState): ManagerAppState => {
     return {
         ...state,
         foundPartnerStore: undefined,
-        newPartnerStoreId: undefined,
+        newPartnerStoreId: 0,
         updatingStore: {...state.updatingStore, partners: [...state.updatingStore.partners, state.foundPartnerStore]}
     }
 };
@@ -194,11 +215,12 @@ export const CancelPartnerStoreAddition = (state: ManagerAppState): ManagerAppSt
 };
 
 export const RemovePartnerStore = (partnerStore: IManagementPartnerStore) => (state: ManagerAppState): ManagerAppState => {
+    debugger;
     return {
         ...state,
         updatingStore: {
             ...state.updatingStore,
-            partners: state.updatingStore.partners.filter(store => store.id === partnerStore.id),
+            partners: state.updatingStore.partners.filter(store => store.id !== partnerStore.id),
         }
     }
 }

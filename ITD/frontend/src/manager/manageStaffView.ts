@@ -7,18 +7,18 @@ import {
     UpdateNewMemberEmail,
 } from "./actions";
 
-export const manageStaffView = ({staffMembers, newMember}: ManagerAppState) => {
+export const manageStaffView = ({staffMembers, newMember, currentUser}: ManagerAppState) => {
 
     return [
         titleText("Manage Staff", "3"),
-        inlineForm([
-            ...staffMembers.map((member) => {
-                return row([
-                    titleText(member.email, "4"),
-                    button(member.role === "clerk" ? "Promote to Manager" : "Make a Clerk", "primary", ChangeStaffType)
-                ])
-            })
-        ]),
+        ...staffMembers.map((member) => {
+            return row([
+                titleText(member.email, "4"),
+                member.email !== currentUser.email
+                    ? button(member.role === "clerk" ? "Promote to Manager" : "Make a Clerk", "primary", ChangeStaffType(member))
+                    : text("")
+            ])
+        }),
         row(card(titleText("Add Staff Member", "4"), [
             inlineForm(row(formField(newMember.email, "Email", UpdateNewMemberEmail))),
             pillSelection([{

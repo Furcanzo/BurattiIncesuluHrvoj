@@ -5,7 +5,7 @@ import {Component, INavigatorItem, State} from "../noImport";
 
 export class NewStore {
     name: string;
-    managerEmail: string;
+    firstManagerEmail: string;
 }
 export class CreateStoreAppState extends State<BackOfficeUser> {
     newStore: NewStore;
