@@ -136,7 +136,7 @@ public class EmployeeService {
         if (store != null) {
             created.setEmail(employeeDTO.getEmail());
             created.setRole(employeeDTO.getRole());
-            created.setStore(storeRepository.findById(employeeDTO.getStoreId()).orElse(null));
+            created.setStore(store);
             return created;
         }
         throw new NoSuchEntityException();
