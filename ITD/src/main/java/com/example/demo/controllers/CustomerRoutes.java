@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/api")
@@ -37,16 +38,16 @@ public class CustomerRoutes {
     }
 
     @GetMapping(path = "/timeSlot/list")
-    public ResponseEntity<String> getTimeSlots(@RequestParam int storeId){
+    public ResponseEntity<String> getTimeSlots(@RequestParam int storeId) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(customerService.availableTimeSlots(storeId, System.currentTimeMillis())));
-        }catch (NoSuchEntityException e){
+        } catch (NoSuchEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(STORE_NOT_FOUND);
         }
     }
 
     @PostMapping(path = "/book", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> bookFutureLineNumber(@RequestBody LineNumberDTO lineNumber, @RequestHeader(name = "bearer") String bearer){
+    public ResponseEntity<String> bookFutureLineNumber(@RequestBody LineNumberDTO lineNumber, @RequestHeader(name = "bearer") String bearer) {
         try {
             Store actualStore = customerService.getStore(lineNumber.getStoreId());
             try {
@@ -58,13 +59,13 @@ public class CustomerRoutes {
             } catch (TimeSlotFullException e) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(TIMESLOT_IS_FULL);
             }
-        } catch (NoSuchEntityException e){
+        } catch (NoSuchEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(STORE_NOT_FOUND);
         }
     }
 
     @PostMapping(path = "/ETA", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getETA(@RequestBody LineNumberDTO lineNumber){
+    public ResponseEntity<String> getETA(@RequestBody LineNumberDTO lineNumber) {
         try {
             int eta = customerService.calcETA(lineNumber, System.currentTimeMillis());
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ETADTO(eta)));
@@ -76,7 +77,7 @@ public class CustomerRoutes {
     }
 
     @PostMapping(path = "/retrieve", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> retrieveLineNumber(@RequestBody LineNumberDTO lineNumber,  @RequestHeader(name = "bearer") String bearer){
+    public ResponseEntity<String> retrieveLineNumber(@RequestBody LineNumberDTO lineNumber, @RequestHeader(name = "bearer") String bearer) {
         try {
             try {
                 Customer customer = customerService.findCustomerByEmail(bearer);
@@ -85,19 +86,19 @@ public class CustomerRoutes {
             } catch (NoTimeSlotsException e) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No time slots left");
             }
-        } catch (NoSuchEntityException e){
+        } catch (NoSuchEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(STORE_NOT_FOUND);
         }
     }
 
     @GetMapping(path = "/store/list")
-    public ResponseEntity<String> getStoreList(){
+    public ResponseEntity<String> getStoreList() {
         return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(customerService.getStoreList()));
     }
 
 
     @GetMapping(path = "/store")
-    public ResponseEntity<String> getStoreDetails(@RequestParam int id){
+    public ResponseEntity<String> getStoreDetails(@RequestParam int id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(customerService.getStore(id)));
         } catch (NoSuchEntityException e) {
@@ -106,7 +107,7 @@ public class CustomerRoutes {
     }
 
     @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> register(@RequestBody CustomerDTO customer){
+    public ResponseEntity<String> register(@RequestBody CustomerDTO customer) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(customerService.register(customer)));
         } catch (MailAlreadyUsedException e) {
@@ -115,7 +116,7 @@ public class CustomerRoutes {
     }
 
     @GetMapping(path = "/lineNumber/list")
-    public ResponseEntity<String> getLineNumbers(@RequestHeader(name = "bearer") String bearer){
+    public ResponseEntity<String> getLineNumbers(@RequestHeader(name = "bearer") String bearer) {
         try {
             Customer customer = customerService.findCustomerByEmail(bearer);
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(customer.getLineNumbers()));

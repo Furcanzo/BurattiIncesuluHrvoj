@@ -16,7 +16,7 @@ export const INIT = (state: State<Manager>): ManagerAppState => {
     const clientStore: ManagementStore = {
         partners: oldStore.partnerStores as any, // Ids always come from the server.
         timeoutMinutes: oldStore.timeOut / 60 / 1000,
-        workingHours: parseServerTimeSlot({startTime: oldStore.workingHour.from, endTime: oldStore.workingHour.until}),
+        workingHours: parseServerTimeSlot({startTime: oldStore.workingHour.from, endTime: oldStore.workingHour.until, id: 0}),
         ...oldStore,
         location: {
             lat: oldStore.latitude,
@@ -93,7 +93,6 @@ export const SubmitNewMember = (state: ManagerAppState) => {
 }
 
 export const ChangeStaffType = (member: User) => (state: ManagerAppState) => {
-    debugger;
     const newRole = member.role === "clerk" ? "manager" : "clerk";
     return [state, reqChangeRole(LoadStaffTab, Errored, member.id, newRole)];
 }
@@ -113,8 +112,8 @@ export const SaveStore = ({updatingStore, ...rest}: ManagerAppState) => {
         timeOut: updatingStore.timeoutMinutes * 60 * 1000,
         workingHourDTO: {
             id: rest.store.workingHours.id,
-            from: timeToMillis(updatingStore.workingHours.start),
-            until: timeToMillis(updatingStore.workingHours.end),
+            from: updatingStore.workingHours.start.hour,
+            until: updatingStore.workingHours.end.hour,
         }
 
     }
@@ -215,7 +214,6 @@ export const CancelPartnerStoreAddition = (state: ManagerAppState): ManagerAppSt
 };
 
 export const RemovePartnerStore = (partnerStore: IManagementPartnerStore) => (state: ManagerAppState): ManagerAppState => {
-    debugger;
     return {
         ...state,
         updatingStore: {

@@ -15,7 +15,7 @@ export const INIT = (state: State<Clerk>): ClerkAppState => {
     const clientStore: ManagementStore = {
         partners: oldStore.partnerStores as any, // Ids always come from the server.
         timeoutMinutes: oldStore.timeOut / 60 / 1000,
-        workingHours: parseServerTimeSlot({startTime: oldStore.workingHour.from, endTime: oldStore.workingHour.until}),
+        workingHours: parseServerTimeSlot({startTime: oldStore.workingHour.from, endTime: oldStore.workingHour.until, id:0}),
         ...oldStore,
         location: {
             lat: oldStore.latitude,
@@ -64,7 +64,8 @@ export const PrintQR = (state: ClerkAppState) => {
     if (canvases.length > 0) {
         const canvas = canvases[0];
         const printWindow = window.open("");
-        printWindow.document.write(canvas.outerHTML);
+        const html = `<img src="${canvas.toDataURL()}" width="200" height="200">`;
+        printWindow.document.write(html);
         printWindow.print();
     }
     return state;

@@ -1,9 +1,10 @@
-import {API_URL, MAPS_LOCATION_SELECTED_EVENT_NAME} from "./const";
+import {API_URL, MAPS_LOCATION_SELECTED_EVENT_NAME, QR_READ_EVENT_NAME} from "./const";
 import {Loaded, Loading} from "./actions";
 import {isManagerState} from "./models";
 import {UpdateLocation} from "./manager/actions";
 import {State, StoreLocation} from "./noImport";
 import {readUserEmail, writeUserEmail} from "./util";
+import {ReadQRCode} from "./clerk/actions";
 
 export interface IHTTPOptions<State, Request, Response> {
     path: string;
@@ -83,10 +84,19 @@ const subMapLocationSelected = [(dispatch) => {
 
     return () => window.removeEventListener(MAPS_LOCATION_SELECTED_EVENT_NAME, handler);
 }];
+
+const subQrRead = [(dispatch) => {
+    const handler = (ev: CustomEvent) => {
+        dispatch([ReadQRCode, ev.detail]);
+    }
+    window.addEventListener(QR_READ_EVENT_NAME, handler);
+    return () => window.removeEventListener(QR_READ_EVENT_NAME, handler);
+}]
 export const subscriptions = (state: State<any>) => {
     if (isManagerState(state) && state.activeTab === "update") {
-        return [subMapLocationSelected];
+        return [subQrRead, subMapLocationSelected];
     }
-    return [];
+
+    return [subQrRead];
 }
 

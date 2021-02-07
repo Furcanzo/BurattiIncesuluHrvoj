@@ -80,7 +80,6 @@ export const reqChangeRole = (success: (state: any, result: (Clerk | Manager)) =
 
 //Customer
 export const reqBookFutureLineNumber = (success: (state: any, result: IServerLineNumberResponse) => any, fail, lineNumber: IServerLineNumberRequest) => {
-    debugger;
     return http({
         path: "/book",
         method: "POST",
@@ -90,7 +89,7 @@ export const reqBookFutureLineNumber = (success: (state: any, result: IServerLin
     })
 }
 
-export const reqETA = (success: (state: any, result: number) => any, fail, lineNumber: IServerLineNumberRequest) => {
+export const reqETA = (success: (state: any, result: {etaMilliseconds: number}) => any, fail, lineNumber: IServerLineNumberRequest) => {
     return http({
         path: "/ETA",
         method: "POST",
@@ -105,6 +104,7 @@ export const reqGetImmediateLineNumber = (success: (state: any, result: IServerL
     return http({
         path: "/retrieve",
         method: "POST",
+        body: lineNumber,
         resultAction: success,
         errorAction: fail,
     })
