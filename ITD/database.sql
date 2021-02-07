@@ -56,7 +56,7 @@ CREATE TABLE TimeSlot
 (
   startTime BIGINT NOT NULL,
   endTime BIGINT NOT NULL,
-  timeSlotID INT NOT NULL,
+  timeSlotID INT NOT NULL UNIQUE  AUTO_INCREMENT,
   storeID INT NOT NULL,
   PRIMARY KEY (timeSlotID),
   FOREIGN KEY (storeID) REFERENCES Store(storeID)

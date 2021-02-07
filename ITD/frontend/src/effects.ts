@@ -12,6 +12,7 @@ export interface IHTTPOptions<State, Request, Response> {
     errorAction: (state: State, text?: string) => any;
     method: "GET" | "POST" | "DELETE" | "PUT" | "PATCH";
     showScreenWhileLoading?: boolean;
+    loadNewUser?: boolean;
 }
 const getErrorMessage = (e: Error) => {
     if (e.message.includes("NetworkError")) {
@@ -41,7 +42,7 @@ export const http = <State, Request, Response>(props: IHTTPOptions<State, Reques
                     dispatch([props.errorAction, JSON.stringify(response)]);
 
                 } else {
-                    if (response.hasOwnProperty("email")) {
+                    if (props.loadNewUser && response.hasOwnProperty("email")) {
                         writeUserEmail(response.email);
                     }
                     dispatch([props.resultAction, response]);

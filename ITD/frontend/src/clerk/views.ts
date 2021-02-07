@@ -12,10 +12,10 @@ const qrCodeReadPane = (state: ClerkAppState) => {
         text("Scan code here:"),
         qrCodeReader(ReadQRCode)
     ];
-    return row([
+    return [
         ...lastRead,
         ...scanner,
-    ]);
+    ];
 }
 
  const qrCodeGeneratePane = (state: ClerkAppState) => {
@@ -28,10 +28,10 @@ const qrCodeReadPane = (state: ClerkAppState) => {
     ]: [];
 
     const generateNew = button("Generate a new ticket", "primary", GenerateQR);
-    return row([
+    return [
         ...generated,
         generateNew,
-    ])
+    ]
 }
 
 export const view = (state: ClerkAppState) => {

@@ -1,6 +1,17 @@
 import {CustomerAppState} from "./models";
 import {LineNumber, LineNumberRequest} from "../models";
-import {alertBar, button, card, clickable, largeColumn, markerMap, row, text, titleText} from "../widgets";
+import {
+    alertBar,
+    button,
+    card, centered,
+    clickable, column,
+    largeColumn,
+    loadingWidget,
+    markerMap,
+    row, smallColumn,
+    text,
+    titleText
+} from "../widgets";
 import {
     GetLineNumbers, ImmediatelyBook,
     SelectStore,
@@ -13,9 +24,12 @@ import {dateTimeSlotSelection, estimatedStaySelector, lineNumberCard, timeStr} f
 import {CHECK_CIRCLE, PATCH_CHECK, X_CIRCLE_FILL} from "../icons";
 import {getCurrentTimeMillis, millisToTime} from "../util";
 import {Time, TimeSlot} from "../noImport";
+import {Loading} from "../actions";
 
 export const reserveView = ({newLineNumber, lineNumberReserved}: CustomerAppState) => {
-
+    if (!newLineNumber.potentialStores) {
+        return loadingWidget();
+    }
     if (!newLineNumber.store) {
         // Store selection
 
@@ -26,7 +40,7 @@ export const reserveView = ({newLineNumber, lineNumberReserved}: CustomerAppStat
                 ...result
             ];
         }
-        return result;
+        return [row(result)];
     }
     if (!newLineNumber.potentialTimeSlots) {
         // Store selected show detail screen
@@ -55,7 +69,7 @@ export const reserveView = ({newLineNumber, lineNumberReserved}: CustomerAppStat
 
 const storeSelector = ({potentialStores}: LineNumberRequest) => {
     return potentialStores.map(store => {
-        return row(largeColumn([storeCard(store, SelectStore)]));
+        return smallColumn([storeCard(store, SelectStore)]);
     });
 }
 
@@ -74,16 +88,16 @@ const storeDetails = ({store}: LineNumberRequest) => {
         titleText(store.name, "2"),
         [
             titleText(store.description, "3"),
-            markerMap(store.location, false),
+            markerMap(store.location, false, 15),
             titleText("Opens at: " + timeStr(store.workingHours.start), "3"),
             titleText("Closes at: " + timeStr(store.workingHours.end), "3"),
             titleText("(The opening hours are valid for each day)", "4"),
         ]
     ),
         row([
-            button(text([CHECK_CIRCLE, "Book Now!"]), "success", ImmediatelyBook),
-            button(text([CHECK_CIRCLE, "Continue"]), "success", SubmitStore),
-            button(text([X_CIRCLE_FILL, "Cancel"]), "danger", UnSelectStore),
+            button(text([CHECK_CIRCLE, text("Book Now!")]), "success", ImmediatelyBook),
+            button(text([CHECK_CIRCLE, text("Continue")]), "success", SubmitStore),
+            button(text([X_CIRCLE_FILL, text("Cancel")]), "danger", UnSelectStore),
         ])
     ]
 }
@@ -109,14 +123,15 @@ const showETA = (time: TimeSlot | null, etaMilliseconds: number) => {
 }
 const lineNumberDetailsForm = ({store, time, estimatedTimeOfVisit, etaMilliseconds}: LineNumberRequest) => {
     const isScheduling = !!time;
+    debugger;
     return [
         titleText("Line Number will arrive in:"),
-        etaMilliseconds ? titleText(showETA(time, etaMilliseconds), "2") : titleText("Loading", "4"),
+        typeof etaMilliseconds === "number" ? titleText(showETA(time, etaMilliseconds), "2") : titleText("Loading", "4"),
         estimatedStaySelector(estimatedTimeOfVisit),
-        row([
-            button([CHECK_CIRCLE, text(isScheduling ? "Schedule": "Get")], "success", isScheduling ? SendLineNumberRequest: SubmitImmediateBooking),
+        centered(row([
+            button([CHECK_CIRCLE, text(isScheduling ? "Schedule": "Get")], "success", isScheduling ? SendLineNumberRequest: SubmitImmediateBooking, "md", false, typeof etaMilliseconds !== "number"),
             button([X_CIRCLE_FILL, text("Cancel")], "danger", UnSelectTimeSlot),
-        ])
+        ])),
     ];
 }
 

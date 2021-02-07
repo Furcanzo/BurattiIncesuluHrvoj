@@ -28,6 +28,7 @@ export const Errored = <U extends User>(state: State<U>, errorText: string): Sta
 }
 
 export const Crashed = <U extends User>(state: State<U>, errorText: string): State<U> => {
+    writeUserEmail("");
     return {...state, error: {text: errorText, recoverable: false}};
 }
 const findDefaultNavigation = (component: Component<any, any>): INavigatorItem => {
