@@ -1,6 +1,5 @@
 package com.example.demo.services;
 
-import com.example.demo.exceptions.NoSuchEntityException;
 import com.example.demo.model.dtos.EmployeeDTO;
 import com.example.demo.model.dtos.NewStoreDTO;
 import com.example.demo.model.dtos.StoreDTO;
@@ -47,7 +46,7 @@ public class BackOfficeService {
                 store.getWorkingHourDTO() != null? store.getWorkingHourDTO() : new WorkingHourDTO(0,0),
                 store.getPartnerStoreIds());
         Store created = generateStore(storeDTO);
-        EmployeeDTO firstManagerDTO = new EmployeeDTO(store.getFirstManagerEmail(), "manager", created.getId());
+        EmployeeDTO firstManagerDTO = new EmployeeDTO(store.getFirstManagerEmail(), "manager");
         workingHourRepository.save(created.getWorkingHour());
         Store savedStore = storeRepository.save(created);
         Employee firstManager = generateEmployeeWithStore(firstManagerDTO, savedStore);

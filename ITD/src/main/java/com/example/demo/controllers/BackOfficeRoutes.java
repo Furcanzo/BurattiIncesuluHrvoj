@@ -1,6 +1,5 @@
 package com.example.demo.controllers;
 
-import com.example.demo.exceptions.NoSuchEntityException;
 import com.example.demo.model.dtos.NewStoreDTO;
 import com.example.demo.model.entities.Store;
 import com.example.demo.services.BackOfficeService;
