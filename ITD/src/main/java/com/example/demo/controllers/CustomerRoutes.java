@@ -34,7 +34,7 @@ public class CustomerRoutes {
     @GetMapping(path = "/timeSlot/list")
     public ResponseEntity<String> getTimeSlots(@RequestParam int storeId){
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(customerService.availableTimeSlots(storeId)));
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(customerService.availableTimeSlots(storeId, System.currentTimeMillis())));
         }catch (NoSuchEntityException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(STORE_NOT_FOUND);
         }
@@ -46,13 +46,13 @@ public class CustomerRoutes {
             Store actualStore = customerService.getStore(lineNumber.getStoreId());
             try {
                 Customer customer = customerService.findCustomerByEmail(bearer);
-                LineNumber created = customerService.bookFutureLineNUmber(lineNumber, customer);
+                LineNumber created = customerService.bookFutureLineNUmber(lineNumber, customer, System.currentTimeMillis());
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(created));
             } catch (NoTimeSlotsException e) {
                 List<Store> available = actualStore.getPartnerStores();
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(available));
             } catch (TimeSlotFullException e) {
-                List<TimeSlot> available = customerService.availableTimeSlots(actualStore.getId());
+                List<TimeSlot> available = customerService.availableTimeSlots(actualStore.getId(), System.currentTimeMillis());
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(available));
             }
         } catch (NoSuchEntityException e){
@@ -63,7 +63,7 @@ public class CustomerRoutes {
     @GetMapping(path = "/ETA")
     public ResponseEntity<String> getETA(@RequestBody LineNumberDTO lineNumber){
         try {
-            int eta = customerService.calcETA(lineNumber);
+            int eta = customerService.calcETA(lineNumber, System.currentTimeMillis());
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(eta));
         } catch (NoSuchEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(STORE_NOT_FOUND);
@@ -78,10 +78,10 @@ public class CustomerRoutes {
             Store actualStore = customerService.getStore(lineNumber.getStoreId());
             try {
                 Customer customer = customerService.findCustomerByEmail(bearer);
-                LineNumber created = customerService.retrieveLineNumber(lineNumber, customer);
+                LineNumber created = customerService.retrieveLineNumber(lineNumber, customer, System.currentTimeMillis());
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(created));
             } catch (NoTimeSlotsException e) {
-                List<TimeSlot> available = customerService.availableTimeSlots(actualStore.getId());
+                List<TimeSlot> available = customerService.availableTimeSlots(actualStore.getId(), System.currentTimeMillis());
                 return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(available));
             }
         } catch (NoSuchEntityException e){

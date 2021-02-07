@@ -24,6 +24,7 @@ public class Employee {
 
     @ManyToOne
     @JoinColumn(name = "storeID")
+    @Expose
     private Store store;
 
     public int getId() {

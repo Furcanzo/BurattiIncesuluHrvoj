@@ -43,10 +43,14 @@ public class CustomerService {
         this.number = 1;
     }
 
-    public LineNumber bookFutureLineNUmber(LineNumberDTO lineNumberDTO, Customer customer) throws TimeSlotFullException, NoTimeSlotsException, NoSuchEntityException {
+    public LineNumber bookFutureLineNUmber(LineNumberDTO lineNumberDTO, Customer customer, long timestamp) throws TimeSlotFullException, NoTimeSlotsException, NoSuchEntityException {
+        Store store = storeRepository.findById(lineNumberDTO.getStoreId()).orElse(null);
+        if (store == null){
+            throw new NoSuchEntityException();
+        }
+        deleteOldTimeSlots(store, timestamp);
+        createNewTimeSlotsIfNeeded(store, timestamp);
         LineNumber lineNumber = generateLineNumber(lineNumberDTO, customer);
-        deleteOldTimeSlots(lineNumber.getStore());
-        createNewTimeSlotsIfNeeded(lineNumber.getStore());
         if(noTimeSlots(lineNumber.getStore())){
             throw new NoTimeSlotsException();
         }
@@ -57,6 +61,9 @@ public class CustomerService {
     }
 
     private boolean timeSlotFull(TimeSlot timeSlot) {
+        if (timeSlot.getLineNumbers() == null){
+            return false;
+        }
         return timeSlot.getLineNumbers().size() >= timeSlot.getStore().getMaxCustomers();
     }
 
@@ -69,49 +76,54 @@ public class CustomerService {
         return true;
     }
 
-    public List<TimeSlot> availableTimeSlots(int storeId) throws NoSuchEntityException {
+    public List<TimeSlot> availableTimeSlots(int storeId, long timestamp) throws NoSuchEntityException {
         Store store = storeRepository.findById(storeId).orElse(null);
         if (store == null){
             throw new NoSuchEntityException();
         }
 
-        deleteOldTimeSlots(store);
-        createNewTimeSlotsIfNeeded(store);
+        deleteOldTimeSlots(store, timestamp);
+        createNewTimeSlotsIfNeeded(store, timestamp);
 
         List<TimeSlot> availableTimeSlots = new ArrayList<>();
         for (TimeSlot ts : store.getTimeSlots()){
-            if (ts.getLineNumbers().size()<= store.getMaxCustomers()){
+            if (ts.getLineNumbers()== null || ts.getLineNumbers().size()<= store.getMaxCustomers()){
                 availableTimeSlots.add(ts);
             }
         }
         return availableTimeSlots;
     }
 
-    private void deleteOldTimeSlots(Store store) {
+    private void deleteOldTimeSlots(Store store, long timestamp) {
+
+        List<TimeSlot> toDelete = new ArrayList<>();
         for (TimeSlot ts : store.getTimeSlots()){
-            if (ts.getEndTime() < System.currentTimeMillis()){
-                timeSlotRepository.delete(ts);
+            if (ts.getEndTime() < timestamp){
+                toDelete.add(ts);
             }
         }
-    }
-
-    private void createNewTimeSlotsIfNeeded(Store store) {
-        if (enoughTimeSlots(store)){
-            return;
+        for (TimeSlot ts : toDelete){
+            store.removeTimeSlot(ts);
+            timeSlotRepository.delete(ts);
         }
-        createNextTimeSlot(store);
-        createNewTimeSlotsIfNeeded(store);
     }
 
-    private void createNextTimeSlot(Store store) {
-        long max = System.currentTimeMillis();
+    private void createNewTimeSlotsIfNeeded(Store store, long timestamp) {
+        while (!enoughTimeSlots(store, timestamp)){
+            createNextTimeSlot(store, timestamp);
+        }
+        storeRepository.save(store);
+    }
+
+    private void createNextTimeSlot(Store store, long timestamp) {
+        long max = timestamp;
         for (TimeSlot ts : store.getTimeSlots()){
             if (ts.getEndTime()> max){
                 max= ts.getEndTime();
             }
         }
         TimeSlot timeSlot = new TimeSlot();
-        if (lastTimeSlotEndsDay(store)){
+        if (lastTimeSlotEndsDay(store, timestamp)){
             long startTime = calcTimeStamp(max, store.getWorkingHour().getFrom(), 1);
             timeSlot.setStartTime(startTime);
             timeSlot.setEndTime(startTime + store.getTimeOut());
@@ -124,11 +136,11 @@ public class CustomerService {
         this.number = 1;
     }
 
-    private boolean lastTimeSlotEndsDay(Store store) {
+    private boolean lastTimeSlotEndsDay(Store store, long timestamp) {
         if(store.getTimeSlots().isEmpty()) {
             return false;
         }
-        long max = System.currentTimeMillis();
+        long max = timestamp;
         TimeSlot maxTime = null;
         for (TimeSlot ts : store.getTimeSlots()){
             if (ts.getEndTime()> max){
@@ -142,34 +154,38 @@ public class CustomerService {
 
     private long calcTimeStamp(long dayTimeStamp, int hour, int plusDays) {
         Date date = new Date(dayTimeStamp);
-        date.setDate(date.getDay()+ plusDays);
+        date.setDate(date.getDate()+ plusDays);
         date.setHours(hour);
         date.setMinutes(0);
         date.setSeconds(0);
         return date.getTime();
     }
 
-    private boolean enoughTimeSlots(Store store) {
+    private boolean enoughTimeSlots(Store store, long timestamp) {
         long max = 0;
         for (TimeSlot ts : store.getTimeSlots()){
             if (ts.getEndTime()> max){
                 max= ts.getEndTime();
             }
         }
-        return max > System.currentTimeMillis() + 3*7*24*60*60*1000; //3 weeks
+        return  store.getTimeSlots().size() > 380; //max > timestamp + 3*7*24*60*60*1000; //3 weeks
     }
 
-    public int calcETA(LineNumberDTO lineNumberDTO) throws NoSuchEntityException, NoTimeSlotsException {
+    public int calcETA(LineNumberDTO lineNumberDTO, long timestamp) throws NoSuchEntityException, NoTimeSlotsException {
+        Store store = storeRepository.findById(lineNumberDTO.getStoreId()).orElse(null);
+        if (store == null){
+            throw new NoSuchEntityException();
+        }
+        deleteOldTimeSlots(store, timestamp);
+        createNewTimeSlotsIfNeeded(store, timestamp);
         LineNumber lineNumber = generateLineNumber(lineNumberDTO, null);
-        deleteOldTimeSlots(lineNumber.getStore());
-        createNewTimeSlotsIfNeeded(lineNumber.getStore());
         int duration = (int)(lineNumber.getUntil()- lineNumber.getFrom());
-        if (testIfFits(duration, System.currentTimeMillis(), lineNumber.getStore().getMaxCustomers(), lineNumber.getStore().getId())){
+        if (testIfFits(duration, timestamp, lineNumber.getStore().getMaxCustomers(), lineNumber.getStore().getId())){
             return 0;
         }
         for (LineNumber  ln : lineNumber.getStore().getLineNumbers()){
             if (ln.getUntil() < calcTimeStamp(lineNumber.getUntil(), lineNumber.getStore().getWorkingHour().getUntil(), 0) && testIfFits(duration, ln.getUntil(), lineNumber.getStore().getMaxCustomers(), lineNumber.getStore().getId())){
-                return (int) (ln.getUntil() - System.currentTimeMillis());
+                return (int) (ln.getUntil() - timestamp);
             }
         }
         throw new NoTimeSlotsException();
@@ -180,17 +196,23 @@ public class CustomerService {
 
     }
 
-    public LineNumber retrieveLineNumber(LineNumberDTO lineNumberDTO, Customer customer) throws NoTimeSlotsException, NoSuchEntityException {
+    public LineNumber retrieveLineNumber(LineNumberDTO lineNumberDTO, Customer customer, long timestamp) throws NoTimeSlotsException, NoSuchEntityException {
+        Store store = storeRepository.findById(lineNumberDTO.getStoreId()).orElse(null);
+        if (store == null){
+            throw new NoSuchEntityException();
+        }
+        deleteOldTimeSlots(store, timestamp);
+        createNewTimeSlotsIfNeeded(store, timestamp);
         LineNumber lineNumber = generateLineNumber(lineNumberDTO, customer);
-        deleteOldTimeSlots(lineNumber.getStore());
-        createNewTimeSlotsIfNeeded(lineNumber.getStore());
         if (noTimeSlots(lineNumber.getStore())){
             throw new NoTimeSlotsException();
         }
-        long fromTimeStamp = System.currentTimeMillis() + calcETA(lineNumberDTO);
+        long fromTimeStamp = timestamp + calcETA(lineNumberDTO, timestamp);
         lineNumber.setFrom(fromTimeStamp);
         lineNumber.setUntil(fromTimeStamp + (lineNumberDTO.getUntil() - lineNumberDTO.getFrom()));
-        lineNumber.setTimeSlot(timeSlotRepository.getTimeSlotAt(lineNumber.getStore().getId(), fromTimeStamp));
+        TimeSlot timeSlot = timeSlotRepository.getTimeSlotAt(lineNumber.getStore().getId(), fromTimeStamp);
+        lineNumber.setTimeSlot(timeSlot);
+        lineNumber.setStatus("WAITING");
         return lineNumberRepository.save(lineNumber);
     }
 
@@ -238,7 +260,7 @@ public class CustomerService {
         lineNumber.setUntil(lineNumberDTO.getUntil());
         TimeSlot timeSlot = timeSlotRepository.findById(lineNumberDTO.getTimeSlotId()).orElse(null);
         Store store = storeRepository.findById(lineNumberDTO.getStoreId()).orElse(null);
-        if (store == null || timeSlot == null){
+        if (store == null){
             throw new NoSuchEntityException();
         }
         lineNumber.setTimeSlot(timeSlot);

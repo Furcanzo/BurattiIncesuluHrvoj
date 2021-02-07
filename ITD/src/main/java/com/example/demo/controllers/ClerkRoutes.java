@@ -79,10 +79,10 @@ public class ClerkRoutes {
             if (securityService.checkClerk(employee, lineNumber.getStoreId())) {
                 Store actualStore = customerService.getStore(lineNumber.getStoreId());
                 try {
-                    LineNumber created = customerService.retrieveLineNumber(lineNumber, null);
+                    LineNumber created = customerService.retrieveLineNumber(lineNumber, null, System.currentTimeMillis());
                     return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(created));
                 } catch (NoTimeSlotsException e) {
-                    List<TimeSlot> available = customerService.availableTimeSlots(actualStore.getId());
+                    List<TimeSlot> available = customerService.availableTimeSlots(actualStore.getId(), System.currentTimeMillis());
                     return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(available));
                 }
             } else {
