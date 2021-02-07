@@ -37,10 +37,15 @@ export const http = <State, Request, Response>(props: IHTTPOptions<State, Reques
         fetch(url, requestProps).then((rawResponse) => {
             const rawResponse2 = rawResponse.clone();
             rawResponse.json().then(response => {
-                if (response.hasOwnProperty("email")) {
-                    writeUserEmail(response.email);
+                if (!rawResponse.ok) {
+                    dispatch([props.errorAction, JSON.stringify(response)]);
+
+                } else {
+                    if (response.hasOwnProperty("email")) {
+                        writeUserEmail(response.email);
+                    }
+                    dispatch([props.resultAction, response]);
                 }
-                dispatch([props.resultAction, response]);
             }) .catch((err) => {
                 console.error(err);
                 rawResponse2.text().then((text) => {

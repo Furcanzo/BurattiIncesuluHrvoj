@@ -36,7 +36,6 @@ export const SwitchTab = (route: string) => (state)  => {
     return [state, effects.Navigate(route)];
 }
 export const NewUser = <U extends User>(state: State<User>, newUser: U): any[] => {
-    debugger;
     let newState: State<U> = {...state, currentUser: newUser, initialized: true} as State<U>; // Old state is on the front?
     let component: Component<any, any>;
     if (isClerkState(newState)) {
@@ -82,7 +81,6 @@ export const RemoveErrors = (state: State<User>): State<User> => {
 export const INIT = () => {
     const state = {...firstState};
     state.currentUser.email = readUserEmail();
-    debugger;
     if (state.currentUser.email) {
         return [state, reqLogin(NewUser, Crashed, state.currentUser.email)];
     }
@@ -90,7 +88,6 @@ export const INIT = () => {
 }
 
 export const Logout = (state: State<User>) => {
-    debugger;
     writeUserEmail("");
     return INIT();
 }
