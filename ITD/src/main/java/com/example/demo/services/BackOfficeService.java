@@ -4,6 +4,7 @@ import com.example.demo.exceptions.NoSuchEntityException;
 import com.example.demo.model.dtos.EmployeeDTO;
 import com.example.demo.model.dtos.NewStoreDTO;
 import com.example.demo.model.dtos.StoreDTO;
+import com.example.demo.model.dtos.WorkingHourDTO;
 import com.example.demo.model.entities.Employee;
 import com.example.demo.model.entities.Store;
 import com.example.demo.repositories.EmployeeRepository;
@@ -36,20 +37,30 @@ public class BackOfficeService {
     }
 
     @Transactional
-    public Store createStore(NewStoreDTO store) throws NoSuchEntityException {
+    public Store createStore(NewStoreDTO store){
         StoreDTO storeDTO = new StoreDTO(store.getName(),
-                store.getDescription(), store.getLongitude(),
+                store.getDescription() != null? store.getDescription() : "",
+                store.getLongitude(),
                 store.getLatitude(),
                 store.getMaxCustomers(),
                 store.getTimeOut(),
-                store.getWorkingHourDTO(),
+                store.getWorkingHourDTO() != null? store.getWorkingHourDTO() : new WorkingHourDTO(0,0),
                 store.getPartnerStoreIds());
         Store created = generateStore(storeDTO);
         EmployeeDTO firstManagerDTO = new EmployeeDTO(store.getFirstManagerEmail(), "manager", created.getId());
-        Employee firstManager = employeeService.generateEmployee(firstManagerDTO);
         workingHourRepository.save(created.getWorkingHour());
+        Store savedStore = storeRepository.save(created);
+        Employee firstManager = generateEmployeeWithStore(firstManagerDTO, savedStore);
         employeeRepository.save(firstManager);
-        return storeRepository.save(created);
+        return savedStore;
+    }
+
+    private Employee generateEmployeeWithStore(EmployeeDTO employeeDTO, Store savedStore){
+        Employee created = new Employee();
+        created.setEmail(employeeDTO.getEmail());
+        created.setRole(employeeDTO.getRole());
+        created.setStore(savedStore);
+        return created;
     }
 
 

@@ -33,17 +33,12 @@ public class BackOfficeRoutes {
     }
 
     @PostMapping(path = "/store", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Transactional
     public ResponseEntity<String> createStore(@RequestBody NewStoreDTO store, @RequestHeader(name = "bearer") String bearer) {
-        try {
-            if (securityService.backOffice(bearer)) {
-                Store created = backOfficeService.createStore(store);
-                return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(created));
-            } else {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("The requester doesn't have the permission to do this");
-            }
-        }catch (NoSuchEntityException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("bad request");
+        if (securityService.backOffice(bearer)) {
+            Store created = backOfficeService.createStore(store);
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(created));
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("The requester doesn't have the permission to do this");
         }
     }
 }
