@@ -12,6 +12,7 @@ public class TimeSlot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "timeSlotID")
+    @Expose
     private int id;
 
     @Column(name = "startTime")
