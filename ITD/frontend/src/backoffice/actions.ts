@@ -26,7 +26,7 @@ const StoreAdded = (state: CreateStoreAppState): CreateStoreAppState => {
 }
 
 export const SubmitStore = (state: CreateStoreAppState) => {
-    const newStore = state.newStore
+    const newStore = state.newStore;
     if (newStore.managerEmail && newStore.name) {
         return [state, reqCreateStore(StoreAdded, Errored, newStore)];
     }

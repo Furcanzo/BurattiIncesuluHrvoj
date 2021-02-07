@@ -174,6 +174,7 @@ export const reqCreateStore = (success: (state: any, result: null) => any, fail,
     return http({
         path: "/store",
         method: "POST",
+        body: newStore,
         resultAction: success,
         errorAction: fail,
     })
