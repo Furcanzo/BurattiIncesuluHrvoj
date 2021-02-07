@@ -51,7 +51,7 @@ export const dateTimeSlotSelection = (lineNumberRequest: LineNumberRequest) => {
         return new Date(newMilisecs);
     })
     const selectedDate = lineNumberRequest.selectedDateSlot;
-    const currentSlots = selectedDate ? lineNumberRequest.potentialTimeSlots.filter((timeSlot) => selectedDate === timeSlot.day) : [];
+    const currentSlots = selectedDate ? lineNumberRequest.potentialTimeSlots.filter((timeSlot) => Math.abs(selectedDate - timeSlot.day) < 1000) : [];
     const navigation = [
         {
             active: false,
@@ -80,23 +80,21 @@ export const dateTimeSlotSelection = (lineNumberRequest: LineNumberRequest) => {
         });
     } else if (selectedDate) {
         cardBody = [titleText("There are no time slots available for the slot that you selected.")]
-        if (lineNumberRequest.store.partners.length > 0) {
-            const storeCards = lineNumberRequest.store.partners.map(store => storeCard(store, SelectStore(store)))
+        if ((lineNumberRequest.store as any).partnerStores.length > 0) {
+            const storeCards = (lineNumberRequest.store as any).partnerStores.map(store => storeCard(store, SelectStore(store)))
             cardBody = [...cardBody, titleText("However following partner stores are available:"), ...storeCards];
         }
     } else {
         cardBody = titleText(`Select a date to view the timeslots available!`, "4");
     }
-    return centered(navigationCard(navigation, row(cardBody)));
+    return [centered(navigationCard(navigation, row(cardBody)))];
 
 }
 
 export const estimatedStaySelector = (estimatedTime: Time) => {
     return centered(card(titleText("How much time do you plan on spending in the store?", "5"), row([
-        column([]),
         column(formField(estimatedTime.hour.toString(), "Hours", UpdateVisitTimeField("hour"), "number")),
         column(formField(estimatedTime.minute.toString(), "Minutes", UpdateVisitTimeField("minute"), "number")),
-        column([]),
     ]), "secondary"));
 }
 

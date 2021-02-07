@@ -54,7 +54,7 @@ export const BookLineNumber = (state: CustomerAppState, previousErrored: boolean
     newLineNumber.estimatedTimeOfVisit = new Time();
     newLineNumber.previousErrored = previousErrored;
     const success = (doneState, storeResponses) => {
-        const emptyPartnerStores = storeResponses.map((storeResponse: IServerStoreResponse) => {
+        const stores: Store[] = storeResponses.map((storeResponse: IServerStoreResponse) => {
             return {
                 ...storeResponse,
                 location: {
@@ -62,20 +62,12 @@ export const BookLineNumber = (state: CustomerAppState, previousErrored: boolean
                     lon: storeResponse.longitude,
                 },
                 workingHours: parseServerTimeSlot({
-                    startTime: storeResponse.workingHour.from,
-                    endTime: storeResponse.workingHour.until
+                    startTime: (storeResponse.workingHourDTO || storeResponse.workingHour).from,
+                    endTime: (storeResponse.workingHourDTO || storeResponse.workingHour).until
                 }),
                 timeoutMinutes: storeResponse.timeOut / 60 / 1000,
                 maxCustomerCapacity: storeResponse.maxCustomers,
-                partners: storeResponse.partnerStoreIds, // Partners will be populated once we have all the stores
             }
-        },);
-        const stores: Store[] = emptyPartnerStores.map(emptyStore => {
-
-            return {
-                partners: emptyStore.partnerStoreIds.map((storeId: number): Store => emptyPartnerStores.find((store_) => store_.id === storeId)).filter(store => !!store),
-                ...emptyStore,
-            };
         });
         return GotBookingStores(doneState, stores);
 
@@ -89,7 +81,7 @@ export const BookLineNumber = (state: CustomerAppState, previousErrored: boolean
 }
 
 export const GotBookingStores = (state: CustomerAppState, stores: Store[]): CustomerAppState => {
-    return {newLineNumber: {...state.newLineNumber, potentialStores: stores}, ...state};
+    return {...state, newLineNumber: {...state.newLineNumber, potentialStores: stores}};
 }
 
 export const SelectStore = (store: Store) => (state: CustomerAppState): CustomerAppState => {
@@ -109,11 +101,23 @@ const convertLineNumberRequest = (newLineNumber: LineNumberRequest): IServerLine
         storeId: newLineNumber.store.id,
     }
 }
+
+const convertImmediateBooking = () => {
+
+}
 export const ImmediatelyBook = (state: CustomerAppState) => {
+    const newLineNumber = state.newLineNumber;
+    const serverRequest: IServerLineNumberRequest = {
+        ...newLineNumber,
+        from: getCurrentTimeMillis() + newLineNumber.etaMilliseconds,
+        until: getCurrentTimeMillis() + newLineNumber.etaMilliseconds + newLineNumber.store.timeoutMinutes * 60 * 1000,
+        timeSlotId: null,
+        storeId: newLineNumber.store.id,
+    }
     return [{
         ...state,
         newLineNumber: {...state.newLineNumber, time: null}
-    } as CustomerAppState, reqETA(ETARetrieved, ReservationFailed, convertLineNumberRequest(state.newLineNumber))];
+    } as CustomerAppState, reqETA(ETARetrieved, ReservationFailed, serverRequest)];
 }
 
 export const ETARetrieved = (state: CustomerAppState, etaMilliseconds: number): CustomerAppState => {
@@ -137,7 +141,14 @@ export const SubmitStore = (state: CustomerAppState) => {
     return [state, reqListTimeSlotsOf(StoreTimeSlotsRetrieved, ReservationFailed, state.newLineNumber.store.id)];
 }
 export const StoreTimeSlotsRetrieved = (state: CustomerAppState, timeSlots: IServerTimeSlot[]): CustomerAppState => {
-    return {...state, newLineNumber: {...state.newLineNumber, potentialTimeSlots: timeSlots.map(parseServerTimeSlot)}};
+    const immediate: CustomerAppState = {
+        ...state,
+        newLineNumber: {...state.newLineNumber, potentialTimeSlots: timeSlots.map(parseServerTimeSlot)}
+    };
+    return {
+        ...immediate,
+        newLineNumber: {...immediate.newLineNumber, selectedWeekSlot: immediate.newLineNumber.potentialTimeSlots[0].day}
+    }
 }
 
 export const UpdateVisitTimeField = (field: "hour" | "minute") => (state: CustomerAppState, content: string): CustomerAppState => {
@@ -150,10 +161,12 @@ export const UpdateVisitTimeField = (field: "hour" | "minute") => (state: Custom
 }
 
 export const SelectTimeSlot = (timeSlot: TimeSlot) => (state: CustomerAppState) => {
-    return [{
+    const newState = {
         ...state,
-        newLineNumber: {...state.newLineNumber, time: timeSlot, previousErrored: false}
-    }, reqETA(ETARetrieved, Errored, convertLineNumberRequest(state.newLineNumber))];
+        newLineNumber: {...state.newLineNumber, time: timeSlot, previousErrored: false, estimatedTimeOfVisit: {hour: 0, minute: 30}} as LineNumberRequest,
+
+    }
+    return [newState, reqETA(ETARetrieved, Errored, convertLineNumberRequest(newState.newLineNumber))];
 }
 
 export const UnSelectTimeSlot = (state: CustomerAppState): CustomerAppState => {

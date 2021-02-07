@@ -17,6 +17,7 @@ export const reqLogin = (success, fail, email: string) => {
         method: "GET",
         resultAction: success,
         errorAction: fail,
+        loadNewUser: true,
     })
 }
 // Manager
@@ -79,9 +80,11 @@ export const reqChangeRole = (success: (state: any, result: (Clerk | Manager)) =
 
 //Customer
 export const reqBookFutureLineNumber = (success: (state: any, result: IServerLineNumberResponse) => any, fail, lineNumber: IServerLineNumberRequest) => {
+    debugger;
     return http({
         path: "/book",
         method: "POST",
+        body: lineNumber,
         resultAction: success,
         errorAction: fail,
     })
@@ -130,6 +133,7 @@ export const reqRegister = (success: (state: any, result: IServerCustomerRespons
         body: customer,
         resultAction: success,
         errorAction: fail,
+        loadNewUser: true,
     })
 }
 

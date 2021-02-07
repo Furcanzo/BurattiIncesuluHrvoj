@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.exceptions.MailAlreadyUsedException;
+import com.example.demo.model.dtos.ETADTO;
 import com.example.demo.model.entities.*;
 import com.example.demo.model.dtos.CustomerDTO;
 import com.example.demo.model.dtos.LineNumberDTO;
@@ -66,7 +67,7 @@ public class CustomerRoutes {
     public ResponseEntity<String> getETA(@RequestBody LineNumberDTO lineNumber){
         try {
             int eta = customerService.calcETA(lineNumber, System.currentTimeMillis());
-            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(eta));
+            return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(new ETADTO(eta)));
         } catch (NoSuchEntityException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(STORE_NOT_FOUND);
         } catch (NoTimeSlotsException e) {

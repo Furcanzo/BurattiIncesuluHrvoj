@@ -64,7 +64,7 @@ public class ClerkRoutes {
             Employee employee = employeeService.findEmployeeByEmail(bearer);
             if (securityService.checkClerk(employee, lineNumber.getStoreId())) {
                 Store actualStore = customerService.getStore(lineNumber.getStoreId());
-                List<TimeSlot> availableSlots = customerService.availableTimeSlots(actualStore.getId());
+                List<TimeSlot> availableSlots = customerService.availableTimeSlots(actualStore.getId(), System.currentTimeMillis());
                 TimeSlot firstTimeSlot = availableSlots.get(0);
                 try {
                     LineNumberDTO actualTimeSlottedLN = new LineNumberDTO(lineNumber.getFrom(), lineNumber.getUntil(), firstTimeSlot.getId(), lineNumber.getStoreId());
