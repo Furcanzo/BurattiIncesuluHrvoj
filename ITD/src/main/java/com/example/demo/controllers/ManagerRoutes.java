@@ -14,6 +14,7 @@ import com.example.demo.services.SecurityService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,7 +43,7 @@ public class ManagerRoutes {
         this.securityService = securityService;
     }
 
-    @PutMapping(path = "/store")
+    @PutMapping(path = "/store", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> updateStore(@RequestBody StoreDTO store, @RequestHeader(name = "bearer") String bearer) {
         try {
             Employee manager = employeeService.findEmployeeByEmail(bearer);
@@ -86,7 +87,7 @@ public class ManagerRoutes {
         }
     }
 
-    @PostMapping(path = "/employee")
+    @PostMapping(path = "/employee", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> addEmployee(@RequestBody EmployeeDTO employee, @RequestHeader(name = "bearer") String bearer) {
         try {
             Employee manager = employeeService.findEmployeeByEmail(bearer);

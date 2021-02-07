@@ -14,5 +14,5 @@ export const numbersView = ({myLineNumbers, showDetailsOf}: CustomerAppState) =>
             row(button([X_CIRCLE_FILL, text("Close")], "danger", UnSelectDetails)),
         ];
     }
-    return lineNumberSelector(myLineNumbers);
+    return [lineNumberSelector(myLineNumbers)];
 }

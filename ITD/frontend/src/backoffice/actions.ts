@@ -3,14 +3,15 @@ import {CreateStoreAppState, NewStore} from "./models";
 import {http} from "../effects";
 import {Errored} from "../actions";
 import {State} from "../noImport";
+import {reqCreateStore} from "../requests";
 
 const emptyNewStore: NewStore = {name: "", managerEmail: ""}
 export const INIT = (state: State<AnonUser>): CreateStoreAppState => {
-    return {...state, newStore: emptyNewStore};
+    return {...state, newStore: {...emptyNewStore}};
 }
 
 export const CreateStorePage = (state: CreateStoreAppState) => {
-    return {...state, newStore: emptyNewStore};
+    return {...state, newStore: {...emptyNewStore}};
 }
 
 
@@ -20,22 +21,14 @@ export const UpdateStoreField = (field: "managerEmail" | "name") =>
         return state;
     };
 
-const StoreAdded = (state: CreateStoreAppState) => {
-    return state;
+const StoreAdded = (state: CreateStoreAppState): CreateStoreAppState => {
+    return {...state, lastCreatedStore: state.newStore, newStore: {...emptyNewStore}};
 }
-
-const CREATE_STORE = "addStore";
 
 export const SubmitStore = (state: CreateStoreAppState) => {
     const newStore = state.newStore
     if (newStore.managerEmail && newStore.name) {
-        return [state, http({
-            path: CREATE_STORE,
-            method: "POST",
-            body: newStore,
-            errorAction: Errored,
-            resultAction: StoreAdded,
-        })]
+        return [state, reqCreateStore(StoreAdded, Errored, newStore)];
     }
     return Errored(state, "Please fill all the required fields");
 }

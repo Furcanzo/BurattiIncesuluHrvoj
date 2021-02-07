@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "customer")
+@Table(name = "Customer")
 public class Customer {
 
     @Id
@@ -35,6 +35,7 @@ public class Customer {
     private List<LineNumber> lineNumbers;
 
     @Expose
+    @Transient
     private String role = "customer";
 
     public int getId() {

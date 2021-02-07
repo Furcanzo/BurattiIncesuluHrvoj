@@ -211,7 +211,7 @@ const footer = background(html`
 `, "light");
 
 export const alertBar = (content: string | any[], color: Color) => {
-    return html`<div class="alert alert-${color}" role="alert">${content}</div>`
+    return html`<div class="alert alert-${color} flex-grow-1 text-center" role="alert">${content}</div>`
 }
 export const wrapper = (navbar: any, body: any[], error?: string) => {
     const alert = error ? alertBar(error, "danger") : "";

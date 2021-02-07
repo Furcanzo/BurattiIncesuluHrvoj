@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "employee")
+@Table(name = "Employee")
 public class Employee {
 
     @Id

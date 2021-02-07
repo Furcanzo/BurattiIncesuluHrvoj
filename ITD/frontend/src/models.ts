@@ -3,7 +3,7 @@ import {ManagementStore, ManagerAppState, managerComponent} from "./manager/mode
 import {ClerkAppState, clerkComponent} from "./clerk/models";
 import {LoginAppState, loginComponent} from "./login/models";
 import {CreateStoreAppState, createStoreComponent} from "./backoffice/models";
-import {NewUser} from "./actions";
+import {Logout, NewUser} from "./actions";
 import {INavigatorItem, State, Store, Time, TimeSlot, User} from "./noImport";
 
 
@@ -160,6 +160,7 @@ export const routes = {
     ...generateRoutes(customerComponent.navigation),
 
     "/": (state: State<any>) => NewUser(state, state.currentUser),
+    "/logout": {OnEnter: Logout}
 
 }
 

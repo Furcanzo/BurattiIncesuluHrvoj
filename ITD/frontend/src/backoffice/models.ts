@@ -9,6 +9,7 @@ export class NewStore {
 }
 export class CreateStoreAppState extends State<BackOfficeUser> {
     newStore: NewStore;
+    lastCreatedStore?: NewStore;
 }
 
 const navigationItems: INavigatorItem[] = [{
