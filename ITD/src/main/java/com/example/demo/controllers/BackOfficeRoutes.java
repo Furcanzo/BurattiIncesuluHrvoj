@@ -8,6 +8,7 @@ import com.example.demo.services.SecurityService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,8 +32,7 @@ public class BackOfficeRoutes {
         this.backOfficeService = backOfficeService;
     }
 
-    // TODO: @Roberto These two requests shall become one, input is manager email and store name
-    @PostMapping(path = "/store")
+    @PostMapping(path = "/store", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
     public ResponseEntity<String> createStore(@RequestBody NewStoreDTO store, @RequestHeader(name = "bearer") String bearer) {
         try {

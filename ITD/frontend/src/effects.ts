@@ -26,7 +26,8 @@ export const http = <State, Request, Response>(props: IHTTPOptions<State, Reques
             body: props.body ? JSON.stringify(props.body) : null,
             method: props.method,
             headers: new Headers([
-                ["Bearer", readUserEmail()]
+                ["Bearer", readUserEmail()],
+                ...(props.body ? [["Content-Type", "application/json; charset=utf-8"]] : [])
             ])
         };
         if (!props.showScreenWhileLoading) {

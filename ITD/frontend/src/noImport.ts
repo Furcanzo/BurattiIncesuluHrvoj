@@ -10,6 +10,7 @@ export abstract class State<U extends User> {
         recoverable?: boolean;
         text?: string;
     };
+    initialized: boolean;
 }
 export interface INavigatorItem {
     title: string;

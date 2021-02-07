@@ -1,5 +1,4 @@
 import {
-    AnonUser,
     isAnonState, isBackOfficeState,
     isClerkState,
     isCustomerState,
@@ -8,12 +7,10 @@ import {
 import {clerkComponent} from "./clerk/models";
 import {managerComponent} from "./manager/models";
 import {customerComponent} from "./customer/models";
-import {LoginAppState, loginComponent} from "./login/models";
-import {INIT as LoginINIT} from "./login/actions";
+import {loginComponent} from "./login/models";
 import { effects } from '@mrbarrysoftware/hyperapp-router';
-import {Component, INavigatorItem, State, User} from "./state";
+import {Component, INavigatorItem, State, User} from "./noImport";
 import {readUserEmail, writeUserEmail} from "./util";
-import {http} from "./effects";
 import {reqLogin} from "./requests";
 import {createStoreComponent} from "./backoffice/models";
 
@@ -40,7 +37,7 @@ export const SwitchTab = (route: string) => (state)  => {
 }
 export const NewUser = <U extends User>(state: State<User>, newUser: U): any[] => {
     debugger;
-    let newState: State<U> = {...state, currentUser: newUser} as State<U>; // Old state is on the front?
+    let newState: State<U> = {...state, currentUser: newUser, initialized: true} as State<U>; // Old state is on the front?
     let component: Component<any, any>;
     if (isClerkState(newState)) {
         component = clerkComponent;
@@ -52,6 +49,11 @@ export const NewUser = <U extends User>(state: State<User>, newUser: U): any[] =
         component = loginComponent;
     } else if (isBackOfficeState(newState)) {
         component = createStoreComponent;
+    } else {
+        return [newState, Nothing]; // This happens when we error on user authentication, the loaded action will dispatch the correct error
+    }
+    if (newState.error && !newState.error.recoverable) {
+        return [newState, Nothing]; // We crashed, everything can happen
     }
     newState = component.initAction(newState);
     return [newState, effects.Navigate(findDefaultNavigation(component).route)];
@@ -61,11 +63,12 @@ export const Nothing = <U extends User>(state: State<U>): State<U> => {
 }
 
 const firstState = {
-    loading: false,
+    loading: true,
     currentUser: {
         role: "anonymous",
         email: "",
     } as User,
+    initialized: false,
     error: undefined,
 };
 
@@ -79,13 +82,15 @@ export const RemoveErrors = (state: State<User>): State<User> => {
 export const INIT = () => {
     const state = {...firstState};
     state.currentUser.email = readUserEmail();
+    debugger;
     if (state.currentUser.email) {
         return [state, reqLogin(NewUser, Crashed, state.currentUser.email)];
     }
-    return NewUser(firstState, state.currentUser);
+    return NewUser({...firstState, initialized: true, loading: false}, state.currentUser);
 }
 
 export const Logout = (state: State<User>) => {
+    debugger;
     writeUserEmail("");
-    return NewUser({...firstState}, {email: "", role: "anonymous"})
+    return INIT();
 }

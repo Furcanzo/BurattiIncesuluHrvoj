@@ -11,6 +11,7 @@ import com.example.demo.services.CustomerService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,7 +44,7 @@ public class CustomerRoutes {
         }
     }
 
-    @PostMapping(path = "/book")
+    @PostMapping(path = "/book", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> bookFutureLineNumber(@RequestBody LineNumberDTO lineNumber, @RequestHeader(name = "bearer") String bearer){
         try {
             Store actualStore = customerService.getStore(lineNumber.getStoreId());
@@ -61,7 +62,7 @@ public class CustomerRoutes {
         }
     }
 
-    @PostMapping(path = "/ETA")
+    @PostMapping(path = "/ETA", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getETA(@RequestBody LineNumberDTO lineNumber){
         try {
             int eta = customerService.calcETA(lineNumber);
@@ -73,7 +74,7 @@ public class CustomerRoutes {
         }
     }
 
-    @PostMapping(path = "/retrieve")
+    @PostMapping(path = "/retrieve", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> retrieveLineNumber(@RequestBody LineNumberDTO lineNumber,  @RequestHeader(name = "bearer") String bearer){
         try {
             Store actualStore = customerService.getStore(lineNumber.getStoreId());
@@ -105,7 +106,7 @@ public class CustomerRoutes {
         }
     }
 
-    @PostMapping(path = "/register")
+    @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> register(@RequestBody CustomerDTO customer){
         try {
             return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(customerService.register(customer)));

@@ -10,6 +10,7 @@ import com.example.demo.services.SecurityService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,7 +58,7 @@ public class ClerkRoutes {
         }
     }
 
-    @PostMapping(path = "/guestTicket")
+    @PostMapping(path = "/guestTicket", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> retrieveGuestLineNumber(@RequestBody LineNumberDTO lineNumber, @RequestHeader(name = "bearer") String bearer) {
         try {
             Employee employee = employeeService.findEmployeeByEmail(bearer);
