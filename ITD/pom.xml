@@ -111,6 +111,15 @@
                         </goals>
                     </execution>
                     <execution>
+                        <id>parcel version</id>
+                        <goals>
+                            <goal>npx</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>parcel -/-version</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>compile parcel</id>
                         <goals>
                             <goal>npx</goal>
@@ -119,7 +128,7 @@
                         <phase>generate-resources</phase>
 
                         <configuration>
-                            <arguments>parcel build index.html -/-dist-dir ../src/main/resources/static </arguments>
+                            <arguments>parcel build index.html -/-dist-dir ../src/main/resources/static -/-no-scope-hoist</arguments>
                         </configuration>
                     </execution>
                 </executions>
