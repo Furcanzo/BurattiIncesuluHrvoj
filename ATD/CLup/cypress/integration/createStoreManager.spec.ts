@@ -1,7 +1,6 @@
 describe("Register Store Manager", () => {
     it("R1 - will ask for the necessary information to register a user (generalization of Store Manager)", () => {
         cy.visit("/");
-
     });
     it("R1 - will register a person to the system as a user (generalization of Store Manager)", () => {
 

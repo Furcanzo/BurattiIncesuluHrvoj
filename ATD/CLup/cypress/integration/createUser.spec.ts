@@ -24,7 +24,7 @@ describe("Register Clupper", () => {
         goToRegisterPage();
         ["email", "password", "name", "surname"].map((field) => {
             cy.get(`input[name^="${field}"`).should("exist");
-        })
+        });
 
     });
     it("R1 - will register a person to the system as a user (generalization of Clupper)", () => {

@@ -9,3 +9,8 @@
 *   this results in the deletion of his ticket.
 * */
 
+describe("JoinDigitalQueue", () => {
+    it("Select a supermarket", () => {
+        cy.login(1, "customer");
+    })
+})

@@ -4,6 +4,6 @@ declare namespace Cypress {
         * Custom command to login as a specific user to the given CLup implementation
          * Do NOT use to test authentication.
         * */
-        login(n: number, type: "customer" | "manager"): Chainable;
+        login(n: number, type: "customer" | "manager", capacity?: number): Chainable;
     }
 }
