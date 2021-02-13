@@ -10,7 +10,60 @@
 * */
 
 describe("JoinDigitalQueue", () => {
-    it("Select a supermarket", () => {
+    before(()=>{
         cy.login(1, "customer");
-    })
-})
+    });
+    beforeEach(()=>{
+        cy.visit("/explore");
+    });
+    it("Select a supermarket", () => {
+        const firstStore = cy.get("a.store").first();
+        firstStore.within(()=>{
+            cy.get("div.store-info>h2").invoke('text').as("storeName");
+            cy.get("div.store-info>h3").invoke('text').as("numberOfCustomers");
+        });
+        firstStore.click();
+        cy.get("@storeName").then((storeName)=>{
+            cy.get("body").contains(storeName);
+        });
+
+        cy.get("@numberOfCustomers").then((numberOfCustomers)=>{
+            cy.get("body").contains(numberOfCustomers);
+        });
+
+    });
+
+    it("Join the queue", ()=>{
+        cy.login(1, "manager");
+        cy.login(1, "customer");
+        cy.get("a.store").last().click();
+        cy.get("button#form-btn").click();
+        cy.get("body").then(($el) => {
+            cy.wrap($el.html());
+        }).as("ticket");
+        cy.get("a[href='/explore']").click();
+        cy.login(1, "customer");
+        cy.get("a[href='/explore/queue']").click();
+        cy.get("@ticket").then((ticket)=>{
+            cy.get("body").then(($el) => {
+                cy.wrap($el.html());
+            }).should("eq",ticket);
+        });
+    });
+
+    it.only("Leave the queue", ()=>{
+        cy.login(2, "manager").as("newStore");
+        cy.login(2, "customer");
+        cy.get("@newStore").then((newStore) => {
+            cy.get("a.store").contains(newStore.storeName).click();
+        });
+        cy.get("button#form-btn").click();
+        cy.get("a[href='/explore']").click();
+        cy.login(2, "customer");
+        cy.get("a[href='/explore/queue']").click();
+        cy.get("button#form-btn").click();
+        cy.get("a[href='/explore/queue']").click();
+        cy.get(".toast").contains("No ticket found.").should("exist");
+
+    });
+});
