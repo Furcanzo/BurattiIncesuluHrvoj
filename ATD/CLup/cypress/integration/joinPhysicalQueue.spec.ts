@@ -9,9 +9,7 @@
 
 describe("Physical Queue", () => {
 
-
-
-    it("Create physical ticket", () => {
+    it("Check if the tickets store address matches", () => {
         cy.login(1, "manager");
         const addressComponent = cy.get(".store-details > h2:nth-child(2)");
         addressComponent.should("be.visible");
@@ -19,11 +17,18 @@ describe("Physical Queue", () => {
         cy.get("a[href='/overview/ticket/issue']").click();
         cy.get("img.qr-code").should("exist");
         cy.get("@storeAdress").then((addr) => {
-        cy.get("div.info-container:nth-child(1) > div:nth-child(2) > h2:nth-child(2)").invoke("text").should("eq", addr)
+            cy.get("div.info-container:nth-child(1) > div:nth-child(2) > h2:nth-child(2)").invoke("text").should("eq", addr)
         })
     })
 
-    it("Check if physical ticket can be printable", () => {
+    it("Check if the ticket cannot be closed before it is printed", () => {
+        cy.login(1, "manager");
+        cy.get("a[href='/overview/ticket/issue']").click();
+        cy.get("#close-btn").click();
+        cy.get(".toast").should("be.visible");
+    })
+
+    it("Check if the ticket can be printed", () => {
         cy.login(1, "manager");
         cy.get("a[href='/overview/ticket/issue']").click();
         const printButton = cy.get("#print-btn");
@@ -36,6 +41,32 @@ describe("Physical Queue", () => {
         })
     })
 
-
+    it("Check if the ticket can be deleted", () => {
+        cy.login(1, "manager");
+        cy.get("a[href='/overview/ticket/issue']").click();
+        const printButton = cy.get("#form-btn");
+        printButton.should("exist");
+        cy.get("#form-btn").click();
+        cy.get("div.report-container:nth-child(2) > span:nth-child(2)").invoke("text").should('eq', "0");
     })
+
+    // Is this hardcoded in a bad way if it checks "In line" from 0 to 1?
+    it("Check if the newlt created ticket increases number in line-up", () => {
+        cy.login(1, "manager");
+        cy.get("div.report-container:nth-child(2) > span:nth-child(2)").invoke("text").should('eq', "0");
+        cy.get("a[href='/overview/ticket/issue']").click();
+        cy.get("#print-btn").click();
+        cy.get("#close-btn").click();
+        cy.get("div.report-container:nth-child(2) > span:nth-child(2)").invoke("text").should('eq', "1");
+    })
+
+    it.only("Check if manager can issue new ticket if the store is full", () => {
+        cy.login(2,"manager", 0);
+        cy.get("div.report-container:nth-child(2) > span:nth-child(2)").invoke("text").should('eq', "0");
+        cy.get("a[href='/overview/ticket/issue']").click();
+        cy.get("#print-btn").click();
+        cy.get("#close-btn").click();
+        cy.get("div.report-container:nth-child(2) > span:nth-child(2)").invoke("text").should('eq', "1");
+    })
+})
 
