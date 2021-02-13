@@ -27,6 +27,9 @@ router.post('/login', async (req, res) => {
         return res.redirectMessage('/login', user.error, 303)
 
     // Set the session
+    if (!user || !user.toJSON) {
+        debugger;
+    }
     req.session.user = user.toJSON()
     if(user.isClupper()) res.redirect('/explore')
     else res.redirect('/overview')

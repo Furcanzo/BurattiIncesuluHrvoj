@@ -77,7 +77,10 @@ class AccountManagement {
         const values = [email, password]
         return new Promise( (resolve, _reject) => {
             this.dbConn.query(stmt, values, (err, results, _fields) => {
-                if (err) return resolve({error: err.sqlMessage, sqlError: true})
+                if (err) {
+                    debugger;
+                    return resolve({error: err.sqlMessage, sqlError: true})
+                }
                 if (results.length == 0) return resolve({error: 'Wrong combination of email and password.', sqlError: false})
                 const { email, name, surname, password, store } = results[0]
                 resolve(new User(name, surname, email, password, store))

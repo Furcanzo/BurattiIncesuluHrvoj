@@ -20,7 +20,8 @@ class StoreOverview {
         const store = await sharedServices.storeDetails.getStore(vat)
 
         if(!store.error) {
-            const address = await sharedServices.positionStack.getAddressFromPosition(store.lat, store.lng)
+            const address = await sharedServices.positionStack.getAddressFromPosition(store.lat, store.lng);
+            if(!address) return "Address not found!";
             if(address.error) return address
             store.address = address
             

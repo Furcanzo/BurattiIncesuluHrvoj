@@ -44,10 +44,10 @@ describe("JoinDigitalQueue", () => {
         cy.get("a[href='/explore']").click();
         cy.login(1, "customer");
         cy.get("a[href='/explore/queue']").click();
-        cy.get("@ticket").then((ticket)=>{
+        cy.get("@ticket").then((tic)=>{
             cy.get("body").then(($el) => {
                 cy.wrap($el.html());
-            }).should("eq",ticket);
+            }).should("eq",tic);
         });
     });
 
