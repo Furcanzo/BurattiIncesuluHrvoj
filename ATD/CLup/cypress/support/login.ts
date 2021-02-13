@@ -71,7 +71,7 @@ Cypress.Commands.add("login", (n: number, type: "customer" | "manager", capacity
     cy.visit("/");
     const email = `${n}@${currentSession}-${type}.com`;
     const password = "1234";
-    console.log(users);
+    cy.log(JSON.stringify(users));
     if (!users[type][n]) {
         if (type === "customer") {
             registerUser(email, password);
