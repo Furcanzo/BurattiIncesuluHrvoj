@@ -82,7 +82,8 @@ class StoreLocator {
 
         if(!store.error) {
 
-            const address = await sharedServices.positionStack.getAddressFromPosition(store.lat, store.lng)
+            const address = await sharedServices.positionStack.getAddressFromPosition(store.lat, store.lng);
+            if(!address) return "Address Not Found";
             if(address.error) return address
             store.address = address
         

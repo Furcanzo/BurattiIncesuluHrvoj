@@ -33,7 +33,7 @@ const registerUser = (email: string, password: string) => {
     cy.get("#form-btn").click();
 }
 
-const registerCompany = (email: string, password: string, capacity: number) => {
+const registerCompany = (email: string, password: string, capacity: number, storeName:string) => {
     cy.fixture("streetsMilan.json").its("streets").as("streetList");
     cy.visit("/register");
     cy.get("a").contains("Join Us Now").click();
@@ -41,7 +41,7 @@ const registerCompany = (email: string, password: string, capacity: number) => {
     cy.get('input[name^="password"]').type(password);
     cy.get('input[name^="name"]').type(getRandomText());
     cy.get('input[name^="surname"]').type(getRandomText());
-    cy.get('input[name^="storeName"]').type(getRandomText());
+    cy.get('input[name^="storeName"]').type(storeName);
     cy.get('input[name^="vat"]').type(getRandomNumber().toString());
     cy.get('input[name^="capacity"]').type(capacity.toString());
     cy.get('@streetList').then((streets) => {
@@ -53,7 +53,7 @@ const registerCompany = (email: string, password: string, capacity: number) => {
     cy.get("#form-btn").click();
     cy.url().then((url) => {
         if (url.indexOf("register-store") !== -1) {
-            registerCompany(email, password, capacity);
+            registerCompany(email, password, capacity, storeName);
         }
     })
 };
@@ -77,10 +77,12 @@ Cypress.Commands.add("login", (n: number, type: "customer" | "manager", capacity
             registerUser(email, password);
             users[type][n] = true;
         } else {
-            registerCompany(email, password, capacity)
-            users[type][n] = capacity;
+            const storeName = getRandomText();
+            registerCompany(email, password, capacity, storeName);
+            users[type][n] = {capacity, storeName};
         }
     }
     cy.clearCookies();
     login(email, password);
+    cy.wrap(users[type][n]);
 })
