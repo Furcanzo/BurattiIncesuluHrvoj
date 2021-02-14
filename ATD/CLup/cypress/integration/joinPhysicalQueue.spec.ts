@@ -9,7 +9,7 @@
 
 describe("Physical Queue", () => {
 
-    it("Check if the tickets store address matches", () => {
+    it("R6 - The system is able to generate a new ticket after receiving a request", () => {
         //OK
         cy.login(1, "manager");
         const addressComponent = cy.get(".store-details > h2:nth-child(2)");
@@ -22,7 +22,7 @@ describe("Physical Queue", () => {
         })
     })
 
-    it("Check if the ticket cannot be closed before it is printed", () => {
+    it("Check if the ticket cannot be closed before it is printed (We couldn't find a requirement for this)", () => {
         //OK
         cy.login(2, "manager");
         cy.get("a[href='/overview/ticket/issue']").click();
@@ -30,7 +30,7 @@ describe("Physical Queue", () => {
         cy.get(".toast").should("be.visible");
     })
 
-    it("Check if the ticket can be printed", () => {
+    it("Check if the ticket can be printed (We couldn't find a requirement for this, however it is mentioned as a function in the RASD)", () => {
         //OK
         cy.login(3, "manager");
         cy.get("a[href='/overview/ticket/issue']").click();
@@ -43,8 +43,7 @@ describe("Physical Queue", () => {
         })
     })
 
-    // R9 The system is able to remove a ticket from a store queue
-    it("Check if the ticket can be deleted", () => {
+    it("R9 - The system is able to remove a ticket from a store queue", () => {
         //OK
         cy.login(4, "manager");
         cy.get("a[href='/overview/ticket/issue']").click();
@@ -54,7 +53,7 @@ describe("Physical Queue", () => {
         cy.get("div.report-container:nth-child(2) > span:nth-child(2)").invoke("text").should('eq', "0");
     })
 
-    it("Check if the newly created ticket increases number in line-up", () => {
+    it("R31 - The system is able to retrieve the number of customers currently in a store queue", () => {
         //OK
         cy.login(5, "manager");
         cy.get("div.report-container:nth-child(2) > span:nth-child(2)").invoke("text").should('eq', "0");
@@ -68,8 +67,10 @@ describe("Physical Queue", () => {
         cy.get("div.report-container:nth-child(2) > span:nth-child(2)").invoke("text").should('eq', "1");
     })
 
-    it("Check if manager can issue new ticket if the store is full", () => {
+    it("R6 - The system is able to generate a new ticket after receiving a request even when the store is full", () => {
         //OK
+        // We wanted to check this given that the ability to create tickets and check in can easily be mixed by developers.
+
         cy.login(6,"manager", 0);
         cy.get("div.report-container:nth-child(2) > span:nth-child(2)").invoke("text").should('eq', "0");
         cy.get("a[href='/overview/ticket/issue']").click();
