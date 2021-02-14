@@ -7,7 +7,8 @@ Acceptance tests are divided in six sections, one for each functionality describ
     Test related to the requirement R1 of the RASD document, \\
     Test steps:
     \begin{enumerate}
-        \item //todo description
+        \item go to register store page,
+        \item check if the fields email, name, username, password, vat, address, store name and capacity exists.
     \end{enumerate}
     Test Passed \\
 
@@ -15,7 +16,11 @@ Acceptance tests are divided in six sections, one for each functionality describ
     Test related to the requirement R1 of the RASD document, \\
     Test steps:
     \begin{enumerate}
-        \item //todo description
+        \item go to register store page,
+        \item fill register form with valid data,
+        \item click register button,
+        \item check if the url the user is redirected contains word "login™,
+        \item check if the status code for login is 200.
     \end{enumerate}
     Test Passed\\
 
@@ -23,7 +28,15 @@ Acceptance tests are divided in six sections, one for each functionality describ
     Test related to the requirement R2 of the RASD document, \\
     Test steps:
     \begin{enumerate}
-        \item //todo description
+        \item go to register page,
+        \item fill register form with valid data,
+        \item click register button,
+        \item clear cookies,
+        \item go to register page,
+        \item fill register form with same email,
+        \item click register button,
+        \item check if the url the user is redirected contains word "register",
+        \item check if the element "toast" exists with description "This email is already in use.".
     \end{enumerate}
     Test Passed \\
 
@@ -31,7 +44,14 @@ Acceptance tests are divided in six sections, one for each functionality describ
     Test related to the requirement R3 of the RASD document, \\
     Test steps:
     \begin{enumerate}
-        \item //todo description
+        \item go to register page,
+        \item fill register form with valid data,
+        \item click register button,
+        \item clear cookies,
+        \item go to register page,
+        \item fill register form with same vat number,
+        \item click register button,
+        \item check if the element "toast" exists with description "This VAT number is already in use.".
     \end{enumerate}
     Test Passed \\
 
@@ -39,7 +59,14 @@ Acceptance tests are divided in six sections, one for each functionality describ
     Test related to the requirement R4 of the RASD document, \\
     Test steps:
     \begin{enumerate}
-        \item //todo description
+        \item go to register page,
+        \item fill register form with valid data,
+        \item click register button,
+        \item clear cookies,
+        \item check if there is a "Sign in" link,
+        \item sign in with registered data,
+        \item check if the url the user is redirected contains word "overview",
+        \item check if the element "h1" exists with description "Store overview".
     \end{enumerate}
     Test Passed \\
 
@@ -47,7 +74,13 @@ Acceptance tests are divided in six sections, one for each functionality describ
     Test related to the requirement R5 of the RASD document, \\
     Test steps:
     \begin{enumerate}
-        \item //todo description
+        \item go to register page,
+        \item fill register form with valid data,
+        \item click register button,
+        \item clear cookies,
+        \item check if there is a "Sign in" link,
+        \item sign in with registered data,
+        \item check if the url the user is redirected contains word "overview",
     \end{enumerate}
     Test Passed \\
 
@@ -340,6 +373,7 @@ Before this tests a manager is registered and logged in.
     Test steps: \\
     \begin{enumerate}
         \item login as a customer,
+
         \item get a ticket from the store of the manager registered at the beginning,
         \item login as manager,
         \item check that there is 1 person in the queue and 0 in the store,
