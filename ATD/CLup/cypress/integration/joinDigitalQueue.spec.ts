@@ -39,9 +39,11 @@ describe("JoinDigitalQueue", () => {
 
     // R16 A clupper is able to retrieve a previously obtained ticket
     it("Join the queue", ()=>{
-        cy.login(1, "manager");
+        cy.login(1, "manager").as("newStore");
         cy.login(1, "customer");
-        cy.get("a.store").last().click();
+        cy.get("@newStore").then((newStore) => {
+            cy.get("a.store").contains(newStore.storeName).click();
+        });
         cy.get("button#form-btn").click();
         cy.get("body").then(($el) => {
             cy.wrap($el.html());
