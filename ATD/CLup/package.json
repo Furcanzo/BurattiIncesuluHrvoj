@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha --timeout 0 --exit",
     "nodemon": "nodemon src/index.js",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "e2e:installDb": "mysql --defaults-extra-file=databaseCred.ini <database.sql"
   },
   "author": "",
   "license": "ISC",
