@@ -1,0 +1,85 @@
+\input{commandsFile}
+
+\begin{document}
+
+%TITLE PAGE
+
+\begin{titlepage}
+
+%LOGO
+
+{\begin{table}[t!]
+\centering
+\begin{tabu} to \textwidth { X[1.3,r,p] X[1.7,l,p] }
+\textcolor{Blue}
+{\textbf{\small{CLup project ATD Roberto Buratti, Hrvoje Hrvoj, Ozan Incesulu}}} & \includegraphics[scale=0.5]{Images/PolimiLogo}
+\end{tabu}
+\end{table}}~\\ [7cm]
+
+%TITLE 
+
+\begin{flushleft}
+
+%Replace the text string with your title
+{\textcolor{Blue}{\textbf{\Huge{Acceptance Testing Document}}}} \\ [1cm]
+
+\end{flushleft}
+
+\end{titlepage}
+
+%Define deliverable specific info
+%Replace cell contents where needed
+\begin{table}[h!]
+\begin{tabu} to \textwidth { X[0.3,r,p] X[0.7,l,p] }
+\hline
+
+\textbf{Deliverable:} & ATD \\
+\textbf{Title:} & Acceptance Testing Document \\
+\textbf{Authors:} & Roberto Buratti, Hrvoje Hrvoj, Ozan Incesulu \\
+\textbf{Version:} & 1.0 \\ 
+\textbf{Date:} & \the\day{}-\the\month{}-\the\year{} \\
+\textbf{Download page:} & https://github.com/Furcanzo/BurattiIncesuluHrvoj \\
+\textbf{Copyright:} & Copyright © \the\year{}, Roberto Buratti, Hrvoje Hrvoj, Ozan Incesulu – All rights reserved \\
+\hline
+\end{tabu}
+\end{table}
+
+
+
+
+\setcounter{page}{2}
+
+
+%------------------------------------------------------------------------------------------------------------------------------------------------
+\newpage
+\addcontentsline{toc}{section}{Table of Contents}
+\tableofcontents
+
+%------------------------------------------------------------------------------------------------------------------------------------------------
+\clearpage
+{\color{Blue}{\section{Target Project Description}}}
+\label{sect:targetProject}
+\input{Files/targetProject}
+
+%------------------------------------------------------------------------------------------------------------------------------------------------
+\clearpage
+{\color{Blue}{\section{Installation Setup}}}
+\label{sect:install}
+\input{Files/installationSetup}
+
+%------------------------------------------------------------------------------------------------------------------------------------------------
+\clearpage
+{\color{Blue}{\section{Acceptance Tests}}}
+\label{sect:at}
+\input{Files/acceptanceTests}
+
+%------------------------------------------------------------------------------------------------------------------------------------------------
+\clearpage
+{\color{Blue}{\section{Conclusion}}}
+\label{sect:conclusion}
+\input{Files/conclusion}
+
+
+
+
+\end{document}
