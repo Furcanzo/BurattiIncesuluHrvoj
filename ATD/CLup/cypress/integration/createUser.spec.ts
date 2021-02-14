@@ -50,7 +50,6 @@ describe("Register Clupper", () => {
         cy.get("#form-btn").click();
         cy.url().should("include", "register");
         cy.get(".toast").contains("This email is already in use").should("exist");
-
     });
 
     it("R5 - A user (generalization of Clupper) is able to log into the system by entering his personal credentials", () => {
