@@ -9,6 +9,8 @@
 
 describe("Physical Queue", () => {
 
+    // R6 The system is able to generate a new ticket after receiving a request
+    // R8 The system is able to insert a ticket into a store queue
     it("Check if the tickets store address matches", () => {
         cy.login(1, "manager");
         const addressComponent = cy.get(".store-details > h2:nth-child(2)");
@@ -41,6 +43,7 @@ describe("Physical Queue", () => {
         })
     })
 
+    // R9 The system is able to remove a ticket from a store queue
     it("Check if the ticket can be deleted", () => {
         cy.login(1, "manager");
         cy.get("a[href='/overview/ticket/issue']").click();
@@ -51,7 +54,7 @@ describe("Physical Queue", () => {
     })
 
     // Is this hardcoded in a bad way if it checks "In line" from 0 to 1?
-    it("Check if the newlt created ticket increases number in line-up", () => {
+    it("Check if the newly created ticket increases number in line-up", () => {
         cy.login(1, "manager");
         cy.get("div.report-container:nth-child(2) > span:nth-child(2)").invoke("text").should('eq', "0");
         cy.get("a[href='/overview/ticket/issue']").click();

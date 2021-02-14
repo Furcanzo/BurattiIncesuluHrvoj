@@ -7,3 +7,5 @@
 * This function also offers to the store manager the possibility to update the store capacity in order to adapt to the latest regulations.
 *
 * */
+
+// R17 A store manager is able to change the maximum store capacity at any time
