@@ -197,11 +197,17 @@ Before this tests a customer is registered and logged in.
     \end{enumerate}
     Test Passed
 
-    \item TODO: Test name\\
-    Test related to the requirement R7 of the RASD document.\\
+    \item R7 - A clupper is able to join at most one queue at any time (for any store)\\
+    Test is used to verify that a Clupper can not join to another queue when they are already in one.\\
     Test steps:\\
     \begin{enumerate}
-        \item
+        \item Create 2 different managers responsible for 2 different stores
+        \item Login as a new customer
+        \item Add the customer to the queue for the first store
+        \item Open the addition page for the second store.
+        \item Verify that the button for adding the customer is disabled.
+        \item Click the verify button.
+        \item Verify that an error message is shown indicating that the customer can join at one queue at a time.
     \end{enumerate}
     Test Passed
 \end{itemize}
