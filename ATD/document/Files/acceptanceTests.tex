@@ -216,7 +216,13 @@ Before this tests a customer is registered and logged in.
 
         \item login as a manager,
 
-        \item //todo I don't understand
+        \item save the address,
+
+        \item click on the button for issuing tickets,
+
+        \item check that a QR code exist,
+
+        \item check that the address in this page is the same as before.
     \end{enumerate}
     Test Passed
 
@@ -288,7 +294,12 @@ Before this tests a customer is registered and logged in.
     Test used to check if the system prevents the manager to issuing more tickets than the store limit. \\
     Test steps: \\
     \begin{enumerate}
-        \item //todo I don't understand
+        \item create a new store with capacity 0,
+        \item login with the manager of that store,
+        \item check that the capacity is 0,
+        \item click on the printing button,
+        \item click on the close button,
+        \item check that the number of customer in the queue is 1
     \end{enumerate}
     Test Passed\\
 \end{itemize}
@@ -304,10 +315,25 @@ Before this tests a manager is registered and logged in.
     Test steps: \\
     \begin{enumerate}
         \item login as a customer,
-
         \item get a ticket from the store of the manager registered at the beginning,
-
-        \item //todo I don't understand
+        \item login as manager,
+        \item check that there is 1 person in the queue and 0 in the store,
+        \item login as another customer,
+        \item get another ticket from the store of the manager registered at the beginning,
+        \item login as manager,
+        \item check that there are 2 persons in the queue and 0 in the store,
+        \item validate the first ticket,
+        \item check that there is 1 person in the queue and 1 in the store,
+        \item login as another customer,
+        \item get another ticket from the store of the manager registered at the beginning,
+        \item login as manager,
+        \item check that there are 2 persons in the queue and 1 in the store,
+        \item validate the second ticket,
+        \item check that there is 1 person in the queue and 2 in the store,
+        \item validate the exit of the first ticket,
+        \item check that there is 1 person in the queue and 1 in the store,
+        \item validate the exit of the third ticket,
+        \item check that there are 0 persons in the queue and 2 in the store.
     \end{enumerate}
     Test Passed \\
 
@@ -315,7 +341,18 @@ Before this tests a manager is registered and logged in.
     Test related to the requirement R17 of the RASD document. \\
     Test steps: \\
     \begin{enumerate}
-        \item //todo I don't understand
+        \item create a new store with capacity 3,
+        \item login as customer,
+        \item get a ticket from the store registered at the beginning,
+        \item login as another customer,
+        \item get another ticket from the store registered at the beginning,
+        \item login as manager,
+        \item validate the first ticket,
+        \item check that the capacity of the store is 3,
+        \item click on the update button,
+        \item write 5 as input for the capacity,
+        \item click the accept button,
+        \item chack that the capacity of the store is 5.
     \end{enumerate}
     Test Passed \\
 
