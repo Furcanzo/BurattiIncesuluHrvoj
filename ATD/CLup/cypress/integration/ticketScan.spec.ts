@@ -50,7 +50,7 @@ describe("Ticket Scanner", () => {
     // R23 The system is able to invalidate a customer’s ticket when it is scanned at the exit
     it("should scan a user out of the store", () => {
         cy.login(2, "manager", 3).as("newStore")
-        cy.login(1, "customer");
+        cy.login(2, "customer");
         generateTicketSrc().as("QRResult");
         cy.login(2, "manager");
         validateTicket("@QRResult");
@@ -63,9 +63,9 @@ describe("Ticket Scanner", () => {
 
     it("should not allow entrance of more than the limit", () => {
         cy.login(3, "manager", 1).as("newStore")
-        cy.login(1, "customer");
+        cy.login(3, "customer");
         generateTicketSrc().as("QRResult1");
-        cy.login(2, "customer");
+        cy.login(4, "customer");
         generateTicketSrc().as("QRResult2");
         cy.login(3, "manager");
         validateTicket("@QRResult1");
@@ -79,7 +79,7 @@ describe("Ticket Scanner", () => {
 
     it("should prevent already exited tickets from re-exiting", () => {
         cy.login(4, "manager", 1).as("newStore")
-        cy.login(1, "customer");
+        cy.login(5, "customer");
         generateTicketSrc().as("QRResult");
         cy.login(4, "manager");
         validateTicket("@QRResult");
@@ -90,9 +90,9 @@ describe("Ticket Scanner", () => {
 
     it("should prevent people from entering before their turn", () => {
         cy.login(5, "manager", 1).as("newStore");
-        cy.login(1, "customer");
+        cy.login(6, "customer");
         generateTicketSrc().as("QRResult1");
-        cy.login(2, "customer");
+        cy.login(7, "customer");
         generateTicketSrc().as("QRResult2");
         cy.login(5, "manager");
         validateTicket("@QRResult2");
