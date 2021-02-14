@@ -21,12 +21,14 @@ describe("Register Clupper", () => {
         cy.get('input[name^="surname"]').type(surname);
     }
     it("R1 - will ask for the necessary information to register a user (generalization of Clupper)", () => {
+        // OK
         goToRegisterPage();
         ["email", "password", "name", "surname"].map((field) => {
             cy.get(`input[name^="${field}"`).should("exist");
         });
     });
     it("R1 - will register a person to the system as a user (generalization of Clupper)", () => {
+        // OK
         goToRegisterPage();
         const email = `${getRandomText()}@registerClupper.com`;
         const password = getRandomText();
@@ -37,6 +39,7 @@ describe("Register Clupper", () => {
     });
 
     it("R2 - will verify that the email provided by a person during the registration process is unique (generalization of Clupper)", () => {
+        // OK
         goToRegisterPage();
         const email = `${getRandomText()}@registerClupper.com`;
         fillRegisterFormWith(email, getRandomText(), getRandomText(), getRandomText());
@@ -51,6 +54,7 @@ describe("Register Clupper", () => {
     });
 
     it("R5 - A user (generalization of Clupper) is able to log into the system by entering his personal credentials", () => {
+        // OK
         goToRegisterPage();
         const email = `${getRandomText()}@registerClupper.com`;
         const password = getRandomText();

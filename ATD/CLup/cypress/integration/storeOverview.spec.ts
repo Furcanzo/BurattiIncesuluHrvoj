@@ -43,6 +43,8 @@ describe("Store Overview", () => {
     }
     it("R31 - The system is able to retrieve the number of customers currently in a store queue\n" +
         "R32 The system is able to retrieve the number of customers currently inside a store", () => {
+
+        // OK
         cy.login(1, "customer");
         generateTicketSrc().as("firstInline");
 
@@ -82,6 +84,7 @@ describe("Store Overview", () => {
     });
 
     it("R17 - A store manager is able to change the maximum store capacity at any time", () => {
+        // OK
         cy.login(1, "customer");
         generateTicketSrc().as("firstInline");
         cy.login(2, "customer");
@@ -98,6 +101,9 @@ describe("Store Overview", () => {
     });
 
     it("Store capacity can not be reduced below the current amount of customers inside", () => {
+        // Not OK
+        // there is no indication in the document on what should happen if the amount of shoppers in store are larger than the new capacity
+        // We expect some sort of an error, but it just continues with an illegal text like 2/1.
         cy.login(1, "customer");
         generateTicketSrc().as("firstInline");
         cy.login(2, "customer");
