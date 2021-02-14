@@ -24,18 +24,17 @@ describe("Physical Queue", () => {
     })
 
     it("Check if the ticket cannot be closed before it is printed", () => {
-        cy.login(1, "manager");
+        cy.login(2, "manager");
         cy.get("a[href='/overview/ticket/issue']").click();
         cy.get("#close-btn").click();
         cy.get(".toast").should("be.visible");
     })
 
     it("Check if the ticket can be printed", () => {
-        cy.login(1, "manager");
+        cy.login(3, "manager");
         cy.get("a[href='/overview/ticket/issue']").click();
         const printButton = cy.get("#print-btn");
         printButton.should("exist");
-        // window.print
         cy.window().then((win) => {
             const printStub = cy.stub(win, "print");
             cy.get("#print-btn").click();
@@ -45,7 +44,7 @@ describe("Physical Queue", () => {
 
     // R9 The system is able to remove a ticket from a store queue
     it("Check if the ticket can be deleted", () => {
-        cy.login(1, "manager");
+        cy.login(4, "manager");
         cy.get("a[href='/overview/ticket/issue']").click();
         const printButton = cy.get("#form-btn");
         printButton.should("exist");
@@ -55,19 +54,27 @@ describe("Physical Queue", () => {
 
     // Is this hardcoded in a bad way if it checks "In line" from 0 to 1?
     it("Check if the newly created ticket increases number in line-up", () => {
-        cy.login(1, "manager");
+        cy.login(5, "manager");
         cy.get("div.report-container:nth-child(2) > span:nth-child(2)").invoke("text").should('eq', "0");
         cy.get("a[href='/overview/ticket/issue']").click();
-        cy.get("#print-btn").click();
+        cy.window().then((win) => {
+            const printStub = cy.stub(win, "print");
+            cy.get("#print-btn").click();
+            cy.wrap(win).trigger("afterprint");
+        })
         cy.get("#close-btn").click();
         cy.get("div.report-container:nth-child(2) > span:nth-child(2)").invoke("text").should('eq', "1");
     })
 
-    it.only("Check if manager can issue new ticket if the store is full", () => {
-        cy.login(2,"manager", 0);
+    it("Check if manager can issue new ticket if the store is full", () => {
+        cy.login(6,"manager", 0);
         cy.get("div.report-container:nth-child(2) > span:nth-child(2)").invoke("text").should('eq', "0");
         cy.get("a[href='/overview/ticket/issue']").click();
-        cy.get("#print-btn").click();
+        cy.window().then((win) => {
+            const printStub = cy.stub(win, "print");
+            cy.get("#print-btn").click();
+            cy.wrap(win).trigger("afterprint");
+        })
         cy.get("#close-btn").click();
         cy.get("div.report-container:nth-child(2) > span:nth-child(2)").invoke("text").should('eq', "1");
     })
