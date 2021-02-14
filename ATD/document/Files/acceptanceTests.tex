@@ -164,10 +164,10 @@ Acceptance tests are divided in six sections, one for each functionality describ
 \subsection{joinDigitalQueue}
 
 Before this tests a customer is registered and logged in.
-//todo update
+
 \begin{itemize}
-    \item Select a supermarket: \\
-    Test used to check if, after selecting a supermarket from the list, the clupper will be able to see its details: (name, number of customers already in line).\\
+    \item A clupper is able to join a queue \\
+    Test related to the requirement R7 of the RASD document. \\
     Test steps:\\
 
     \begin{enumerate}
@@ -177,8 +177,8 @@ Before this tests a customer is registered and logged in.
     \end{enumerate}
     Test Passed
 
-    \item Join a queue: \\
-    Test related to the requirements R6, R8 and R16 of the RASD document. \\
+    \item The system is able to insert a ticket into a store queue \\
+    Test related to the requirement R8 of the RASD document. \\
     Test steps: \\
     \begin{enumerate}
 
@@ -192,17 +192,36 @@ Before this tests a customer is registered and logged in.
 
         \item click on the button to return to the main page(/explore),
 
-        \item log out,
-
-        \item log in with the same user,
-
-        \item click on the button to see the tickets,
-
-        \item check if the ticket is equal to the one showed in the registration step.
+        \item check that the store has one person in line.
     \end{enumerate}
     Test Passed
 
-    \item Leave the queue: \\
+    \item A clupper is able to retrieve a previously obtained ticket \\
+    Test related to the requirement R16 of the RASD document. \\
+    Test steps: \\
+    \begin{enumerate}
+
+        \item a new manager (with related store) is created,
+
+        \item a new customer is created and logged in,
+
+        \item click on the new store,
+
+        \item click on the button to join the queue,
+
+        \item click on the button to return to the main page(/explore),
+
+        \item logout,
+
+        \item log in with the same customer,
+
+        \item click on the button for seeing the queue,
+
+        \item check that the ticket is the same as before.
+    \end{enumerate}
+    Test Passed
+
+    \item The system is able to remove a ticket from a store queue \\
     Test related to the requirement R9 of the RASD document. \\
     Test steps:\\
     \begin{enumerate}
@@ -230,11 +249,17 @@ Before this tests a customer is registered and logged in.
     \end{enumerate}
     Test Passed
 
-    \item TODO: Test name\\
-    Test related to the requirement R7 of the RASD document.\\
+    \item A clupper is able to join at most one queue at any time (for any store)\\
+    TTest related to the requirement R7 of the RASD document.\\
     Test steps:\\
     \begin{enumerate}
-        \item
+        \item Create 2 different managers responsible for 2 different stores
+        \item Login as a new customer
+        \item Add the customer to the queue for the first store
+        \item Open the addition page for the second store.
+        \item Verify that the button for adding the customer is disabled.
+        \item Click the verify button.
+        \item Verify that an error message is shown indicating that the customer can join at one queue at a time.
     \end{enumerate}
     Test Passed
 \end{itemize}
@@ -249,7 +274,13 @@ Before this tests a customer is registered and logged in.
 
         \item login as a manager,
 
-        \item
+        \item save the address,
+
+        \item click on the button for issuing tickets,
+
+        \item check that a QR code exist,
+
+        \item check that the address in this page is the same as before.
     \end{enumerate}
     Test Passed
 
@@ -321,7 +352,12 @@ Before this tests a customer is registered and logged in.
     Test used to check if the system prevents the manager to issuing more tickets than the store limit. \\
     Test steps: \\
     \begin{enumerate}
-        \item //todo I don't understand
+        \item create a new store with capacity 0,
+        \item login with the manager of that store,
+        \item check that the capacity is 0,
+        \item click on the printing button,
+        \item click on the close button,
+        \item check that the number of customer in the queue is 1
     \end{enumerate}
     Test Passed\\
 \end{itemize}
@@ -339,8 +375,24 @@ Before this tests a manager is registered and logged in.
         \item login as a customer,
 
         \item get a ticket from the store of the manager registered at the beginning,
-
-        \item //todo I don't understand
+        \item login as manager,
+        \item check that there is 1 person in the queue and 0 in the store,
+        \item login as another customer,
+        \item get another ticket from the store of the manager registered at the beginning,
+        \item login as manager,
+        \item check that there are 2 persons in the queue and 0 in the store,
+        \item validate the first ticket,
+        \item check that there is 1 person in the queue and 1 in the store,
+        \item login as another customer,
+        \item get another ticket from the store of the manager registered at the beginning,
+        \item login as manager,
+        \item check that there are 2 persons in the queue and 1 in the store,
+        \item validate the second ticket,
+        \item check that there is 1 person in the queue and 2 in the store,
+        \item validate the exit of the first ticket,
+        \item check that there is 1 person in the queue and 1 in the store,
+        \item validate the exit of the third ticket,
+        \item check that there are 0 persons in the queue and 2 in the store.
     \end{enumerate}
     Test Passed \\
 
@@ -348,7 +400,18 @@ Before this tests a manager is registered and logged in.
     Test related to the requirement R17 of the RASD document. \\
     Test steps: \\
     \begin{enumerate}
-        \item //todo I don't understand
+        \item create a new store with capacity 3,
+        \item login as customer,
+        \item get a ticket from the store registered at the beginning,
+        \item login as another customer,
+        \item get another ticket from the store registered at the beginning,
+        \item login as manager,
+        \item validate the first ticket,
+        \item check that the capacity of the store is 3,
+        \item click on the update button,
+        \item write 5 as input for the capacity,
+        \item click the accept button,
+        \item chack that the capacity of the store is 5.
     \end{enumerate}
     Test Passed \\
 
@@ -379,4 +442,69 @@ Before this tests a manager is registered and logged in.
 
 \subsection{ticketScan}
 
-
+\begin{itemize}
+    \item R19 - A store manager is able to scan a customer’s ticket at the entrance of the store before letting him in\\
+    R22 - The system is able to remove a customer’s ticket from the store queue when it is scanned at the entrance\\
+    R21 - The system is able to perform a validity check on a ticket scanned by a store manager and to inform him about the result\\
+    Test is used to check whether scanning a customer's ticket allows access and updates the customer report accordingly. \\
+    Test steps:\\
+    \begin{enumerate}
+        \item Create a new store by registering as a manager
+        \item Create and login as a new customer
+        \item Generate a ticket for the customer
+        \item Login as the store manager to validate the ticket
+        \item Check that a success message is displayed and the numbers reported are updated to reflect the entrance.
+    \end{enumerate}
+    Test Passed
+    \item R23 - A customer's ticket is scanned at the exit \\
+    Test is used to check whether a customer's exit from the store is reflected on the store numbers.
+    Test steps: \\
+    \begin{enumerate}
+        \item Create a new store by registering as a manager
+        \item Create and login as a new customer
+        \item Generate a ticket for the customer
+        \item Login as the store manager to validate the ticket twice, which corresponds to checking in and out
+        \item Check that a success message is displayed and the numbers reported are updated to reflect the exit of the customer.
+    \end{enumerate}
+    Test Passed \\
+    \item R19 - A store manager is able to scan a customer's ticket only if the number of customers currently inside does not exceed its maximum capacity \\
+    R21 - The system is able to perform a validity check on a ticket scanned by a store manager and to inform him about the result \\
+    Test is used to check whether the manager can not scan another customer in when the maximum store capacity is reached.
+    Test steps: \\
+    \begin{enumerate}
+        \item Create a new store with a capacity 1 by registering as a manager
+        \item Create and login as a new customer
+        \item Generate a ticket for the customer
+        \item Create and login as another customer
+        \item Generate a ticket for that customer customer
+        \item Login as the store manager to validate both of the tickets
+        \item Check that an error message is displayed and the numbers reported do not exceed the set capacity.
+    \end{enumerate}
+    Test Passed\\
+    \item R23 - The system is able to invalidate a customer's ticket \\
+    R21 - The system is able to perform a validity check on a ticket scanned by a store manager and to inform him about the result \\
+    Test is used to detect that the customers ticket is invalid after exiting from the store \\
+    Test steps:
+    \begin{enumerate}
+        \item Create a new store by registering as a manager
+        \item Create and login as a new customer
+        \item Generate a ticket for the customer
+        \item Login as the store manager to validate the ticket twice, which corresponds to checking in and out and trying an invalid ticket.
+        \item Check that an error message is displayed and the numbers reported are updated to reflect the exit of the customer, but not a change for the third scan.
+    \end{enumerate}
+    Test Passed\\
+    \item no one should be able to enter before his turn (We can't find a specific requirement for this) \\
+    R21 - The system is able to perform a validity check on a ticket scanned by a store manager and to inform him about the result \\
+    Test is used to verify that the ordering is assured, even though the requirements don't mention this, it is specified in the function definition and various parts of the RASD.\\
+    Test steps:
+    \begin{enumerate}
+        \item Create a new store with a capacity 1 by registering as a manager
+        \item Create and login as a new customer
+        \item Generate a ticket for the customer
+        \item Create and login as another customer
+        \item Generate a ticket for that customer customer
+        \item Login as the store manager to validate the second ticket
+        \item Check that an error message is displayed indicating that the customer is not at the head of the queue.
+    \end{enumerate}
+    Test Passed\\
+\end{itemize}
