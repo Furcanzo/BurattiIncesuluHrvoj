@@ -15,7 +15,11 @@
 /**
  * @type {Cypress.PluginConfig}
  */
+import {exec} from 'child_process';
 module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
+    on("before:browser:launch", () => {
+        exec("npm run e2e:installDb");
+    })
 }
