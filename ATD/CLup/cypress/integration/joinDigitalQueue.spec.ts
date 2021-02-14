@@ -51,6 +51,7 @@ describe("JoinDigitalQueue", () => {
         cy.login(7, "manager").as("newStore");
         cy.login(7, "customer");
         cy.get("@newStore").then((newStore) => {
+            cy.get("@newStore").then((newStore) => {
             cy.get("a.store").contains(newStore.storeName).click();
         });
         cy.get("button#form-btn").click();
