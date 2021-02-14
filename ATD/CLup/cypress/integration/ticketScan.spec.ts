@@ -32,7 +32,8 @@ describe("Ticket Scanner", () => {
     it("R19 - A store manager is able to scan a customer’s ticket at the entrance of the store before letting him in\n" +
         "R22 - The system is able to remove a customer’s ticket from the store queue when it is scanned at the entrance" +
         "R21 - The system is able to perform a validity check on a ticket scanned by a store manager and to inform him about the result", () => {
-        cy.login(1, "manager", 3).as("newStore")
+        // OK
+        cy.login(1, "manager", 3).as("newStore");
         cy.login(1, "customer");
         generateTicketSrc().as("QRResult");
         cy.login(1, "manager");
@@ -43,6 +44,7 @@ describe("Ticket Scanner", () => {
     });
 
     it("R23 - A customer's ticket is scanned at the exit", () => {
+        // OK
         cy.login(2, "manager", 3).as("newStore")
         cy.login(2, "customer");
         generateTicketSrc().as("QRResult");
@@ -57,6 +59,7 @@ describe("Ticket Scanner", () => {
 
     it("R19 - A store manager is able to scan a customer’s ticket only if the number of customers currently inside does not exceed its maximum capacity\n" +
         "R21 - The system is able to perform a validity check on a ticket scanned by a store manager and to inform him about the result", () => {
+        // OK
         cy.login(3, "manager", 1).as("newStore")
         cy.login(3, "customer");
         generateTicketSrc().as("QRResult1");
@@ -74,6 +77,7 @@ describe("Ticket Scanner", () => {
 
     it("R23 - The system is able to invalidate a customer’s ticket\n" +
         "R21 - The system is able to perform a validity check on a ticket scanned by a store manager and to inform him about the result", () => {
+        // OK
         cy.login(4, "manager", 1).as("newStore")
         cy.login(5, "customer");
         generateTicketSrc().as("QRResult");
@@ -86,7 +90,7 @@ describe("Ticket Scanner", () => {
 
     it("no one should be able to enter before his turn (We can't find a specific requirement for this)\n" +
         "R21 - The system is able to perform a validity check on a ticket scanned by a store manager and to inform him about the result", () => {
-
+        // OK
         cy.login(5, "manager", 1).as("newStore");
         cy.login(6, "customer");
         generateTicketSrc().as("QRResult1");
