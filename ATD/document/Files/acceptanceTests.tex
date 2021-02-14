@@ -1,0 +1,513 @@
+Acceptance tests are divided in six sections, one for each functionality described in the ITD document:
+
+\subsection{createStoreManager}
+
+\begin{itemize}
+    \item Will ask for the necessary information to register a user (generalization of Store Manager): \\
+    Test related to the requirement R1 of the RASD document, \\
+    Test steps:
+    \begin{enumerate}
+        \item Go to register store page,
+        \item Check if the fields email, name, username, password, vat, address, store name and capacity exists.
+    \end{enumerate}
+    Test Passed \\
+
+    \item Will register a person to the system as a user (generalization of Store Manager): \\
+    Test related to the requirement R1 of the RASD document, \\
+    Test steps:
+    \begin{enumerate}
+        \item Go to register store page,
+        \item Fill register form with valid data,
+        \item Click register button,
+        \item Check if the url the user is redirected contains word "login™,
+        \item Check if the status code for login is 200.
+    \end{enumerate}
+    Test Passed\\
+
+    \item Will verify that the email provided by a person during the registration process is unique (generalization of Store Manager): \\
+    Test related to the requirement R2 of the RASD document, \\
+    Test steps:
+    \begin{enumerate}
+        \item Go to register page,
+        \item Fill register form with valid data,
+        \item Click register button,
+        \item Clear cookies,
+        \item Go to register page,
+        \item Fill register form with same email,
+        \item Click register button,
+        \item Check if the url the user is redirected contains word "register",
+        \item Check if the element "toast" exists with description "This email is already in use.".
+    \end{enumerate}
+    Test Passed \\
+
+    \item Will verify that the VAT number provided by a store manager during the registration process is unique: \\
+    Test related to the requirement R3 of the RASD document, \\
+    Test steps:
+    \begin{enumerate}
+        \item Go to register page,
+        \item Fill register form with valid data,
+        \item Click register button,
+        \item Clear cookies,
+        \item Go to register page,
+        \item Fill register form with same vat number,
+        \item Click register button,
+        \item Check if the element "toast" exists with description "This VAT number is already in use.".
+    \end{enumerate}
+    Test Passed \\
+
+    \item Will create a new store after the registration of store manager: \\
+    Test related to the requirement R4 of the RASD document, \\
+    Test steps:
+    \begin{enumerate}
+        \item Go to register page,
+        \item Fill register form with valid data,
+        \item Click register button,
+        \item Clear cookies,
+        \item Check if there is a "Sign in" link,
+        \item Sign in with registered data,
+        \item Check if the url the user is redirected contains word "overview",
+        \item Check if the element "h1" exists with description "Store overview".
+    \end{enumerate}
+    Test Passed \\
+
+    \item A user (generalization of Store Manager) is able to log into the system by entering his personal credentials: \\
+    Test related to the requirement R5 of the RASD document, \\
+    Test steps:
+    \begin{enumerate}
+        \item Go to register page,
+        \item Fill register form with valid data,
+        \item Click register button,
+        \item Clear cookies,
+        \item Check if there is a "Sign in" link,
+        \item Sign in with registered data,
+        \item Check if the url the user is redirected contains word "overview",
+    \end{enumerate}
+    Test Passed \\
+
+\end{itemize}
+\subsection{createUser}
+
+\begin{itemize}
+    \item Will ask for the necessary information to register a user (generalization of Clupper): \\
+    Test related to the requirement R1 of the RASD document. \\
+    Test steps:
+    \begin{enumerate}
+        \item Click on the register button,
+        \item Check that there are input field for email, password, name and surname.
+    \end{enumerate}
+    Test Passed \\
+
+    \item Will register a person to the system as a user (generalization of Clupper): \\
+    Test related to the requirement R1 of the RASD document. \\
+    Test steps:
+    \begin{enumerate}
+        \item Click on the register button,
+        \item Insert random strings in the fields,
+        \item Click on register,
+        \item Log in using the same email and password,
+        \item Checks if the response from the server has an http status code of 200.
+    \end{enumerate}
+    Test Passed \\
+
+    \item Will verify that the email provided by a person during the registration process is unique (generalization of Clupper):\\
+    Test related to the requirement R2 of the RASD document. \\
+    Test steps:
+    \begin{enumerate}
+
+        \item Click on the register button,
+
+        \item Insert random strings in the fields,
+
+        \item Click on register,
+
+        \item Clear the cookies to invalidate the actual session,
+
+        \item Return to the home page,
+
+        \item Click on the register button,
+
+        \item Insert the same email in the email field,
+
+        \item Insert random strings in the other fields,
+
+        \item Click on register,
+
+        \item Checks that an error message is shown.
+    \end{enumerate}
+    Test Passed \\
+
+    \item A user (generalization of Clupper) is able to log into the system by entering his personal credentials: \\
+    Test related to the requirement R5 of the RASD document. \\
+    Test steps: \\
+    \begin{enumerate}
+
+        \item Click on the register button,
+
+        \item Insert random strings in the fields,
+
+        \item Click on register,
+
+        \item Clear the cookies to invalidate the actual session,
+
+        \item Return to the home page,
+
+        \item Click on the sign in button,
+
+        \item Insert the same email and password,
+
+        \item Click on the login button,
+        \item Checks that the system land on the page /explore that is the main page of a logged in user.
+    \end{enumerate}
+    Test Passed
+
+\end{itemize}
+\subsection{joinDigitalQueue}
+
+Before this tests a customer is registered and logged in.
+
+\begin{itemize}
+    \item A clupper is able to join a queue \\
+    Test related to the requirement R7 of the RASD document. \\
+    Test steps:\\
+
+    \begin{enumerate}
+        \item Save the store name and number of customers of the first store in the list,
+        \item Click on the first store in the list,
+        \item Check if the name of the store and the number of custumer are present in the new page.
+    \end{enumerate}
+    Test Passed
+
+    \item The system is able to insert a ticket into a store queue \\
+    Test related to the requirement R8 of the RASD document. \\
+    Test steps: \\
+    \begin{enumerate}
+
+        \item A new manager (with related store) is created,
+
+        \item A new customer is created and logged in,
+
+        \item Click on the new store,
+
+        \item Click on the button to join the queue,
+
+        \item Click on the button to return to the main page(/explore),
+
+        \item Check that the store has one person in line.
+    \end{enumerate}
+    Test Passed
+
+    \item A clupper is able to retrieve a previously obtained ticket \\
+    Test related to the requirement R16 of the RASD document. \\
+    Test steps: \\
+    \begin{enumerate}
+
+        \item A new manager (with related store) is created,
+
+        \item A new customer is created and logged in,
+
+        \item Click on the new store,
+
+        \item Click on the button to join the queue,
+
+        \item Click on the button to return to the main page(/explore),
+
+        \item Logout,
+
+        \item Log in with the same customer,
+
+        \item Click on the button for seeing the queue,
+
+        \item Check that the ticket is the same as before.
+    \end{enumerate}
+    Test Passed
+
+    \item The system is able to remove a ticket from a store queue \\
+    Test related to the requirement R9 of the RASD document. \\
+    Test steps:\\
+    \begin{enumerate}
+        \item A new manager (with related store) is created,
+
+        \item A new customer is created and logged in,
+
+        \item Click on the new store,
+
+        \item Click on the button to join the queue,
+
+        \item Click on the button to return to the main page(/explore),
+
+        \item Log out,
+
+        \item Log in with the same user,
+
+        \item Click on the button to see the tickets,
+
+        \item Click on the button to delete the ticket,
+
+        \item Reclick on the button to see the tickets,
+
+        \item Checks that an error message that says that there are no ticket is shown.
+    \end{enumerate}
+    Test Passed
+
+    \item A clupper is able to join at most one queue at any time (for any store)\\
+    Test related to the requirement R7 of the RASD document.\\
+    Test steps:\\
+    \begin{enumerate}
+        \item Create 2 different managers responsible for 2 different stores
+        \item Login as a new customer
+        \item Add the customer to the queue for the first store
+        \item Open the addition page for the second store.
+        \item Verify that the button for adding the customer is disabled.
+        \item Click the verify button.
+        \item Verify that an error message is shown indicating that the customer can join at one queue at a time.
+    \end{enumerate}
+    Test Passed
+\end{itemize}
+
+\subsection{joinPhysicalQueue}
+
+\begin{itemize}
+    \item R6 - The system is able to generate a new ticket after receiving a request\\
+    Test verifies that the system can generate a ticket upon the request by a manager. \\
+    Test steps: \\
+    \begin{enumerate}
+
+        \item Login as a manager,
+
+        \item Save the address,
+
+        \item Click on the button for issuing tickets,
+
+        \item Check that a QR code exist,
+
+        \item Check that the address in this page is the same as before.
+    \end{enumerate}
+    Test Passed
+
+    \item Check if the ticket cannot be closed before it is printed\\
+    Test used to check if the system prevent the manager from closing the page with the ticket before printing it. \\
+    We couldn't find a requirement for this, however this feature was implemented in the code. \\
+    Test steps: \\
+    \begin{enumerate}
+        \item Login as a manager,
+
+        \item Click on the button for issuing tickets,
+
+        \item Click on the close button,
+
+        \item Checks that an error message is shown.
+    \end{enumerate}
+    Test Passed \\
+
+    \item Check if the ticket can be printed: \\
+    Test used to check if the system allow the manager to print a new ticket. \\
+    We couldn't find a requirement for this, however it is mentioned as a function in the RASD. \\
+    Test steps:\\
+    \begin{enumerate}
+        \item Login as a manager,
+
+        \item Click on the button for issuing tickets,
+
+        \item Check if exists a button for printing,
+
+        \item Click on the print button,
+
+        \item Check that the property calledOnce is set to true.
+    \end{enumerate}
+    Test Passed \\
+
+    \item R9 - The system is able to remove a ticket from a store queue \\
+    Test verifies that a manager can delete a ticket from the store queue. \\
+    Test steps: \\
+    \begin{enumerate}
+        \item Login as a manager,
+
+        \item Click on the button for issuing tickets,
+
+        \item Check if exists a button for printing,
+
+        \item Click on the print button,
+    \end{enumerate}
+    Test Passed\\
+
+    \item R31 - The system is able to retrieve the number of customers currently in a store queue \\
+    Test used to check if creating a new ticket actually increment the size of the queue. \\
+    Test steps: \\
+    \begin{enumerate}
+        \item A new manager (with related store) is created,
+
+        \item Login as the new manager,
+
+        \item Checks that the number of customer in the queue is 0,
+
+        \item Click on the button for issuing tickets,
+
+        \item Click on the print button,
+
+        \item Click on the close button,
+
+        \item Checks that the number of customer in the queue is incremented to 1.
+    \end{enumerate}
+    Test Passed
+
+    \item R6 - The system is able to generate a new ticket after receiving a request even when the store is full \\
+    Test used to check if the system allows the manager to issue more tickets than the store capacity. \\
+    We wanted to check this given that the ability to create tickets and check in can easily be mixed by developers. \\
+    Test steps: \\
+    \begin{enumerate}
+        \item Create a new store with capacity 0,
+        \item Login with the manager of that store,
+        \item Check that the capacity is 0,
+        \item Click on the printing button,
+        \item Click on the close button,
+        \item Check that the number of customer in the queue is 1
+    \end{enumerate}
+    Test Passed\\
+\end{itemize}
+
+\subsection{storeOverview}
+
+Before this tests a manager is registered and logged in.
+
+\begin{itemize}
+
+    \item The system is able to retrieve the number of customers currently in a store queue, The system is able to retrieve the number of customers currently inside a store: \\
+    Test related to the requiremnts R31 and R32 of the RASD document. \\
+    Test steps: \\
+    \begin{enumerate}
+        \item Login as a customer,
+
+        \item Get a ticket from the store of the manager registered at the beginning,
+        \item Login as manager,
+        \item Check that there is 1 person in the queue and 0 in the store,
+        \item Login as another customer,
+        \item Get another ticket from the store of the manager registered at the beginning,
+        \item Login as manager,
+        \item Check that there are 2 persons in the queue and 0 in the store,
+        \item Validate the first ticket,
+        \item Check that there is 1 person in the queue and 1 in the store,
+        \item Login as another customer,
+        \item Get another ticket from the store of the manager registered at the beginning,
+        \item Login as manager,
+        \item Check that there are 2 persons in the queue and 1 in the store,
+        \item Validate the second ticket,
+        \item Check that there is 1 person in the queue and 2 in the store,
+        \item Validate the exit of the first ticket,
+        \item Check that there is 1 person in the queue and 1 in the store,
+        \item Validate the exit of the third ticket,
+        \item Check that there are 0 persons in the queue and 2 in the store.
+    \end{enumerate}
+    Test Passed \\
+
+    \item A store manager is able to change the maximum store capacity at any time: \\
+    Test related to the requirement R17 of the RASD document. \\
+    Test steps: \\
+    \begin{enumerate}
+        \item Create a new store with capacity 3,
+        \item Login as customer,
+        \item Get a ticket from the store registered at the beginning,
+        \item Login as another customer,
+        \item Get another ticket from the store registered at the beginning,
+        \item Login as manager,
+        \item Validate the first ticket,
+        \item Check that the capacity of the store is 3,
+        \item Click on the update button,
+        \item Write 5 as input for the capacity,
+        \item Click the accept button,
+        \item Chack that the capacity of the store is 5.
+    \end{enumerate}
+    Test Passed \\
+
+    \item Store capacity can not be reduced below the current amount of customers inside: \\
+    Test used to check if the system prevents the manager to change the maximum number of user in the store below the actual number of the customers in the store.\\
+    Test steps:\\
+    \begin{enumerate}
+        \item Login as a customer,
+
+        \item Get a ticket from the store of the manager regstered at the beginning,
+
+        \item Login as a second customer,
+
+        \item Get a ticket from the store of the manager regstered at the beginning,
+
+        \item Login as a manager,
+
+        \item Scan the tickets,
+
+        \item Update the capacity of the store to 1,
+
+        \item Check if a error message is shown.
+    \end{enumerate}
+    Test Failed: \\
+    There is no indication in the document on what should happen if the amount of shoppers in store are larger than the new capacity.
+    We expect some sort of an error, but it just continues with an illegal text like 2/1.
+\end{itemize}
+
+\subsection{ticketScan}
+
+\begin{itemize}
+    \item R19 - A store manager is able to scan a customer’s ticket at the entrance of the store before letting him in\\
+    R22 - The system is able to remove a customer’s ticket from the store queue when it is scanned at the entrance\\
+    R21 - The system is able to perform a validity check on a ticket scanned by a store manager and to inform him about the result\\
+    Test is used to check whether scanning a customer's ticket allows access and updates the customer report accordingly. \\
+    Test steps:\\
+    \begin{enumerate}
+        \item Create a new store by registering as a manager
+        \item Create and login as a new customer
+        \item Generate a ticket for the customer
+        \item Login as the store manager to validate the ticket
+        \item Check that a success message is displayed and the numbers reported are updated to reflect the entrance.
+    \end{enumerate}
+    Test Passed
+    \item R23 - A customer's ticket is scanned at the exit \\
+    Test is used to check whether a customer's exit from the store is reflected on the store numbers.
+    Test steps: \\
+    \begin{enumerate}
+        \item Create a new store by registering as a manager
+        \item Create and login as a new customer
+        \item Generate a ticket for the customer
+        \item Login as the store manager to validate the ticket twice, which corresponds to checking in and out
+        \item Check that a success message is displayed and the numbers reported are updated to reflect the exit of the customer.
+    \end{enumerate}
+    Test Passed \\
+    \item R19 - A store manager is able to scan a customer's ticket only if the number of customers currently inside does not exceed its maximum capacity \\
+    R21 - The system is able to perform a validity check on a ticket scanned by a store manager and to inform him about the result \\
+    Test is used to check whether the manager can not scan another customer in when the maximum store capacity is reached.
+    Test steps: \\
+    \begin{enumerate}
+        \item Create a new store with a capacity 1 by registering as a manager
+        \item Create and login as a new customer
+        \item Generate a ticket for the customer
+        \item Create and login as another customer
+        \item Generate a ticket for that customer customer
+        \item Login as the store manager to validate both of the tickets
+        \item Check that an error message is displayed and the numbers reported do not exceed the set capacity.
+    \end{enumerate}
+    Test Passed\\
+    \item R23 - The system is able to invalidate a customer's ticket \\
+    R21 - The system is able to perform a validity check on a ticket scanned by a store manager and to inform him about the result \\
+    Test is used to detect that the customers ticket is invalid after exiting from the store \\
+    Test steps:
+    \begin{enumerate}
+        \item Create a new store by registering as a manager
+        \item Create and login as a new customer
+        \item Generate a ticket for the customer
+        \item Login as the store manager to validate the ticket twice, which corresponds to checking in and out and trying an invalid ticket.
+        \item Check that an error message is displayed and the numbers reported are updated to reflect the exit of the customer, but not a change for the third scan.
+    \end{enumerate}
+    Test Passed\\
+    \item No one should be able to enter before his turn (We can't find a specific requirement for this) \\
+    R21 - The system is able to perform a validity check on a ticket scanned by a store manager and to inform him about the result \\
+    Test is used to verify that the ordering is assured, even though the requirements don't mention this, it is specified in the function definition and various parts of the RASD.\\
+    Test steps:
+    \begin{enumerate}
+        \item Create a new store with a capacity 1 by registering as a manager
+        \item Create and login as a new customer
+        \item Generate a ticket for the customer
+        \item Create and login as another customer
+        \item Generate a ticket for that customer customer
+        \item Login as the store manager to validate the second ticket
+        \item Check that an error message is displayed indicating that the customer is not at the head of the queue.
+    \end{enumerate}
+    Test Passed\\
+\end{itemize}
