@@ -346,4 +346,68 @@ Before this tests a manager is registered and logged in.
 
 \subsection{ticketScan}
 
-
+\begin{itemize}
+    \item R19 - A store manager is able to scan a customer’s ticket at the entrance of the store before letting him in\\
+    R22 - The system is able to remove a customer’s ticket from the store queue when it is scanned at the entrance\\
+    R21 - The system is able to perform a validity check on a ticket scanned by a store manager and to inform him about the result\\
+    Test is used to check whether scanning a customer's ticket allows access and updates the customer report accordingly. \\
+    Test steps:\\
+    \begin{enumerate}
+        \item Create a new store by registering as a manager
+        \item Create and login as a new customer
+        \item Generate a ticket for the customer
+        \item Login as the store manager to validate the ticket
+        \item Check that a success message is displayed and the numbers reported are updated to reflect the entrance.
+    \end{enumerate}
+    Test Passed
+    \item R23 - A customer's ticket is scanned at the exit \\
+    Test is used to check whether a customer's exit from the store is reflected on the store numbers.
+    Test steps: \\
+    \begin{enumerate}
+        \item Create a new store by registering as a manager
+        \item Create and login as a new customer
+        \item Generate a ticket for the customer
+        \item Login as the store manager to validate the ticket twice, which corresponds to checking in and out
+        \item Check that a success message is displayed and the numbers reported are updated to reflect the exit of the customer.
+    \end{enumerate}
+    Test Passed \\
+    \item R19 - A store manager is able to scan a customer's ticket only if the number of customers currently inside does not exceed its maximum capacity \\
+    R21 - The system is able to perform a validity check on a ticket scanned by a store manager and to inform him about the result \\
+    Test is used to check whether the manager can not scan another customer in when the maximum store capacity is reached.
+    Test steps: \\
+    \begin{enumerate}
+        \item Create a new store with a capacity 1 by registering as a manager
+        \item Create and login as a new customer
+        \item Generate a ticket for the customer
+        \item Create and login as another customer
+        \item Generate a ticket for that customer customer
+        \item Login as the store manager to validate both of the tickets
+        \item Check that an error message is displayed and the numbers reported do not exceed the set capacity.
+    \end{enumerate}
+    Test Passed\\
+    \item R23 - The system is able to invalidate a customer's ticket \\
+    R21 - The system is able to perform a validity check on a ticket scanned by a store manager and to inform him about the result \\
+    Test is used to detect that the customers ticket is invalid after exiting from the store \\
+    Test steps:
+    \begin{enumerate}
+        \item Create a new store by registering as a manager
+        \item Create and login as a new customer
+        \item Generate a ticket for the customer
+        \item Login as the store manager to validate the ticket twice, which corresponds to checking in and out and trying an invalid ticket.
+        \item Check that an error message is displayed and the numbers reported are updated to reflect the exit of the customer, but not a change for the third scan.
+    \end{enumerate}
+    Test Passed\\
+    \item no one should be able to enter before his turn (We can't find a specific requirement for this) \\
+    R21 - The system is able to perform a validity check on a ticket scanned by a store manager and to inform him about the result \\
+    Test is used to verify that the ordering is assured, even though the requirements don't mention this, it is specified in the function definition and various parts of the RASD.\\
+    Test steps:
+    \begin{enumerate}
+        \item Create a new store with a capacity 1 by registering as a manager
+        \item Create and login as a new customer
+        \item Generate a ticket for the customer
+        \item Create and login as another customer
+        \item Generate a ticket for that customer customer
+        \item Login as the store manager to validate the second ticket
+        \item Check that an error message is displayed indicating that the customer is not at the head of the queue.
+    \end{enumerate}
+\end{itemize}
