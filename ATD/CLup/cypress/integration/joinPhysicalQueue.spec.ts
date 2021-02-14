@@ -9,9 +9,8 @@
 
 describe("Physical Queue", () => {
 
-    // R6 The system is able to generate a new ticket after receiving a request
-    // R8 The system is able to insert a ticket into a store queue
     it("Check if the tickets store address matches", () => {
+        //OK
         cy.login(1, "manager");
         const addressComponent = cy.get(".store-details > h2:nth-child(2)");
         addressComponent.should("be.visible");
@@ -24,6 +23,7 @@ describe("Physical Queue", () => {
     })
 
     it("Check if the ticket cannot be closed before it is printed", () => {
+        //OK
         cy.login(2, "manager");
         cy.get("a[href='/overview/ticket/issue']").click();
         cy.get("#close-btn").click();
@@ -31,6 +31,7 @@ describe("Physical Queue", () => {
     })
 
     it("Check if the ticket can be printed", () => {
+        //OK
         cy.login(3, "manager");
         cy.get("a[href='/overview/ticket/issue']").click();
         const printButton = cy.get("#print-btn");
@@ -44,6 +45,7 @@ describe("Physical Queue", () => {
 
     // R9 The system is able to remove a ticket from a store queue
     it("Check if the ticket can be deleted", () => {
+        //OK
         cy.login(4, "manager");
         cy.get("a[href='/overview/ticket/issue']").click();
         const printButton = cy.get("#form-btn");
@@ -52,8 +54,8 @@ describe("Physical Queue", () => {
         cy.get("div.report-container:nth-child(2) > span:nth-child(2)").invoke("text").should('eq', "0");
     })
 
-    // Is this hardcoded in a bad way if it checks "In line" from 0 to 1?
     it("Check if the newly created ticket increases number in line-up", () => {
+        //OK
         cy.login(5, "manager");
         cy.get("div.report-container:nth-child(2) > span:nth-child(2)").invoke("text").should('eq', "0");
         cy.get("a[href='/overview/ticket/issue']").click();
@@ -67,6 +69,7 @@ describe("Physical Queue", () => {
     })
 
     it("Check if manager can issue new ticket if the store is full", () => {
+        //OK
         cy.login(6,"manager", 0);
         cy.get("div.report-container:nth-child(2) > span:nth-child(2)").invoke("text").should('eq', "0");
         cy.get("a[href='/overview/ticket/issue']").click();
@@ -79,4 +82,3 @@ describe("Physical Queue", () => {
         cy.get("div.report-container:nth-child(2) > span:nth-child(2)").invoke("text").should('eq', "1");
     })
 })
-
