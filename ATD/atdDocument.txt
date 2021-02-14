@@ -1,0 +1,252 @@
+
+Page1-------------------------------------------------------------------------
+
+copy and paste from previous
+
+Page2-------------------------------------------------------------------------
+
+CLup 
+
+Ferrara Alessandro and Lorenzo Fratus
+
+https://github.com/ferrohd/FerraraFratus
+
+Page3------------------------------------------------------------------------
+
+Installation setup
+
+To install the prototype we needed to install nodeJs install the dependencies and run the application using a custom script provided by the developers.
+The installation guide is easy to follow and complete, but there are some details that can be specified better.
+For example there is a minimum version of nodeJs that needs to be installed and this is not specified so trying to run the program with a old version of node will result in a error.
+Another problem in the installation setup that I want to highlight is that there are not instructions on how to setup the database, since a connection to a remote database is provided in the code, but no API for deletion of items are provided so evry test will just add sample element to the database.
+This last problem has been fixed by contacting the developer and asking for a dump of the database.
+
+Page4------------------------------------------------------------------------
+
+The acceptance tests are divided in six sections, one for each functionality described in the ITD document:
+
+-createStoreManager:
+
+--will ask for the necessary information to register a user (generalization of Store Manager):
+	test related to the requirement R1 of the RASD document,
+	//todo description
+	test passed
+
+--will register a person to the system as a user (generalization of Store Manager):
+	test related to the requirement R1 of the RASD document,
+        //todo description
+        test passed
+
+--will verify that the email provided by a person during the registration process is unique (generalization of Store Manager):
+	test related to the requirement R2 of the RASD document,
+        //todo description
+        test passed
+
+--will verify that the VAT number provided by a store manager during the registration process is unique:
+	test related to the requirement R3 of the RASD document,
+        //todo description
+        test passed
+
+--will create a new store after the registration of store manager:
+	test related to the requirement R4 of the RASD document,
+        //todo description
+        test passed
+
+--A user (generalization of Store Manager) is able to log into the system by entering his personal credentials:
+	test related to the requirement R5 of the RASD document,
+        //todo description
+        test passed
+
+-createUser:
+
+--will ask for the necessary information to register a user (generalization of Clupper):
+	test related to the requirement R1 of the RASD document.
+	Test steps:
+	click on the register button,
+	check that there are input field for email, password, name and surname..
+	test passed
+
+--will register a person to the system as a user (generalization of Clupper):
+	test related to the requirement R1 of the RASD document.
+	Test steps:
+	click on the register button,
+	insert random strings in the fields,
+	click on register,
+	log in using the same email and password,
+	checks if the response from the server has an http status code of 200.
+	test passed
+
+--will verify that the email provided by a person during the registration process is unique (generalization of Clupper):
+	test related to the requirement R2 of the RASD document.
+	Test steps:
+	click on the register button,
+        insert random strings in the fields,
+        click on register,
+	clear the cookies to invalidate the actual session,
+	return to the home page,
+	click on the register button,
+	insert the same email in the email field,
+	insert random strings in the other fields,
+	click on register,
+	checks that an error message is shown.
+	test passed
+
+--A user (generalization of Clupper) is able to log into the system by entering his personal credentials:
+	test related to the requirement R5 of the RASD document.
+	Test steps:
+	click on the register button,
+	insert random strings in the fields,
+	click on register,
+        clear the cookies to invalidate the actual session,
+        return to the home page,
+	click on the sign in button,
+	insert the same email and password,
+	click on the login button,
+	checks that the system land on the page /explore that is the main page of a logged in user.
+	test passed
+
+-joinDigitalQueue:
+
+Before this tests a customer is registered and logged in.
+//todo update
+--Select a supermarket:
+	test used to check if, after selecting a supermarket from the list, the clupper will be able to see its details: (name, number of customers already in line).
+	Test steps:
+	save the store name and number of customers of the first store in the list,
+	click on the first store in the list,
+	check if the name of the store and the number of custumer are present in the new page.
+	test passed
+
+--Join a queue:
+	test related to the requirements R6, R8 and R16 of the RASD document.
+	Test steps:
+	a new manager (with related store) is created,
+	a new customer is created and logged in,
+	click on the new store,
+	click on the button to join the queue,
+	click on the button to return to the main page(/explore),
+	log out,
+	log in with the same user,
+	click on the button to see the tickets,
+	check if the ticket is equal to the one showed in the registration step.
+	test passed
+
+--Leave the queue:
+	test related to the requirement R9 of the RASD document.
+	Test steps:
+	a new manager (with related store) is created,
+        a new customer is created and logged in,
+        click on the new store,
+        click on the button to join the queue,
+        click on the button to return to the main page(/explore),
+        log out,
+        log in with the same user,
+	click on the button to see the tickets,
+	click on the button to delete the ticket,
+	reclick on the button to see the tickets,
+	checks that an error message that says that there are no ticket is shown.
+	test passed
+
+--//todo name:
+	test related to the requirement R7 of the RASD document.
+	Test steps:
+	//todo
+	test passed
+
+-joinPhysicalQueue:
+
+--Check if the tickets store address matches:
+	test related to the requirements R6 and R8 of the RASD document.
+	Test steps:
+	login as a manager,
+	//todo I don't understand
+	test passed
+
+--Check if the ticket cannot be closed before it is printed:
+	test used to check if the system prevent the manager from closing the page with the ticket before printing it.
+	Test steps:
+	login as a manager,
+	click on the button for issuing tickets,
+	click on the close button,
+	checks that an error message is shown.
+	test passed
+
+--Check if the ticket can be printed:
+	test used to check if the system allow the manager to print a new ticket.
+	Test steps:
+	login as a manager,
+	click on the button for issuing tickets,
+	check if exists a button for printing,
+	click on the print button,
+	check that the property calledOnce is set to true.
+	test passed
+
+--Check if the ticket can be deleted:
+	test related to the requirement R9 of the RASD document.
+	Test steps:
+	login as a manager,
+        click on the button for issuing tickets,
+        check if exists a button for printing,
+        click on the print button,
+	//todo I don't understand
+	test passed
+
+--Check if the newly created ticket increases number in line-up:
+	test used to check if creating a new ticket actually increment the size of the queue.
+	Test steps:
+	a new manager (with related store) is created,
+	login as the new manager,
+	checks that the number of customer in the queue is 0,
+	click on the button for issuing tickets,
+	click on the print button,
+	click on the close button,
+	checks that the number of customer in the queue is incremented to 1.
+	test passed
+
+--Check if manager can issue new ticket if the store is full:
+	test used to check if the system prevents the manager to issuing more tickets than the store limit.
+	Test steps:
+	//todo I don't understand
+	
+-storeOverview:
+
+Before this tests a manager is registered and logged in.
+
+--The system is able to retrieve the number of customers currently in a store queue, The system is able to retrieve the number of customers currently inside a store:
+	test related to the requiremnts R31 and R32 of the RASD document.
+	Test steps:
+	login as a customer,
+	get a ticket from the store of the manager regstered at the beginning,
+	//todo I don't understand
+	test passed
+
+--A store manager is able to change the maximum store capacity at any time:
+	test related to the requirement R17 of the RASD document.
+	Test steps:
+	//todo I don't understand
+	test passed
+
+--Store capacity can not be reduced below the current amount of customers inside:
+	test used to check if the system prevents the manager to change the maximum number of user in the store below the actual number of the customers in the store.
+	Test steps:
+	login as a customer,
+	get a ticket from the store of the manager regstered at the beginning,
+	login as a second customer,
+	get a ticket from the store of the manager regstered at the beginning,
+	login as a manager,
+	scan the tickets,
+	update the capacity of the store to 1,
+	check if a error message is shown.
+	test failed:
+	there is no indication in the document on what should happen if the amount of shoppers in store are larger than the new capacity
+        We expect some sort of an error, but it just continues with an illegal text like 2/1.
+
+-ticketScan:
+
+	//todo finish
+
+Page5----------------------------------------------------------------
+
+In conclusion the analyzed system is robust and well done, even if some details need to be fixed.
+The queue managment is too simple since it just set the ETA to 5 minutes for each person before in the queue even if the maximum store capacity is not reached.
+This causes an unnecessary delay in the store exiting and doesn't consider the size of the store.
