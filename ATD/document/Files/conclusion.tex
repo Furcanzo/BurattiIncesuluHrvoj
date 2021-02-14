@@ -1,0 +1,14 @@
+In conclusion the analyzed system is robust and well done, even if some details need to be fixed.
+Some problems that we revealed are: \\
+\begin{itemize}
+    \item The project's ITD document states that all addresses are in region Lombardia for simplicity.
+    Therefore, all addresses that we create were in Milan.
+    However, even though we have explicitly stated the province code (MI) in the address, the location database tried to match the address to Bergamo (BG).
+    \item Following the previous issue, the Geolocation API failed to execute our addresses multiple times, we had to implement a retry logic for this.
+    \item Also, regarding the same issue we have detected that a certain failure causes the app to crash completely.
+    We had to alter the code to prevent the crash so that our tests are replicable (Line 24 in /src/controller/services/StoreManagerServices.js)
+    \item The queue management is too simple since it just set the ETA to 5 minutes for each person before in the queue even if the maximum store capacity is not reached.
+    This causes an unnecessary delay in the store exiting and doesn't consider the size of the store.
+    \item There is no error when the manager reduces the shop's capacity below the amount of customers already present in the store.
+    Even though this is not a regular case to happen, this is not enlisted as impossible in Domain Assumptions, and it is not mentioned as a requirement.
+\end{itemize}

@@ -16,22 +16,22 @@ describe("JoinDigitalQueue", () => {
         cy.login(1, "customer");
         cy.visit("/explore");
         const firstStore = cy.get("a.store").first();
-        firstStore.within(()=>{
+        firstStore.within(() => {
             cy.get("div.store-info>h2").invoke('text').as("storeName");
             cy.get("div.store-info>h3").invoke('text').as("numberOfCustomers");
         });
         firstStore.click();
-        cy.get("@storeName").then((storeName)=>{
+        cy.get("@storeName").then((storeName) => {
             cy.get("body").contains(storeName);
         });
 
-        cy.get("@numberOfCustomers").then((numberOfCustomers)=>{
+        cy.get("@numberOfCustomers").then((numberOfCustomers) => {
             cy.get("body").contains(numberOfCustomers);
         });
 
     });
 
-    it("R8 - The system is able to insert a ticket into a store queue", ()=>{
+    it("R8 - The system is able to insert a ticket into a store queue", () => {
         // OK
         // Even though the correct sentence for error should be "1 user in the line" :)
         cy.login(6, "manager").as("newStore");
@@ -51,7 +51,6 @@ describe("JoinDigitalQueue", () => {
         cy.login(7, "manager").as("newStore");
         cy.login(7, "customer");
         cy.get("@newStore").then((newStore) => {
-            cy.get("@newStore").then((newStore) => {
             cy.get("a.store").contains(newStore.storeName).click();
         });
         cy.get("button#form-btn").click();
@@ -59,12 +58,12 @@ describe("JoinDigitalQueue", () => {
         cy.get("a[href='/explore']").click();
         cy.login(7, "customer");
         cy.get("a[href='/explore/queue']").click();
-        cy.get("@ticket").then((tic)=>{
+        cy.get("@ticket").then((tic) => {
             cy.get("body").invoke("html").should("eq", tic);
         });
     })
 
-    it("R9 - The system is able to remove a ticket from a store queue", ()=>{
+    it("R9 - The system is able to remove a ticket from a store queue", () => {
         // OK
         cy.login(2, "manager").as("newStore");
         cy.login(2, "customer");
@@ -99,5 +98,5 @@ describe("JoinDigitalQueue", () => {
         cy.get(".btn.disable").should("exist");
         cy.get(".btn.disable").click();
         cy.get(".toast").contains("You can be in one queue at a time.").should("exist");
-    })
+    });
 });
