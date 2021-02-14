@@ -33,6 +33,11 @@ describe("JoinDigitalQueue", () => {
 
     });
 
+    // R6 The system is able to generate a new ticket after receiving a request
+
+    // R8 The system is able to insert a ticket into a store queue
+
+    // R16 A clupper is able to retrieve a previously obtained ticket
     it("Join the queue", ()=>{
         cy.login(1, "manager");
         cy.login(1, "customer");
@@ -51,6 +56,8 @@ describe("JoinDigitalQueue", () => {
         });
     });
 
+    // R9 The system is able to remove a ticket from a store queue
+
     it.only("Leave the queue", ()=>{
         cy.login(2, "manager").as("newStore");
         cy.login(2, "customer");
@@ -66,4 +73,7 @@ describe("JoinDigitalQueue", () => {
         cy.get(".toast").contains("No ticket found.").should("exist");
 
     });
+
+    // R7 A clupper is able to join at most one queue at any time (for any store)
+
 });
