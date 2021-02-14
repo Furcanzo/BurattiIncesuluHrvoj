@@ -131,10 +131,10 @@ Acceptance tests are divided in six sections, one for each functionality describ
 \subsection{joinDigitalQueue}
 
 Before this tests a customer is registered and logged in.
-//todo update
+
 \begin{itemize}
-    \item Select a supermarket: \\
-    Test used to check if, after selecting a supermarket from the list, the clupper will be able to see its details: (name, number of customers already in line).\\
+    \item A clupper is able to join a queue \\
+    Test related to the requirement R7 of the RASD document. \\
     Test steps:\\
 
     \begin{enumerate}
@@ -144,8 +144,8 @@ Before this tests a customer is registered and logged in.
     \end{enumerate}
     Test Passed
 
-    \item Join a queue: \\
-    Test related to the requirements R6, R8 and R16 of the RASD document. \\
+    \item The system is able to insert a ticket into a store queue \\
+    Test related to the requirement R8 of the RASD document. \\
     Test steps: \\
     \begin{enumerate}
 
@@ -159,17 +159,36 @@ Before this tests a customer is registered and logged in.
 
         \item click on the button to return to the main page(/explore),
 
-        \item log out,
-
-        \item log in with the same user,
-
-        \item click on the button to see the tickets,
-
-        \item check if the ticket is equal to the one showed in the registration step.
+        \item check that the store has one person in line.
     \end{enumerate}
     Test Passed
 
-    \item Leave the queue: \\
+    \item A clupper is able to retrieve a previously obtained ticket \\
+    Test related to the requirement R16 of the RASD document. \\
+    Test steps: \\
+    \begin{enumerate}
+
+        \item a new manager (with related store) is created,
+
+        \item a new customer is created and logged in,
+
+        \item click on the new store,
+
+        \item click on the button to join the queue,
+
+        \item click on the button to return to the main page(/explore),
+
+        \item logout,
+
+        \item log in with the same customer,
+
+        \item click on the button for seeing the queue,
+
+        \item check that the ticket is the same as before.
+    \end{enumerate}
+    Test Passed
+
+    \item The system is able to remove a ticket from a store queue \\
     Test related to the requirement R9 of the RASD document. \\
     Test steps:\\
     \begin{enumerate}
@@ -197,8 +216,8 @@ Before this tests a customer is registered and logged in.
     \end{enumerate}
     Test Passed
 
-    \item R7 - A clupper is able to join at most one queue at any time (for any store)\\
-    Test is used to verify that a Clupper can not join to another queue when they are already in one.\\
+    \item A clupper is able to join at most one queue at any time (for any store)\\
+    TTest related to the requirement R7 of the RASD document.\\
     Test steps:\\
     \begin{enumerate}
         \item Create 2 different managers responsible for 2 different stores
