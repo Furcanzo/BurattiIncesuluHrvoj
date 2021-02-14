@@ -29,14 +29,9 @@ describe("Ticket Scanner", () => {
         cy.get("#form").submit();
     }
 
-    // R19 A store manager is able to scan a customer’s ticket at the entrance of the store before letting him in only if the number of customers currently inside does not exceed its maximum capacity
-
-    // R21 The system is able to perform a validity check on a ticket scanned by a store manager and to inform him about the result
-
-
-
-    // R22 The system is able to remove a customer’s ticket from the store queue when it is scanned at the entrance
-    it("should scan a user in the store", () => {
+    it("R19 - A store manager is able to scan a customer’s ticket at the entrance of the store before letting him in\n" +
+        "R22 - The system is able to remove a customer’s ticket from the store queue when it is scanned at the entrance" +
+        "R21 - The system is able to perform a validity check on a ticket scanned by a store manager and to inform him about the result", () => {
         cy.login(1, "manager", 3).as("newStore")
         cy.login(1, "customer");
         generateTicketSrc().as("QRResult");
@@ -47,8 +42,7 @@ describe("Ticket Scanner", () => {
         cy.get("h2").contains("In line").siblings("span.report").contains("0").should("exist");
     });
 
-    // R23 The system is able to invalidate a customer’s ticket when it is scanned at the exit
-    it("should scan a user out of the store", () => {
+    it("R23 - A customer's ticket is scanned at the exit", () => {
         cy.login(2, "manager", 3).as("newStore")
         cy.login(2, "customer");
         generateTicketSrc().as("QRResult");
@@ -61,7 +55,8 @@ describe("Ticket Scanner", () => {
 
     });
 
-    it("should not allow entrance of more than the limit", () => {
+    it("R19 - A store manager is able to scan a customer’s ticket only if the number of customers currently inside does not exceed its maximum capacity\n" +
+        "R21 - The system is able to perform a validity check on a ticket scanned by a store manager and to inform him about the result", () => {
         cy.login(3, "manager", 1).as("newStore")
         cy.login(3, "customer");
         generateTicketSrc().as("QRResult1");
@@ -77,7 +72,8 @@ describe("Ticket Scanner", () => {
 
     });
 
-    it("should prevent already exited tickets from re-exiting", () => {
+    it("R23 - The system is able to invalidate a customer’s ticket\n" +
+        "R21 - The system is able to perform a validity check on a ticket scanned by a store manager and to inform him about the result", () => {
         cy.login(4, "manager", 1).as("newStore")
         cy.login(5, "customer");
         generateTicketSrc().as("QRResult");
@@ -88,7 +84,9 @@ describe("Ticket Scanner", () => {
         cy.get(".toast").contains("No ticket found. Ticket is invalid, access not allowed.").should("exist");
     });
 
-    it("should prevent people from entering before their turn", () => {
+    it("no one should be able to enter before his turn (We can't find a specific requirement for this)\n" +
+        "R21 - The system is able to perform a validity check on a ticket scanned by a store manager and to inform him about the result", () => {
+
         cy.login(5, "manager", 1).as("newStore");
         cy.login(6, "customer");
         generateTicketSrc().as("QRResult1");
