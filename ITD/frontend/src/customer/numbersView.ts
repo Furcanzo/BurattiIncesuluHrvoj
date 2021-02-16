@@ -10,7 +10,7 @@ export const numbersView = ({myLineNumbers, showDetailsOf}: CustomerAppState) =>
         return [
             row(lineNumberCard(showDetailsOf, Nothing)),
             row(qrCodeGenerator(showDetailsOf.id.toString())),
-            row(markerMap(showDetailsOf.store.location, false)),
+            markerMap(showDetailsOf.store.location, false),
             row(button([X_CIRCLE_FILL, text("Close")], "danger", UnSelectDetails)),
         ];
     }

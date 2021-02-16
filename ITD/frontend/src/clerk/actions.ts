@@ -45,6 +45,9 @@ export const OpenScanTab = (state: ClerkAppState): ClerkAppState => {
     return {...state, activeTab: "scan"}
 }
 
+export const ErroredScan = (state: ClerkAppState, str: string): any => {
+    return Errored({...state,lastCheckInOut: undefined, lastScannedText: undefined} as any, str);
+}
 export const GenerateQR = (state: ClerkAppState) => {
     const lineNumberInfo: IServerLineNumberRequest = {
         storeId: state.currentUser.store.id,
@@ -53,7 +56,7 @@ export const GenerateQR = (state: ClerkAppState) => {
         timeSlotId: null,
     }
 
-    return [state, reqGenerateQr(QRGenerated, Errored, lineNumberInfo)];
+    return [state, reqGenerateQr(QRGenerated, ErroredScan, lineNumberInfo)];
 }
 export const QRGenerated = (state: ClerkAppState, ticket: IServerLineNumberResponse): ClerkAppState => {
     return {...state, lastGeneratedTicket: ticket};
