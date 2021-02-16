@@ -48,7 +48,7 @@ public class ClerkRoutes {
                 if (employeeService.checkInOut(lineNumberId)) {
                     return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(lineNumber));
                 } else {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: The line number has already checked out!");
                 }
             } else {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Clerk unauthorized");

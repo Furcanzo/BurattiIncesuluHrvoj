@@ -36,8 +36,8 @@ const qrCodeReadPane = (state: ClerkAppState) => {
 
 export const view = (state: ClerkAppState) => {
     if (state.activeTab === "scan") {
-        return qrCodeGeneratePane(state);
-    } else {
         return qrCodeReadPane(state);
+    } else {
+        return qrCodeGeneratePane(state);
     }
 }

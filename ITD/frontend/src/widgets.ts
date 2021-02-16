@@ -4,7 +4,6 @@ import {text as hyperappText} from "hyperapp";
 import {currentYear, debounce, randInt} from "./util";
 import {toCanvas} from "qrcode";
 import {confirm} from "bootbox";
-import "../lib/instascan.min.js";
 import {MAPS_LOCATION_SELECTED_EVENT_NAME, QR_READ_EVENT_NAME} from "./const";
 import {State, StoreLocation} from "./noImport";
 
@@ -20,6 +19,9 @@ export const clickable = (content: any) => {
 }
 export const background = (content: any, backgroundColor: Color) => {
     return addClass(content, [`bg-${backgroundColor}`])
+}
+export const wide = (content: any) => {
+    return addClass(content, ['wide']);
 }
 export type Color =
     "primary"
@@ -146,6 +148,7 @@ export const qrCodeReader = <State>() => {
         const scanner = new (window as any).Instascan.Scanner({video: document.getElementById(randomReader)});
         scanner.addListener('scan', (content: string) => {
             console.log(content);
+            debugger;
             const event = new CustomEvent(QR_READ_EVENT_NAME, {detail: content});
             window.dispatchEvent(event);
         });
@@ -210,7 +213,7 @@ export const markerMap = (location: StoreLocation, enableSelection: boolean, zoo
             addMarker(map);
         });
     }
-    return html`<div id="${randomMap}" class="full-height"></div>`;
+    return html`<div id="${randomMap}" class="full-height wide"></div>`;
 }
 
 const navbarItem = (navigationItem: NavigationItem) => {
