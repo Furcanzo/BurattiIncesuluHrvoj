@@ -8,7 +8,7 @@ import {
     clickable,
     formField,
     smallColumn,
-    Color, centered, markerMap
+    Color, centered, markerMap, wide
 } from "../widgets";
 import {addZero, timeSlotEq} from "../util";
 import {CHECK_CIRCLE, CIRCLE} from "../icons";
@@ -118,11 +118,11 @@ const lineNumberSort = (a: LineNumber, b: LineNumber): number => {
     return a.time.start.minute - b.time.start.minute;
 }
 export const lineNumberSelector = (lineNumbers: LineNumber[]) => {
-    return centered(card(
+    return centered(wide(card(
         titleText("My Line Numbers:", "2"),
         row(lineNumbers.sort(lineNumberSort).map(lineNumber => {
             return smallColumn(lineNumberCard(lineNumber, ShowDetailsOf))
         })),
-    ));
+    )));
 }
 
